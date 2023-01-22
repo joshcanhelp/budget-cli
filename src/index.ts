@@ -5,8 +5,8 @@ export interface Dirent extends Omit<FileSystemDirectoryEntry, "isDirectory" | "
 
 export interface Transaction {
   id: string;
-  dateMade: string;
-  dateAdded: string;
+  datePosted: string;
+  dateImported: string;
   account: string;
   amount: number;
   type: "need" | "want" | "save";

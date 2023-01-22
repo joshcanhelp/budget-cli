@@ -1,17 +1,23 @@
-const { getCsvInDir } = require("../utils/fs");
+const path = require("path");
 
-const path = process.argv[2];
-if (!path) {
+const { getCsvInDir, readCsv } = require("../utils/fs");
+
+const importPath = process.argv[2];
+if (!importPath) {
   console.log("❌ No path");
   process.exit(1);
 }
 
 const importCsvs: string[] = []
 try {
-  getCsvInDir(path, importCsvs)
+  getCsvInDir(importPath, importCsvs)
 } catch (error: any) {
-  console.log(`❌ Error getting files: ${error.message}`);
+  console.log(`❌ Error getting import files: ${error.message}`);
   process.exit(1);
 }
 
-console.log(importCsvs);
+importCsvs.forEach((csvFile) => {
+  console.log(`⚙️ Importing ${csvFile} ...`);
+  const currentFile = path.join(importPath, csvFile);
+  readCsv(currentFile);
+});
