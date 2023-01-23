@@ -1,22 +1,22 @@
-export interface Dirent extends Omit<FileSystemDirectoryEntry, "isDirectory" | "isFile"> {
-  isDirectory: () => boolean;
-  isFile: () => boolean;
-}
-
-export interface Transaction {
-  id: string;
-  datePosted: string;
+export interface TransactionComplete extends TransactionImported {
   dateImported: string;
-  account: string;
-  amount: number;
   type: "need" | "want" | "save";
   category: "expense" | "income" | "omit";
   subCategory: string;
-  description?: string;
-  comments?: string;
-  checkNumber?: number;
   notes?: string;
 }
 
-// TODO: Import from a config file
-export const subCategories = ["family", "mom", "dad", "reimbursable", "other"];
+export interface TransactionImported {
+  id: string;
+  datePosted: string;
+  account: string;
+  amount: number;
+  description: string;
+  comments?: string;
+  checkNumber?: number;
+}
+
+export interface Translator {
+  name: string,
+  translate: (record: string[]) => TransactionImported | null
+}
