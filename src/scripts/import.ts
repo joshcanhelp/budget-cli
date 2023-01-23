@@ -2,7 +2,7 @@ import inquirer from "inquirer";
 import path from "path";
 import * as translators from "../translators/index.mjs";
 
-import { getCsvInDir, readCsv, getFormattedDate, hardNo, transactionHeaders, promptAccount, promptConfirm } from "../utils/index.mjs";
+import { getCsvInDir, readCsv, getFormattedDate, hardNo, transactionHeaders, promptAccount, promptConfirm, promptTransaction } from "../utils/index.mjs";
 import { outputFile, subCategories } from "../config.mjs";
 import { TransactionComplete, Translator } from "../index.js";
 
@@ -46,7 +46,6 @@ try {
     
     for (const transaction of csvData) {
       const importedTransaction = useTranslator.translate(transaction);
-
       if (!importedTransaction) {
         continue;
       }
@@ -58,31 +57,7 @@ try {
         console.log(`${label}: ${value}`);
       });
       
-      const importTransaction = await inquirer.prompt([
-        {
-          name: "category",
-          type: "list",
-          choices: ["expense", "income", "omit"],
-          message: "Which transaction category is this?"
-        },
-        {
-          name: "subCategory",
-          type: "list",
-          choices: subCategories,
-          message: "Which transaction sub-category is this?"
-        },
-        {
-          name: "type",
-          type: "list",
-          choices: ["need", "want", "save"],
-          message: "Which transaction type is this?"
-        },
-        {
-          name: "notes",
-          type: "input",
-          message: "Notes?"
-        }
-      ]);
+      const importTransaction = await promptTransaction();
       
       const mappedTransaction: TransactionComplete = {
         ...importedTransaction,
@@ -94,7 +69,6 @@ try {
       }
 
       console.log(mappedTransaction);
-      
     }
   }
 })();
