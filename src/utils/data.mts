@@ -23,8 +23,3 @@ export const getFormattedDate = (date: Date = (new Date())) => {
 export const padLeftZero = (string: number) => {
   return ("" + string).length === 1 ? "0" + string : string;
 }
-
-// TODO: Import from a config file
-export const outputFile = "./output/data.csv";
-export const subCategories = ["family", "mom", "dad", "reimbursable", "other"];
-export const accounts = ["SCU", "BoA", "Nordstroms"];

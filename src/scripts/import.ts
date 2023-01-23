@@ -2,58 +2,43 @@ import inquirer from "inquirer";
 import path from "path";
 import * as translators from "../translators/index.mjs";
 
-import { getCsvInDir, readCsv } from "../utils/fs.mjs";
-import { accounts, getFormattedDate, outputFile, subCategories, transactionHeaders } from "../utils/data.mjs";
+import { getCsvInDir, readCsv, getFormattedDate, hardNo, transactionHeaders, promptAccount, promptConfirm } from "../utils/index.mjs";
+import { outputFile, subCategories } from "../config.mjs";
 import { TransactionComplete, Translator } from "../index.js";
 
 const importPath = process.argv[2];
 if (!importPath) {
-  console.log("❌ No path provided!");
-  process.exit(1);
+  hardNo("No path provided!");
 }
 
 const importCsvs: string[] = []
 try {
   getCsvInDir(importPath, importCsvs)
 } catch (error: any) {
-  console.log(`❌ Error getting import files: ${error.message}`);
-  process.exit(1);
+  hardNo(`Error getting import files: ${error.message}`);
 }
 
 (async () => {
-  const outputData = readCsv(outputFile);
+  const db = readCsv(outputFile);
   for (const csvFile of importCsvs) {
-    console.log(`🤖 Importing ${csvFile} ...`);
-    const importConfirm = await inquirer.prompt({
-      name: "continue",
-      type: "confirm",
-      message: "Import this file?"
-    });
-    
-    if (!importConfirm.continue) {
+    console.log(`🤖 Reading ${csvFile} ...`);    
+    if (!await promptConfirm("Import this file?")) {
       continue;
     }
     
-    const importAccount = await inquirer.prompt({
-      name: "account",
-      type: "list",
-      choices: accounts,
-      message: "Which account?"
-    });
-    
-    const { account } = importAccount;
+    const importAccount = await promptAccount();
 
     let useTranslator: Translator | undefined;
     Object.values(translators).some((translator) => {
-      if (translator.name === account) {
+      if (translator.name === importAccount) {
         useTranslator = translator;
         return true;
       }
     });
     
     if (!useTranslator) {
-      console.log(`❌ Translator for ${account} not found!`);
-      process.exit(1);
+      console.log(`⛔️ Translator for ${importAccount} not found!`);
+      continue;
     }
     
     const currentFile = path.join(importPath, csvFile);
