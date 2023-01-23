@@ -10,11 +10,11 @@ export const getCsvInDir = (path: string, initial: string[] = []): string[] => {
     }
   });
   return initial;
-}
+};
 
 export const readCsv = (filePath: string): [][] => {
   const data = readFileSync(filePath, { encoding: "utf8" });
   return csvParse(data, {
-    skip_empty_lines: true
+    skip_empty_lines: true,
   });
-}
+};

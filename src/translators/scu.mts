@@ -2,7 +2,7 @@ import { TransactionImported } from "..";
 import { Translator } from "..";
 
 const accountName = "SCU";
-export const scuTranslator: Translator =  {
+export const scuTranslator: Translator = {
   name: accountName,
   translate: (record: any): TransactionImported => ({
     id: record[1],
@@ -11,5 +11,5 @@ export const scuTranslator: Translator =  {
     amount: record[4],
     description: record[2],
     comments: record[3],
-  })
-}
+  }),
+};

@@ -2,10 +2,9 @@ import { TransactionImported } from "..";
 import { Translator } from "..";
 
 const accountName = "BoA";
-export const boaTranslator: Translator =  {
+export const boaTranslator: Translator = {
   name: accountName,
   translate: (record: any): TransactionImported | null => {
-
     if (record[4] === "Amount") {
       return null;
     }
@@ -21,7 +20,7 @@ export const boaTranslator: Translator =  {
 
     let amount: number = parseInt(dollarsString, 10);
     if (centsString) {
-      amount = amount + (parseInt(centsString.substring(0, 2), 10) / 100);
+      amount = amount + parseInt(centsString.substring(0, 2), 10) / 100;
     }
 
     // fin.
@@ -33,5 +32,5 @@ export const boaTranslator: Translator =  {
       description: record[2],
       comments: record[3],
     };
-  }
-}
+  },
+};

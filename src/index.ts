@@ -17,6 +17,6 @@ export interface TransactionImported {
 }
 
 export interface Translator {
-  name: string,
-  translate: (record: string[]) => TransactionImported | null
+  name: string;
+  translate: (record: string[]) => TransactionImported | null;
 }
