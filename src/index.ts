@@ -1,7 +1,7 @@
 export interface TransactionComplete extends TransactionImported {
   dateImported: string;
-  type: "need" | "want" | "save";
-  category: "expense" | "income" | "omit";
+  type: "need" | "want" | "save" | "split";
+  category: "expense" | "income" | "omit" | "split";
   subCategory: string;
   splitId: number;
   notes?: string;

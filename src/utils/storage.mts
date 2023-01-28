@@ -16,9 +16,12 @@ export class DB {
       if (!this.transactionsByAccount[transaction[2]]) {
         this.transactionsByAccount[transaction[2]] = [];
       }
-      this.transactionsByAccount[transaction[2]].push(transaction[0]);
+      if (
+        !this.transactionsByAccount[transaction[2]].includes(transaction[0])
+      ) {
+        this.transactionsByAccount[transaction[2]].push(transaction[0]);
+      }
     });
-    console.log(this.transactionsByAccount);
   }
 
   public saveRow = (row: TransactionComplete) => {

@@ -1,6 +1,6 @@
 import path from "path";
-import * as translators from "../translators/index.mjs";
 
+import * as translators from "../translators/index.mjs";
 import {
   getCsvInDir,
   readCsv,
@@ -10,6 +10,10 @@ import {
   promptAccount,
   promptConfirm,
   promptTransaction,
+  promptAmount,
+  convertStringCurrencyToNumber,
+  mapCompleteTransaction,
+  roundCurrency,
 } from "../utils/index.mjs";
 import { TransactionComplete, Translator } from "../index.js";
 import { DB } from "../utils/storage.mjs";
@@ -35,6 +39,7 @@ try {
 }
 
 const run = async () => {
+  // Iterate through all import files found
   for (const csvFile of importCsvs) {
     console.log(`🤖 Reading ${csvFile} ...`);
     if (!(await promptConfirm("Import this file?"))) {
@@ -59,15 +64,18 @@ const run = async () => {
     const currentFile = path.join(importPath, csvFile);
     const csvData = readCsv(currentFile);
 
+    // Iterate through transactions
     for (const transaction of csvData) {
       const importedTransaction = useTranslator.translate(transaction);
       if (!importedTransaction) {
         continue;
       }
 
-      if (
-        db.hasTransaction(importedTransaction.account, importedTransaction.id)
-      ) {
+      const duplicateTransaction = db.hasTransaction(
+        importedTransaction.account,
+        importedTransaction.id
+      );
+      if (duplicateTransaction) {
         console.log(`Skipping duplicate transaction ${importedTransaction.id}`);
         continue;
       }
@@ -79,20 +87,38 @@ const run = async () => {
         console.log(`${label}: ${value}`);
       });
 
-      const importTransaction = await promptTransaction();
+      let originalAmount = importedTransaction.amount;
+      if (!(await promptConfirm("Split this transaction?"))) {
+        const transactionPrompt = await promptTransaction();
+        db.saveRow(
+          mapCompleteTransaction(importedTransaction, transactionPrompt)
+        );
+        continue;
+      }
 
-      const mappedTransaction: TransactionComplete = {
-        ...importedTransaction,
-        splitId: 0,
-        dateImported: getFormattedDate(),
-        type: importTransaction.type,
-        category: importTransaction.category,
-        subCategory: importTransaction.subCategory,
-        notes: importTransaction.notes,
-      };
+      db.saveRow(mapCompleteTransaction(importedTransaction));
 
-      console.log(mappedTransaction);
-      db.saveRow(mappedTransaction);
+      // Split the original amount
+      let splitCount = 1;
+      let originalAmountToSplit = Math.abs(originalAmount);
+      while (!!originalAmountToSplit) {
+        console.log(
+          `🔪 Split #${splitCount}, $${originalAmountToSplit} remaining`
+        );
+        let splitAmount = convertStringCurrencyToNumber(await promptAmount());
+        const splitPrompt = await promptTransaction();
+        const splitTransaction = {
+          ...importedTransaction,
+          amount: originalAmount > 0 ? splitAmount : splitAmount * -1,
+        };
+        db.saveRow(
+          mapCompleteTransaction(splitTransaction, splitPrompt, splitCount)
+        );
+        splitCount++;
+        originalAmountToSplit = roundCurrency(
+          originalAmountToSplit - splitAmount
+        );
+      }
     }
   }
 };

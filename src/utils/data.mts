@@ -1,3 +1,6 @@
+import { TransactionComplete, TransactionImported } from "..";
+import { TransactionPrompt } from "./prompt.mjs";
+
 export const transactionHeaders = {
   id: "Transaction ID",
   splitId: "Split ID",
@@ -23,4 +26,20 @@ export const getFormattedDate = (date: Date = new Date()) => {
 
 export const padLeftZero = (string: number) => {
   return ("" + string).length === 1 ? "0" + string : string;
+};
+
+export const mapCompleteTransaction = (
+  imported: TransactionImported,
+  prompt?: TransactionPrompt | undefined,
+  splitId?: number | undefined
+): TransactionComplete => {
+  return {
+    ...imported,
+    splitId: splitId || 0,
+    dateImported: getFormattedDate(),
+    type: prompt?.type || "split",
+    category: prompt?.category || "split",
+    subCategory: prompt?.subCategory || "split",
+    notes: prompt?.notes || "",
+  };
 };

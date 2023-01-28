@@ -3,6 +3,13 @@ import inquirer from "inquirer";
 import { accounts, subCategories } from "../config.mjs";
 import { TransactionComplete } from "../index.js";
 
+export interface TransactionPrompt {
+  category: TransactionComplete["category"];
+  subCategory: TransactionComplete["subCategory"];
+  type: TransactionComplete["type"];
+  notes: string;
+}
+
 export const promptConfirm = async (message: string = ""): Promise<boolean> => {
   return (
     await inquirer.prompt({
@@ -24,7 +31,17 @@ export const promptAccount = async (message: string = ""): Promise<string> => {
   ).account;
 };
 
-export const promptTransaction = async (): Promise<TransactionComplete> => {
+export const promptAmount = async (): Promise<string> => {
+  return (
+    await inquirer.prompt({
+      name: "amount",
+      type: "input",
+      message: "How much (positive amount)?",
+    })
+  ).amount;
+};
+
+export const promptTransaction = async (): Promise<TransactionPrompt> => {
   return await inquirer.prompt([
     {
       name: "category",
