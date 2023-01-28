@@ -1,5 +1,6 @@
 import { TransactionImported } from "..";
 import { Translator } from "..";
+import { convertStringCurrencyToNumber } from "../utils/money.mjs";
 
 const accountName = "BoA";
 export const boaTranslator: Translator = {
@@ -13,22 +14,12 @@ export const boaTranslator: Translator = {
     const dateParts = record[0].split("/");
     const datePosted = dateParts[2] + "-" + dateParts[0] + "-" + dateParts[1];
 
-    // Amount conversion
-    const amountRaw = record[4].trim();
-    const dollarsString = amountRaw.split(".")[0];
-    const centsString = amountRaw.split(".")[1];
-
-    let amount: number = parseInt(dollarsString, 10);
-    if (centsString) {
-      amount = amount + parseInt(centsString.substring(0, 2), 10) / 100;
-    }
-
     // fin.
     return {
       id: record[1],
       datePosted,
       account: accountName,
-      amount,
+      amount: convertStringCurrencyToNumber(record[4]),
       description: record[2],
       comments: record[3],
     };

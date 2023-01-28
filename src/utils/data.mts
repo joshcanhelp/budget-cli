@@ -1,5 +1,6 @@
 export const transactionHeaders = {
   id: "Transaction ID",
+  splitId: "Split ID",
   datePosted: "Posted date",
   dateImported: "Imported date",
   account: "Account name",

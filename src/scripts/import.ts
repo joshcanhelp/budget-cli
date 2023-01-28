@@ -1,4 +1,3 @@
-import inquirer from "inquirer";
 import path from "path";
 import * as translators from "../translators/index.mjs";
 
@@ -12,8 +11,9 @@ import {
   promptConfirm,
   promptTransaction,
 } from "../utils/index.mjs";
-import { outputFile, subCategories } from "../config.mjs";
 import { TransactionComplete, Translator } from "../index.js";
+import { DB } from "../utils/storage.mjs";
+import { outputFile } from "../config.mjs";
 
 const importPath = process.argv[2];
 if (!importPath) {
@@ -27,8 +27,14 @@ try {
   hardNo(`Error getting import files: ${error.message}`);
 }
 
-(async () => {
-  const db = readCsv(outputFile);
+let db: DB;
+try {
+  db = new DB(outputFile);
+} catch (error: any) {
+  hardNo(`Error loading transactions from ${outputFile}: ${error.message}`);
+}
+
+const run = async () => {
   for (const csvFile of importCsvs) {
     console.log(`🤖 Reading ${csvFile} ...`);
     if (!(await promptConfirm("Import this file?"))) {
@@ -59,6 +65,13 @@ try {
         continue;
       }
 
+      if (
+        db.hasTransaction(importedTransaction.account, importedTransaction.id)
+      ) {
+        console.log(`Skipping duplicate transaction ${importedTransaction.id}`);
+        continue;
+      }
+
       console.log("🤑 Importing");
       Object.keys(importedTransaction).forEach((transactionProp: string) => {
         const label = (transactionHeaders as any)[transactionProp];
@@ -70,6 +83,7 @@ try {
 
       const mappedTransaction: TransactionComplete = {
         ...importedTransaction,
+        splitId: 0,
         dateImported: getFormattedDate(),
         type: importTransaction.type,
         category: importTransaction.category,
@@ -78,6 +92,9 @@ try {
       };
 
       console.log(mappedTransaction);
+      db.saveRow(mappedTransaction);
     }
   }
-})();
+};
+
+(async () => await run())();

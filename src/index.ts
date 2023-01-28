@@ -3,6 +3,7 @@ export interface TransactionComplete extends TransactionImported {
   type: "need" | "want" | "save";
   category: "expense" | "income" | "omit";
   subCategory: string;
+  splitId: number;
   notes?: string;
 }
 

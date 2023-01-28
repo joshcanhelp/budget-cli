@@ -1,9 +1,14 @@
 {
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "**/*.spec.ts"],
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
+  ],
   "compilerOptions": {
     "removeComments": true,
-    "target": "es2016",
+    "target": "es2021",
     "module": "es6",
     "outDir": "./dist",
     "esModuleInterop": true,
