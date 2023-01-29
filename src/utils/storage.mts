@@ -13,13 +13,12 @@ export class DB {
     this.transactionsByAccount = {};
     this.store = readCsv(outputFile);
     this.store.forEach((transaction: any) => {
-      if (!this.transactionsByAccount[transaction[2]]) {
-        this.transactionsByAccount[transaction[2]] = [];
+      const [id, account] = transaction;
+      if (!this.transactionsByAccount[account]) {
+        this.transactionsByAccount[account] = [];
       }
-      if (
-        !this.transactionsByAccount[transaction[2]].includes(transaction[0])
-      ) {
-        this.transactionsByAccount[transaction[2]].push(transaction[0]);
+      if (!this.transactionsByAccount[account].includes(id)) {
+        this.transactionsByAccount[account].push(id);
       }
     });
   }
@@ -27,8 +26,8 @@ export class DB {
   public saveRow = (row: TransactionComplete) => {
     this.store.push([
       row.id,
-      row.datePosted,
       row.account,
+      row.datePosted,
       row.amount,
       row.description,
       row.comments,
