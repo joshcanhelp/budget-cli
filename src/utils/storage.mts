@@ -4,21 +4,21 @@ import { TransactionComplete } from "../index.js";
 export class DB {
   private store: any[][];
   private outputFile: string;
-  private transactionsByAccount: {
+  private transactionIds: {
     [key: string]: string[];
   };
 
   constructor(outputFile: string) {
     this.outputFile = outputFile;
-    this.transactionsByAccount = {};
+    this.transactionIds = {};
     this.store = readCsv(outputFile);
     this.store.forEach((transaction: any) => {
       const [id, account] = transaction;
-      if (!this.transactionsByAccount[account]) {
-        this.transactionsByAccount[account] = [];
+      if (!this.transactionIds[account]) {
+        this.transactionIds[account] = [];
       }
-      if (!this.transactionsByAccount[account].includes(id)) {
-        this.transactionsByAccount[account].push(id);
+      if (!this.transactionIds[account].includes(id)) {
+        this.transactionIds[account].push(id);
       }
     });
   }
@@ -44,8 +44,8 @@ export class DB {
 
   public hasTransaction = (account: string, id: string) => {
     return (
-      !!this.transactionsByAccount[account] &&
-      this.transactionsByAccount[account].includes(id)
+      !!this.transactionIds[account] &&
+      this.transactionIds[account].includes(id)
     );
   };
 
