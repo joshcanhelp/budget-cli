@@ -82,10 +82,7 @@ const run = async () => {
       const transactionPrompt = await promptTransaction();
       db.saveRow(mapTransaction(importedTransaction, transactionPrompt));
 
-      if (
-        transactionPrompt.category === "omit" ||
-        transactionPrompt.category !== "split"
-      ) {
+      if (["expense", "income", "omit"].includes(transactionPrompt.category)) {
         continue;
       }
 
