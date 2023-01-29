@@ -35,9 +35,9 @@ export class DB {
       row.checkNumber,
       row.splitId,
       row.dateImported,
-      row.type,
       row.category,
       row.subCategory,
+      row.type,
       row.notes,
     ]);
     this.save();

@@ -28,16 +28,28 @@ export const padLeftZero = (string: number) => {
   return ("" + string).length === 1 ? "0" + string : string;
 };
 
-export const mapCompleteTransaction = (
+export const mapTransaction = (
   imported: TransactionImported,
-  splitId?: number | undefined,
-  prompt?: TransactionPrompt | undefined,
-): TransactionComplete => ({
-  ...imported,
-  splitId: splitId || 0,
-  dateImported: getFormattedDate(),
-  type: prompt?.type || "split",
-  category: prompt?.category || "split",
-  subCategory: prompt?.subCategory || "split",
-  notes: prompt?.notes || "",
-});
+  prompt: TransactionPrompt,
+  splitId: number = 1
+): TransactionComplete => {
+  const { category } = prompt;
+  let { subCategory, type } = prompt;
+
+  const isSkipped = category === "omit" || category === "split";
+  if (isSkipped) {
+    splitId = 0;
+    subCategory = category;
+    type = category;
+  }
+
+  return {
+    ...imported,
+    dateImported: getFormattedDate(),
+    notes: prompt.notes,
+    splitId,
+    category,
+    subCategory,
+    type,
+  };
+};

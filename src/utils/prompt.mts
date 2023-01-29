@@ -11,7 +11,10 @@ export interface TransactionPrompt {
   notes: string;
 }
 
-export const promptConfirm = async (message: string = "", defaultValue: boolean = true): Promise<boolean> => {
+export const promptConfirm = async (
+  message: string = "",
+  defaultValue: boolean = true
+): Promise<boolean> => {
   return (
     await inquirer.prompt({
       name: "continue",
@@ -43,29 +46,37 @@ export const promptAmount = async (): Promise<string> => {
   ).amount;
 };
 
-export const promptTransaction = async (): Promise<TransactionPrompt> => {
+export const promptTransaction = async (
+  splitTransaction: boolean
+): Promise<TransactionPrompt> => {
   return await inquirer.prompt([
     {
       name: "category",
       type: "list",
-      choices: ["expense", "income", "omit"],
+      choices: splitTransaction
+        ? ["expense", "income"]
+        : ["expense", "income", "omit", "split"],
       message: "Which transaction category is this?",
     },
     {
       name: "subCategory",
       type: "list",
       choices: subCategories,
+      when: (answers) => !["omit", "split"].includes(answers.category),
       message: "Which transaction sub-category is this?",
     },
     {
       name: "type",
       type: "list",
       choices: ["need", "want", "save"],
+      when: (answers) => !["omit", "split"].includes(answers.category),
       message: "Which transaction type is this?",
     },
     {
       name: "notes",
       type: "input",
+      when: (answers) => !["omit", "split"].includes(answers.category),
+      default: "",
       message: "Notes?",
     },
   ]);

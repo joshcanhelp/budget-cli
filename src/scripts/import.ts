@@ -11,7 +11,7 @@ import {
   promptTransaction,
   promptAmount,
   convertStringCurrencyToNumber,
-  mapCompleteTransaction,
+  mapTransaction,
   roundCurrency,
 } from "../utils/index.mjs";
 import { DB } from "../utils/storage.mjs";
@@ -80,25 +80,21 @@ const run = async () => {
         }
       });
 
-      if (!(await promptConfirm("Import this transaction?"))) {
+      const transactionPrompt = await promptTransaction();
+      db.saveRow(mapTransaction(importedTransaction, transactionPrompt));
+
+      if (
+        transactionPrompt.category === "omit" ||
+        transactionPrompt.category !== "split"
+      ) {
         continue;
       }
-
-      let originalAmount = importedTransaction.amount;
-      if (!await promptConfirm("Split this transaction?", false)) {
-        const transactionPrompt = await promptTransaction();
-        db.saveRow(
-          mapCompleteTransaction(importedTransaction, 1, transactionPrompt)
-        );
-        continue;
-      }
-
-      // Save the original transaction as a split
-      db.saveRow(mapCompleteTransaction(importedTransaction));
 
       // Split the original amount
       let splitCount = 1;
+      let originalAmount = importedTransaction.amount;
       let originalAmountToSplit = Math.abs(originalAmount);
+
       while (!!originalAmountToSplit) {
         console.log(
           `🔪 Split #${splitCount}, $${originalAmountToSplit} remaining`
@@ -109,9 +105,7 @@ const run = async () => {
           ...importedTransaction,
           amount: originalAmount > 0 ? splitAmount : splitAmount * -1,
         };
-        db.saveRow(
-          mapCompleteTransaction(splitTransaction, splitCount, splitPrompt)
-        );
+        db.saveRow(mapTransaction(splitTransaction, splitPrompt, splitCount));
         splitCount++;
         originalAmountToSplit = roundCurrency(
           originalAmountToSplit - splitAmount
