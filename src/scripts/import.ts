@@ -75,18 +75,21 @@ const run = async () => {
       Object.keys(importedTransaction).forEach((transactionProp: string) => {
         const label = (transactionHeaders as any)[transactionProp];
         const value = (importedTransaction as any)[transactionProp];
-        console.log(`${label}: ${value}`);
+        if (value) {
+          console.log(`${label}: ${value}`);
+        }
       });
 
       let originalAmount = importedTransaction.amount;
       if (!(await promptConfirm("Split this transaction?"))) {
         const transactionPrompt = await promptTransaction();
         db.saveRow(
-          mapCompleteTransaction(importedTransaction, transactionPrompt)
+          mapCompleteTransaction(importedTransaction, 1, transactionPrompt)
         );
         continue;
       }
 
+      // Save the original transaction as a split
       db.saveRow(mapCompleteTransaction(importedTransaction));
 
       // Split the original amount
@@ -103,7 +106,7 @@ const run = async () => {
           amount: originalAmount > 0 ? splitAmount : splitAmount * -1,
         };
         db.saveRow(
-          mapCompleteTransaction(splitTransaction, splitPrompt, splitCount)
+          mapCompleteTransaction(splitTransaction, splitCount, splitPrompt)
         );
         splitCount++;
         originalAmountToSplit = roundCurrency(

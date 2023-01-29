@@ -30,16 +30,14 @@ export const padLeftZero = (string: number) => {
 
 export const mapCompleteTransaction = (
   imported: TransactionImported,
+  splitId?: number | undefined,
   prompt?: TransactionPrompt | undefined,
-  splitId?: number | undefined
-): TransactionComplete => {
-  return {
-    ...imported,
-    splitId: splitId || 0,
-    dateImported: getFormattedDate(),
-    type: prompt?.type || "split",
-    category: prompt?.category || "split",
-    subCategory: prompt?.subCategory || "split",
-    notes: prompt?.notes || "",
-  };
-};
+): TransactionComplete => ({
+  ...imported,
+  splitId: splitId || 0,
+  dateImported: getFormattedDate(),
+  type: prompt?.type || "split",
+  category: prompt?.category || "split",
+  subCategory: prompt?.subCategory || "split",
+  notes: prompt?.notes || "",
+});
