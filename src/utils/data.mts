@@ -8,7 +8,7 @@ export const transactionHeaders = {
   dateImported: "Imported date",
   account: "Account name",
   amount: "Amount",
-  type: "Budget type",
+  expenseType: "Expense type",
   category: "Budget category",
   subCategory: "Budget sub-category",
   description: "Description",
@@ -34,13 +34,13 @@ export const mapTransaction = (
   splitId: number = 1
 ): TransactionComplete => {
   const { category } = prompt;
-  let { subCategory, type } = prompt;
+  let { subCategory, expenseType } = prompt;
 
   const isSkipped = category === "omit" || category === "split";
   if (isSkipped) {
     splitId = 0;
     subCategory = category;
-    type = category;
+    expenseType = "";
   }
 
   return {
@@ -50,6 +50,6 @@ export const mapTransaction = (
     splitId,
     category,
     subCategory,
-    type,
+    expenseType,
   };
 };

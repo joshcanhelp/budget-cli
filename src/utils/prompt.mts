@@ -7,7 +7,7 @@ import { getAccountNames } from "../translators/index.mjs";
 export interface TransactionPrompt {
   category: TransactionComplete["category"];
   subCategory: TransactionComplete["subCategory"];
-  type: TransactionComplete["type"];
+  expenseType: TransactionComplete["expenseType"];
   notes: string;
 }
 
@@ -47,7 +47,7 @@ export const promptAmount = async (): Promise<string> => {
 };
 
 export const promptTransaction = async (
-  splitTransaction: boolean
+  splitTransaction: boolean = false
 ): Promise<TransactionPrompt> => {
   return await inquirer.prompt([
     {
@@ -66,11 +66,11 @@ export const promptTransaction = async (
       message: "Which transaction sub-category is this?",
     },
     {
-      name: "type",
+      name: "expenseType",
       type: "list",
-      choices: ["need", "want", "save"],
-      when: (answers) => !["omit", "split"].includes(answers.category),
-      message: "Which transaction type is this?",
+      choices: ["need", "want"],
+      when: (answers) => "expense" === answers.category,
+      message: "Which expense type is this?",
     },
     {
       name: "notes",

@@ -37,7 +37,7 @@ export class DB {
       row.dateImported,
       row.category,
       row.subCategory,
-      row.type,
+      row.expenseType,
       row.notes,
     ]);
     this.save();

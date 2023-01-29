@@ -100,7 +100,7 @@ const run = async () => {
           `🔪 Split #${splitCount}, $${originalAmountToSplit} remaining`
         );
         let splitAmount = convertStringCurrencyToNumber(await promptAmount());
-        const splitPrompt = await promptTransaction();
+        const splitPrompt = await promptTransaction(true);
         const splitTransaction = {
           ...importedTransaction,
           amount: originalAmount > 0 ? splitAmount : splitAmount * -1,
