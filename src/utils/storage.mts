@@ -1,5 +1,6 @@
 import { readCsv, writeCsv } from "../utils/index.mjs";
 import { TransactionComplete } from "../index.js";
+import { outputFile } from "../config.mjs";
 
 export class DB {
   private store: any[][];
@@ -8,7 +9,7 @@ export class DB {
     [key: string]: string[];
   };
 
-  constructor(outputFile: string) {
+  constructor() {
     this.outputFile = outputFile;
     this.transactionIds = {};
     this.store = readCsv(outputFile);

@@ -15,7 +15,6 @@ import {
   roundCurrency,
 } from "../utils/index.mjs";
 import { DB } from "../utils/storage.mjs";
-import { outputFile } from "../config.mjs";
 
 const importPath: string = process.argv[2];
 if (!importPath) {
@@ -31,9 +30,9 @@ try {
 
 let db: DB;
 try {
-  db = new DB(outputFile);
+  db = new DB();
 } catch (error: any) {
-  hardNo(`Error loading transactions from ${outputFile}: ${error.message}`);
+  hardNo(`Error loading transactions: ${error.message}`);
 }
 
 const run = async () => {
