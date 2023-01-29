@@ -1,10 +1,9 @@
 import path from "path";
 
-import * as translators from "../translators/index.mjs";
+import { getTranslator } from "../translators/index.mjs";
 import {
   getCsvInDir,
   readCsv,
-  getFormattedDate,
   hardNo,
   transactionHeaders,
   promptAccount,
@@ -15,11 +14,10 @@ import {
   mapCompleteTransaction,
   roundCurrency,
 } from "../utils/index.mjs";
-import { TransactionComplete, Translator } from "../index.js";
 import { DB } from "../utils/storage.mjs";
 import { outputFile } from "../config.mjs";
 
-const importPath = process.argv[2];
+const importPath: string = process.argv[2];
 if (!importPath) {
   hardNo("No path provided!");
 }
@@ -46,18 +44,10 @@ const run = async () => {
       continue;
     }
 
-    const importAccount = await promptAccount();
-
-    let useTranslator: Translator | undefined;
-    Object.values(translators).some((translator) => {
-      if (translator.name === importAccount) {
-        useTranslator = translator;
-        return true;
-      }
-    });
-
+    const importAccountName = await promptAccount();
+    const useTranslator = getTranslator(importAccountName);
     if (!useTranslator) {
-      console.log(`⛔️ Translator for ${importAccount} not found!`);
+      console.log(`⛔️ Translator for ${importAccountName} not found!`);
       continue;
     }
 
@@ -75,6 +65,7 @@ const run = async () => {
         importedTransaction.account,
         importedTransaction.id
       );
+
       if (duplicateTransaction) {
         console.log(`Skipping duplicate transaction ${importedTransaction.id}`);
         continue;

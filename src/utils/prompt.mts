@@ -1,7 +1,8 @@
 import inquirer from "inquirer";
 
-import { accounts, subCategories } from "../config.mjs";
-import { TransactionComplete } from "../index.js";
+import { subCategories } from "../config.mjs";
+import { TransactionComplete, Translator } from "../index.js";
+import { getAccountNames } from "../translators/index.mjs";
 
 export interface TransactionPrompt {
   category: TransactionComplete["category"];
@@ -20,13 +21,13 @@ export const promptConfirm = async (message: string = ""): Promise<boolean> => {
   ).continue;
 };
 
-export const promptAccount = async (message: string = ""): Promise<string> => {
+export const promptAccount = async (): Promise<string> => {
   return (
     await inquirer.prompt({
       name: "account",
       type: "list",
-      choices: accounts,
-      message: message || "Which account?",
+      choices: getAccountNames(),
+      message: "Which account?",
     })
   ).account;
 };
