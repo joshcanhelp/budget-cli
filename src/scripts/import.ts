@@ -80,8 +80,12 @@ const run = async () => {
         }
       });
 
+      if (!(await promptConfirm("Import this transaction?"))) {
+        continue;
+      }
+
       let originalAmount = importedTransaction.amount;
-      if (!(await promptConfirm("Split this transaction?"))) {
+      if (!await promptConfirm("Split this transaction?", false)) {
         const transactionPrompt = await promptTransaction();
         db.saveRow(
           mapCompleteTransaction(importedTransaction, 1, transactionPrompt)

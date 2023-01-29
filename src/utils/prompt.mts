@@ -11,11 +11,12 @@ export interface TransactionPrompt {
   notes: string;
 }
 
-export const promptConfirm = async (message: string = ""): Promise<boolean> => {
+export const promptConfirm = async (message: string = "", defaultValue: boolean = true): Promise<boolean> => {
   return (
     await inquirer.prompt({
       name: "continue",
       type: "confirm",
+      default: defaultValue,
       message: message || "Continue?",
     })
   ).continue;
