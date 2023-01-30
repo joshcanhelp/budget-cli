@@ -1,7 +1,7 @@
 import { createHash } from "node:crypto";
 
 import { TransactionImported } from "..";
-import { Translator } from "..";
+import { Translator } from "./index.mjs";
 import { convertStringCurrencyToNumber } from "../utils/money.mjs";
 
 const accountName = "SCU";

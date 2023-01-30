@@ -16,6 +16,7 @@ import {
 } from "../utils/index.mjs";
 import { DB } from "../utils/storage.mjs";
 
+const importYear: number = parseInt(process.argv[3], 10);
 const importPath: string = process.argv[2];
 if (!importPath) {
   hardNo("No path provided!");
@@ -51,12 +52,18 @@ const run = async () => {
     }
 
     const currentFile = path.join(importPath, csvFile);
-    const csvData = readCsv(currentFile);
+    const csvData = readCsv(currentFile, useTranslator.transformFileData);
 
     // Iterate through transactions
     for (const transaction of csvData) {
       const importedTransaction = useTranslator.translate(transaction);
       if (!importedTransaction) {
+        continue;
+      }
+
+      const transactionYear = parseInt(importedTransaction.datePosted.split("-")[0], 10);
+      if (importYear && importYear !== transactionYear) {
+        console.log(`⏩ Skipping transaction in year ${transactionYear}`);
         continue;
       }
 
@@ -66,7 +73,7 @@ const run = async () => {
       );
 
       if (duplicateTransaction) {
-        console.log(`Skipping duplicate transaction ${importedTransaction.id}`);
+        console.log(`⏩ Skipping duplicate transaction ${importedTransaction.id}`);
         continue;
       }
 

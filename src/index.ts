@@ -16,8 +16,3 @@ export interface TransactionImported {
   comments?: string;
   checkNumber?: number;
 }
-
-export interface Translator {
-  name: string;
-  translate: (record: string[]) => TransactionImported | null;
-}

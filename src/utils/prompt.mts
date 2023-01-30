@@ -1,7 +1,7 @@
 import inquirer from "inquirer";
 
 import { subCategories } from "../config.mjs";
-import { TransactionComplete, Translator } from "../index.js";
+import { TransactionComplete } from "../index.js";
 import { getAccountNames } from "../translators/index.mjs";
 
 export interface TransactionPrompt {
