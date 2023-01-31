@@ -1,6 +1,7 @@
 import { TransactionImported } from "..";
 import { Translator } from "./index.mjs";
 import { convertStringCurrencyToNumber } from "../utils/money.mjs";
+import { padLeftZero } from "../utils/data.mjs";
 
 const accountName = "Nordstroms";
 export const nordstromsTranslator: Translator = {
@@ -15,7 +16,12 @@ export const nordstromsTranslator: Translator = {
 
     // Date conversion
     const dateObject = new Date(record[0]);
-    const datePosted = dateObject.getFullYear() + "-" + (dateObject.getMonth() + 1) + "-" + dateObject.getDate();
+    const datePosted =
+      dateObject.getFullYear() +
+      "-" +
+      padLeftZero(dateObject.getMonth() + 1) +
+      "-" +
+      padLeftZero(dateObject.getDate());
 
     // fin.
     return {
@@ -23,7 +29,7 @@ export const nordstromsTranslator: Translator = {
       datePosted,
       account: accountName,
       amount: convertStringCurrencyToNumber(record[4]),
-      description: record[3]
+      description: record[3],
     };
   },
 };

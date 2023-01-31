@@ -9,7 +9,11 @@ export interface Translator {
   transformFileData?: (data: string) => string;
 }
 
-const availableTranslators: Translator[] = [boaTranslator, scuTranslator, nordstromsTranslator];
+const availableTranslators: Translator[] = [
+  boaTranslator,
+  scuTranslator,
+  nordstromsTranslator,
+];
 
 export const getAccountNames = (): string[] => {
   return availableTranslators.map((translator: Translator) => translator.name);

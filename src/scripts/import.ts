@@ -1,4 +1,8 @@
 import path from "path";
+import dotEnv from "dotenv";
+dotEnv.config();
+
+const { OUTPUT_FILE = "./output/data.csv" } = process.env;
 
 import { getTranslator } from "../translators/index.mjs";
 import {
@@ -16,7 +20,6 @@ import {
 } from "../utils/index.mjs";
 import { DB } from "../utils/storage.mjs";
 
-const importYear: number = parseInt(process.argv[3], 10);
 const importPath: string = process.argv[2];
 if (!importPath) {
   hardNo("No path provided!");
@@ -31,10 +34,12 @@ try {
 
 let db: DB;
 try {
-  db = new DB();
+  db = new DB(OUTPUT_FILE);
 } catch (error: any) {
   hardNo(`Error loading transactions: ${error.message}`);
 }
+
+const importYear: number = parseInt(process.argv[3], 10);
 
 const run = async () => {
   // Iterate through all import files found
@@ -61,7 +66,10 @@ const run = async () => {
         continue;
       }
 
-      const transactionYear = parseInt(importedTransaction.datePosted.split("-")[0], 10);
+      const transactionYear = parseInt(
+        importedTransaction.datePosted.split("-")[0],
+        10
+      );
       if (importYear && importYear !== transactionYear) {
         console.log(`⏩ Skipping transaction in year ${transactionYear}`);
         continue;
@@ -73,7 +81,9 @@ const run = async () => {
       );
 
       if (duplicateTransaction) {
-        console.log(`⏩ Skipping duplicate transaction ${importedTransaction.id}`);
+        console.log(
+          `⏩ Skipping duplicate transaction ${importedTransaction.id}`
+        );
         continue;
       }
 

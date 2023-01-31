@@ -11,7 +11,10 @@ export const getCsvInDir = (path: string, initial: string[] = []): string[] => {
   return initial;
 };
 
-export const readCsv = (filePath: string, transform?: (data: string) => string): any[] => {
+export const readCsv = (
+  filePath: string,
+  transform?: (data: string) => string
+): any[] => {
   let data = readFileSync(filePath, { encoding: "utf8" });
   if (typeof transform === "function") {
     data = transform(data);

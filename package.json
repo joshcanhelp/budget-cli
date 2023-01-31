@@ -2,7 +2,8 @@
   "type": "module",
   "scripts": {
     "dev": "tsc -w",
-    "lint": "prettier --write ./src"
+    "lint": "prettier --write ./src",
+    "import": "node ./dist/scripts/import.js"
   },
   "devDependencies": {
     "@types/inquirer": "^9.0.3",
@@ -12,6 +13,7 @@
   },
   "dependencies": {
     "csv": "^6.2.5",
+    "dotenv": "^16.0.3",
     "g": "^2.0.1",
     "inquirer": "^9.1.4"
   },

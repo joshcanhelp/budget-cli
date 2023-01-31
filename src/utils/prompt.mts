@@ -1,8 +1,12 @@
 import inquirer from "inquirer";
 
-import { subCategories } from "../config.mjs";
 import { TransactionComplete } from "../index.js";
 import { getAccountNames } from "../translators/index.mjs";
+
+const { SUBCATEGORIES = "" } = process.env;
+const subCategoriesArray = SUBCATEGORIES.split(",").map((string: string) => {
+  string.trim();
+});
 
 export interface TransactionPrompt {
   category: TransactionComplete["category"];
@@ -61,8 +65,10 @@ export const promptTransaction = async (
     {
       name: "subCategory",
       type: "list",
-      choices: subCategories,
-      when: (answers) => !["omit", "split"].includes(answers.category),
+      choices: subCategoriesArray,
+      when: (answers) =>
+        !!subCategoriesArray.length &&
+        !["omit", "split"].includes(answers.category),
       message: "Which transaction sub-category is this?",
     },
     {
