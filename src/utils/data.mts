@@ -7,55 +7,55 @@ export interface TransactionHeader {
 }
 
 export const transactionHeaders: TransactionHeader[] = [
-  {
+  { // 0
     key: "id",
     header: "Transaction ID",
   },
-  {
+  { // 1
     key: "account",
     header: "Account name",
   },
-  {
+  { // 2
     key: "datePosted",
     header: "Posted date",
   },
-  {
+  { // 3
     key: "amount",
     header: "Amount",
   },
-  {
+  { // 4
     key: "description",
     header: "Description",
   },
-  {
+  { // 5
     key: "comments",
     header: "Comments",
   },
-  {
+  { // 6
     key: "checkNumber",
     header: "Check number",
   },
-  {
+  { // 7
     key: "splitId",
     header: "Split ID",
   },
-  {
+  { // 8
     key: "dateImported",
     header: "Imported date",
   },
-  {
+  { // 9
     key: "category",
     header: "Category",
   },
-  {
+  { // 10
     key: "subCategory",
     header: "Subcategory",
   },
-  {
+  { // 11
     key: "type",
     header: "Expense type",
   },
-  {
+  { // 12
     key: "notes",
     header: "Notes",
   },
@@ -78,6 +78,17 @@ export const getFormattedDate = (date: Date = new Date()): string => {
 
 export const padLeftZero = (string: number): string => {
   return ("" + string).length === 1 ? "0" + string : "" + string;
+};
+
+export const formatCurrency = (currency: number): string => {
+  const currencyParts = ("" + currency).split(".");
+  if (!currencyParts[1]) {
+    return "$" + currency + ".00";
+  }
+  if (currencyParts[1].length === 1) {
+    return "$" + currencyParts[0] + "." + currencyParts[1] + "0";
+  }
+  return "$" + currency;
 };
 
 export const mapTransaction = (
