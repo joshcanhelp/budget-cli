@@ -47,7 +47,7 @@ if (importYear) {
   console.log(`🤖 Importing transactions for ${importYear}`);
 }
 
-const run = async () => {
+const run = async (): Promise<void | any> => {
   // Iterate through all import files found
   for (const csvFile of importCsvs) {
     console.log(`🤖 Reading ${csvFile} ...`);
@@ -58,8 +58,7 @@ const run = async () => {
     const importAccountName = await promptAccount();
     const useTranslator = getTranslator(importAccountName);
     if (!useTranslator) {
-      console.log(`⛔️ Translator for ${importAccountName} not found!`);
-      continue;
+      return hardNo(`Translator for ${importAccountName} not found!`);
     }
 
     const currentFile = path.join(importPath, csvFile);
@@ -93,7 +92,7 @@ const run = async () => {
         continue;
       }
 
-      console.log("🤑 Importing");
+      console.log("👇 Importing");
       const transactionShape = getTransactionShape();
       Object.keys(importedTransaction).forEach((transactionProp: string) => {
         const label = (transactionShape as any)[transactionProp];
