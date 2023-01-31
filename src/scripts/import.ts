@@ -47,7 +47,7 @@ if (importYear) {
   console.log(`🤖 Importing transactions for ${importYear}`);
 }
 
-const run = async (): Promise<void | unknown> => {
+const run = async (): Promise<void> => {
   // Iterate through all import files found
   for (const csvFile of importCsvs) {
     console.log(`🤖 Reading ${csvFile} ...`);
@@ -58,7 +58,8 @@ const run = async (): Promise<void | unknown> => {
     const importAccountName = await promptAccount();
     const useTranslator = getTranslator(importAccountName);
     if (!useTranslator) {
-      return hardNo(`Translator for ${importAccountName} not found!`);
+      hardNo(`Translator for ${importAccountName} not found!`);
+      return;
     }
 
     const currentFile = path.join(importPath, csvFile);
