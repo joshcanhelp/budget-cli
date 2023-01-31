@@ -1,11 +1,13 @@
 import inquirer from "inquirer";
+import dotEnv from "dotenv";
+dotEnv.config();
 
 import { TransactionComplete } from "../index.js";
 import { getAccountNames } from "../translators/index.mjs";
 
 const { SUBCATEGORIES = "" } = process.env;
 const subCategoriesArray = SUBCATEGORIES.split(",").map((string: string) => {
-  string.trim();
+  return string.trim();
 });
 
 export interface TransactionPrompt {

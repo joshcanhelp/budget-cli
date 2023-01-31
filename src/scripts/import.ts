@@ -9,7 +9,6 @@ import {
   getCsvInDir,
   readCsv,
   hardNo,
-  transactionHeaders,
   promptAccount,
   promptConfirm,
   promptTransaction,
@@ -17,6 +16,7 @@ import {
   convertStringCurrencyToNumber,
   mapTransaction,
   roundCurrency,
+  getTransactionShape,
 } from "../utils/index.mjs";
 import { DB } from "../utils/storage.mjs";
 
@@ -40,6 +40,12 @@ try {
 }
 
 const importYear: number = parseInt(process.argv[3], 10);
+
+console.log(`🤖 Writing to ${OUTPUT_FILE}`);
+
+if (importYear) {
+  console.log(`🤖 Importing transactions for ${importYear}`);
+}
 
 const run = async () => {
   // Iterate through all import files found
@@ -88,8 +94,9 @@ const run = async () => {
       }
 
       console.log("🤑 Importing");
+      const transactionShape = getTransactionShape();
       Object.keys(importedTransaction).forEach((transactionProp: string) => {
-        const label = (transactionHeaders as any)[transactionProp];
+        const label = (transactionShape as any)[transactionProp];
         const value = (importedTransaction as any)[transactionProp];
         if (value) {
           console.log(`${label}: ${value}`);

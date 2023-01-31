@@ -1,17 +1,35 @@
-import { readCsv, writeCsv } from "../utils/index.mjs";
+import { readFileSync, writeFileSync } from "fs";
+import { stringify, parse as csvParse } from "csv/sync";
+
+import {
+  readCsv,
+  TransactionHeader,
+  transactionHeaders,
+} from "../utils/index.mjs";
 import { TransactionComplete } from "../index.js";
 
 export class DB {
-  private store: any[][];
+  private store: string[][] = [];
   private outputFile: string;
   private transactionIds: {
     [key: string]: string[];
-  };
+  } = {};
 
   constructor(outputFile: string) {
     this.outputFile = outputFile;
-    this.transactionIds = {};
-    this.store = readCsv(outputFile);
+    this.loadTransactions();
+    this.loadTransactionIds();
+  }
+
+  private loadTransactions = () => {
+    let data = readFileSync(this.outputFile, { encoding: "utf8" });
+    this.store = csvParse(data, {
+      skip_empty_lines: true,
+      from_line: 2,
+    });
+  };
+
+  private loadTransactionIds = () => {
     this.store.forEach((transaction: any) => {
       const [id, account] = transaction;
       if (!this.transactionIds[account]) {
@@ -21,24 +39,14 @@ export class DB {
         this.transactionIds[account].push(id);
       }
     });
-  }
+  };
 
   public saveRow = (row: TransactionComplete) => {
-    this.store.push([
-      row.id,
-      row.account,
-      row.datePosted,
-      row.amount,
-      row.description,
-      row.comments,
-      row.checkNumber,
-      row.splitId,
-      row.dateImported,
-      row.category,
-      row.subCategory,
-      row.expenseType,
-      row.notes,
-    ]);
+    const pushRow: any[] = [];
+    transactionHeaders.forEach((header: TransactionHeader) => {
+      pushRow.push(row[header.key as keyof TransactionComplete]);
+    });
+    this.store.push(pushRow);
     this.save();
   };
 
@@ -50,10 +58,12 @@ export class DB {
   };
 
   public save = () => {
-    writeCsv(this.outputFile, this.store);
-  };
-
-  public dump = () => {
-    console.log(this.store);
+    const csvHeaders = transactionHeaders.map(
+      (header: TransactionHeader) => header.header
+    );
+    writeFileSync(
+      this.outputFile,
+      stringify(this.store, { columns: csvHeaders, header: true })
+    );
   };
 }

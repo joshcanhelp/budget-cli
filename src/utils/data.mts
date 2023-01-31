@@ -1,31 +1,83 @@
 import { TransactionComplete, TransactionImported } from "..";
 import { TransactionPrompt } from "./prompt.mjs";
 
-export const transactionHeaders = {
-  id: "Transaction ID",
-  splitId: "Split ID",
-  datePosted: "Posted date",
-  dateImported: "Imported date",
-  account: "Account name",
-  amount: "Amount",
-  expenseType: "Expense type",
-  category: "Budget category",
-  subCategory: "Budget sub-category",
-  description: "Description",
-  comments: "Comments",
-  checkNumber: "Check number",
-  notes: "Notes",
+export interface TransactionHeader {
+  key: string;
+  header: string;
+}
+
+export const transactionHeaders: TransactionHeader[] = [
+  {
+    key: "id",
+    header: "Transaction ID",
+  },
+  {
+    key: "account",
+    header: "Account name",
+  },
+  {
+    key: "datePosted",
+    header: "Posted date",
+  },
+  {
+    key: "amount",
+    header: "Amount",
+  },
+  {
+    key: "description",
+    header: "Description",
+  },
+  {
+    key: "comments",
+    header: "Comments",
+  },
+  {
+    key: "checkNumber",
+    header: "Check number",
+  },
+  {
+    key: "splitId",
+    header: "Split ID",
+  },
+  {
+    key: "dateImported",
+    header: "Imported date",
+  },
+  {
+    key: "category",
+    header: "Category",
+  },
+  {
+    key: "subCategory",
+    header: "Subcategory",
+  },
+  {
+    key: "type",
+    header: "Expense type",
+  },
+  {
+    key: "notes",
+    header: "Notes",
+  },
+];
+
+export const getTransactionShape = (): any => {
+  const shape: any = {};
+  transactionHeaders.forEach((header) => {
+    shape[header.key] = header.header;
+  });
+  return shape;
 };
 
-export const getFormattedDate = (date: Date = new Date()) => {
+export const getFormattedDate = (date: Date = new Date()): string => {
   const yyyy = date.getFullYear();
   const month = date.getMonth() + 1;
   const day = date.getDate();
   return yyyy + "-" + padLeftZero(month) + "-" + padLeftZero(day);
 };
 
-export const padLeftZero = (string: number) => {
-  return ("" + string).length === 1 ? "0" + string : string;
+export const padLeftZero = (string: number): string => {
+  return ("" + string).length === 1 ? "0" + string : "" + string;
 };
 
 export const mapTransaction = (
