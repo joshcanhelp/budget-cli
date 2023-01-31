@@ -1,4 +1,5 @@
-const { OUTPUT_FILE = "./output/data.csv" } = process.env;
+import dotEnv from "dotenv";
+dotEnv.config();
 
 import {
   convertStringCurrencyToNumber,
@@ -8,7 +9,10 @@ import {
 } from "../utils/index.mjs";
 import { DB } from "../utils/storage.mjs";
 
-const { SUBCATEGORIES_SKIP_REPORT = "" } = process.env;
+const {
+  OUTPUT_FILE = "./output/data.csv",
+  SUBCATEGORIES_SKIP_REPORT = ""
+} = process.env;
 const subCategoriesSkipArray = SUBCATEGORIES_SKIP_REPORT.split(",").map((string: string) => {
   return string.trim();
 });
