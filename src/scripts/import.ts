@@ -47,7 +47,7 @@ if (importYear) {
   console.log(`🤖 Importing transactions for ${importYear}`);
 }
 
-const run = async (): Promise<void | any> => {
+const run = async (): Promise<void | unknown> => {
   // Iterate through all import files found
   for (const csvFile of importCsvs) {
     console.log(`🤖 Reading ${csvFile} ...`);
