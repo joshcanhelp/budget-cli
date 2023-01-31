@@ -21,7 +21,7 @@ export class DB {
     this.loadTransactionIds();
   }
 
-  private loadTransactions = () => {
+  private loadTransactions = (): void => {
     let data = readFileSync(this.outputFile, { encoding: "utf8" });
     this.store = csvParse(data, {
       skip_empty_lines: true,
@@ -29,7 +29,7 @@ export class DB {
     });
   };
 
-  private loadTransactionIds = () => {
+  private loadTransactionIds = (): void => {
     this.store.forEach((transaction: any) => {
       const [id, account] = transaction;
       if (!this.transactionIds[account]) {
@@ -41,7 +41,7 @@ export class DB {
     });
   };
 
-  public saveRow = (row: TransactionComplete) => {
+  public saveRow = (row: TransactionComplete): void => {
     const pushRow: any[] = [];
     transactionHeaders.forEach((header: TransactionHeader) => {
       pushRow.push(row[header.key as keyof TransactionComplete]);
@@ -50,14 +50,14 @@ export class DB {
     this.save();
   };
 
-  public hasTransaction = (account: string, id: string) => {
+  public hasTransaction = (account: string, id: string): boolean => {
     return (
       !!this.transactionIds[account] &&
       this.transactionIds[account].includes(id)
     );
   };
 
-  public save = () => {
+  public save = (): void => {
     const csvHeaders = transactionHeaders.map(
       (header: TransactionHeader) => header.header
     );
@@ -65,5 +65,12 @@ export class DB {
       this.outputFile,
       stringify(this.store, { columns: csvHeaders, header: true })
     );
+  };
+
+  public getMonth = (yyyymm: string): string[][] => {
+    return this.store.filter((transaction: string[]) => {
+      const datePosted = transaction[2].split("-");
+      return `${datePosted[0]}-${datePosted[1]}` === yyyymm;
+    });
   };
 }
