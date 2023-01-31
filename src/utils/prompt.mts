@@ -1,14 +1,10 @@
 import inquirer from "inquirer";
-import dotEnv from "dotenv";
-dotEnv.config();
 
 import { TransactionComplete } from "../index.js";
 import { getAccountNames } from "../translators/index.mjs";
+import { getConfiguration } from "../utils/config.mjs";
 
-const { SUBCATEGORIES = "" } = process.env;
-const subCategoriesArray = SUBCATEGORIES.split(",").map((string: string) => {
-  return string.trim();
-});
+const config = getConfiguration();
 
 export interface TransactionPrompt {
   category: TransactionComplete["category"];
@@ -67,9 +63,9 @@ export const promptTransaction = async (
     {
       name: "subCategory",
       type: "list",
-      choices: subCategoriesArray,
+      choices: config.subCategories,
       when: (answers) =>
-        !!subCategoriesArray.length &&
+        !!config.subCategories.length &&
         !["omit", "split"].includes(answers.category),
       message: "Which transaction sub-category is this?",
     },

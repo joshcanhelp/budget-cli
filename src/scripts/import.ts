@@ -1,8 +1,4 @@
 import path from "path";
-import dotEnv from "dotenv";
-dotEnv.config();
-
-const { OUTPUT_FILE = "./output/data.csv" } = process.env;
 
 import { getTranslator } from "../translators/index.mjs";
 import {
@@ -19,6 +15,9 @@ import {
   getTransactionShape,
 } from "../utils/index.mjs";
 import { DB } from "../utils/storage.mjs";
+import { getConfiguration } from "../utils/config.mjs";
+
+const config = getConfiguration();
 
 const importPath: string = process.argv[2];
 if (!importPath) {
@@ -34,14 +33,14 @@ try {
 
 let db: DB;
 try {
-  db = new DB(OUTPUT_FILE);
+  db = new DB(config.outputFile);
 } catch (error: any) {
   hardNo(`Error loading transactions: ${error.message}`);
 }
 
 const importYear: number = parseInt(process.argv[3], 10);
 
-console.log(`🤖 Writing to ${OUTPUT_FILE}`);
+console.log(`🤖 Writing to ${config.outputFile}`);
 
 if (importYear) {
   console.log(`🤖 Importing transactions for ${importYear}`);

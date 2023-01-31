@@ -1,6 +1,3 @@
-import dotEnv from "dotenv";
-dotEnv.config();
-
 import {
   convertStringCurrencyToNumber,
   formatCurrency,
@@ -8,15 +5,9 @@ import {
   roundCurrency,
 } from "../utils/index.mjs";
 import { DB } from "../utils/storage.mjs";
+import { getConfiguration } from "../utils/config.mjs";
 
-const {
-  OUTPUT_FILE = "./output/data.csv",
-  SUBCATEGORIES_SKIP_REPORT = ""
-} = process.env;
-const subCategoriesSkipArray = SUBCATEGORIES_SKIP_REPORT.split(",").map((string: string) => {
-  return string.trim();
-});
-
+const config = getConfiguration();
 
 const getMonth: string = process.argv[2];
 const dateRegex = /^[0-9]{4}-[0-9]{2}$/;
@@ -26,11 +17,11 @@ if (!getMonth || !(getMonth.match(dateRegex) || []).length) {
 
 let db: DB;
 try {
-  db = new DB(OUTPUT_FILE);
+  db = new DB(config.outputFile);
 } catch (error: any) {
   hardNo(`Error loading transactions: ${error.message}`);
 }
-console.log(`🤖 Reading from ${OUTPUT_FILE}`);
+console.log(`🤖 Reading from ${config.outputFile}`);
 
 const monthlyReport = async (): Promise<void> => {
   const reportData: any = {};
@@ -55,22 +46,30 @@ const monthlyReport = async (): Promise<void> => {
         reportData[reportKey] + currentAmount
       );
 
-      if (!subCategoriesSkipArray.includes(subCategory)) {
-        reportIncome = roundCurrency(reportIncome + (category === "income" ? currentAmount : 0));
-        reportExpenses = roundCurrency(reportExpenses + (category === "expense" ? currentAmount : 0));
+      const skipSubCategories = config.subCategoriesSkipReport || [];
+      if (!skipSubCategories.includes(subCategory)) {
+        reportIncome = roundCurrency(
+          reportIncome + (category === "income" ? currentAmount : 0)
+        );
+        reportExpenses = roundCurrency(
+          reportExpenses + (category === "expense" ? currentAmount : 0)
+        );
       }
 
       if (category === "expense") {
-        reportExpensesNeed = roundCurrency(reportExpensesNeed + (expenseType === "need" ? currentAmount : 0));
-        reportExpensesWant = roundCurrency(reportExpensesWant + (expenseType === "want" ? currentAmount : 0));
+        reportExpensesNeed = roundCurrency(
+          reportExpensesNeed + (expenseType === "need" ? currentAmount : 0)
+        );
+        reportExpensesWant = roundCurrency(
+          reportExpensesWant + (expenseType === "want" ? currentAmount : 0)
+        );
       }
     });
 
-
   const remainingIncome = roundCurrency(reportIncome + reportExpenses);
-  const budgetNeed = Math.round(reportExpensesNeed / reportIncome * -100);
-  const budgetWant = Math.round(reportExpensesWant / reportIncome * -100);
-  const budgetSaved = Math.round(remainingIncome / reportIncome * 100);
+  const budgetNeed = Math.round((reportExpensesNeed / reportIncome) * -100);
+  const budgetWant = Math.round((reportExpensesWant / reportIncome) * -100);
+  const budgetSaved = Math.round((remainingIncome / reportIncome) * 100);
 
   console.log("");
   console.log("Monthly progress");
