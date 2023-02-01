@@ -43,6 +43,6 @@ export const getConfiguration = (): Configuration => {
   const parsedUserConfig = JSON.parse(userConfig);
   return {
     ...defaultConfig,
-    ...parsedUserConfig
-  }
+    ...parsedUserConfig,
+  };
 };

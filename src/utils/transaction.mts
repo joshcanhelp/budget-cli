@@ -1,4 +1,5 @@
 import { TransactionComplete, TransactionImported } from "..";
+import { getFormattedDate } from "./date.mjs";
 import { TransactionPrompt } from "./prompt.mjs";
 
 export interface TransactionHeader {
@@ -80,28 +81,6 @@ export const getTransactionShape = (): any => {
     shape[header.key] = header.header;
   });
   return shape;
-};
-
-export const getFormattedDate = (date: Date = new Date()): string => {
-  const yyyy = date.getFullYear();
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-  return yyyy + "-" + padLeftZero(month) + "-" + padLeftZero(day);
-};
-
-export const padLeftZero = (string: number): string => {
-  return ("" + string).length === 1 ? "0" + string : "" + string;
-};
-
-export const formatCurrency = (currency: number): string => {
-  const currencyParts = ("" + currency).split(".");
-  if (!currencyParts[1]) {
-    return "$" + currency + ".00";
-  }
-  if (currencyParts[1].length === 1) {
-    return "$" + currencyParts[0] + "." + currencyParts[1] + "0";
-  }
-  return "$" + currency;
 };
 
 export const mapTransaction = (

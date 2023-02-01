@@ -1,7 +1,7 @@
 import { TransactionImported } from "..";
 import { Translator } from "./index.mjs";
 import { convertStringCurrencyToNumber } from "../utils/money.mjs";
-import { padLeftZero } from "../utils/data.mjs";
+import { padLeftZero } from "../utils/transaction.mjs";
 
 const accountName = "Nordstroms";
 export const nordstromsTranslator: Translator = {

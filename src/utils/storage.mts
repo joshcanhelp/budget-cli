@@ -1,11 +1,7 @@
 import { readFileSync, writeFileSync } from "fs";
 import { stringify, parse as csvParse } from "csv/sync";
 
-import {
-  readCsv,
-  TransactionHeader,
-  transactionHeaders,
-} from "../utils/index.mjs";
+import { TransactionHeader, transactionHeaders } from "../utils/index.mjs";
 import { TransactionComplete } from "../index.js";
 
 export class DB {
