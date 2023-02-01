@@ -75,7 +75,7 @@ export const transactionHeaders: TransactionHeader[] = [
   },
 ];
 
-export const getTransactionShape = (): any => {
+export const getTransactionShape = (): TransactionComplete => {
   const shape: any = {};
   transactionHeaders.forEach((header) => {
     shape[header.key] = header.header;
@@ -93,7 +93,7 @@ export const mapTransaction = (
 
   const isSkipped = category === "omit" || category === "split";
   if (isSkipped) {
-    splitId = 0;
+    splitId = category === "split" ? 0 : 1;
     subCategory = category;
     expenseType = "";
   }
