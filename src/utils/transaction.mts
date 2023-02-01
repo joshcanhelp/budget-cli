@@ -65,7 +65,7 @@ export const transactionHeaders: TransactionHeader[] = [
   },
   {
     // 11
-    key: "type",
+    key: "expenseType",
     header: "Expense type",
   },
   {
