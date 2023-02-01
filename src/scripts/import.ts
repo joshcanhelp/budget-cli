@@ -86,9 +86,7 @@ const run = async (): Promise<void> => {
       );
 
       if (duplicateTransaction) {
-        console.log(
-          `⏩ Skipping duplicate transaction ${importedTransaction.id}`
-        );
+        console.log(`⏩ Skipping duplicate ${importedTransaction.id}`);
         continue;
       }
 
