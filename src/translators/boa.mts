@@ -1,6 +1,7 @@
 import { TransactionImported } from "..";
 import { Translator } from "./index.mjs";
 import { convertStringCurrencyToNumber } from "../utils/money.mjs";
+import { getFormattedDate } from "../utils/date.mjs";
 
 const accountName = "BoA";
 export const boaTranslator: Translator = {
@@ -10,14 +11,10 @@ export const boaTranslator: Translator = {
       return null;
     }
 
-    // Date conversion
-    const dateParts = record[0].split("/");
-    const datePosted = dateParts[2] + "-" + dateParts[0] + "-" + dateParts[1];
-
     // fin.
     return {
       id: record[1],
-      datePosted,
+      datePosted: getFormattedDate(new Date(record[0])),
       account: accountName,
       amount: convertStringCurrencyToNumber(record[4]),
       description: record[2],

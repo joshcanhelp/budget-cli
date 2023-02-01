@@ -3,6 +3,7 @@ import { createHash } from "node:crypto";
 import { TransactionImported } from "..";
 import { Translator } from "./index.mjs";
 import { convertStringCurrencyToNumber } from "../utils/money.mjs";
+import { getFormattedDate } from "../utils/index.mjs";
 
 const accountName = "SCU";
 export const scuTranslator: Translator = {
@@ -17,14 +18,10 @@ export const scuTranslator: Translator = {
     // date :: description :: amount :: balance
     hash.update(`${record[0]}::${record[1]}::${record[4]}::${record[5]}`);
 
-    // Date conversion
-    const dateParts = record[0].split("/");
-    const datePosted = dateParts[2] + "-" + dateParts[0] + "-" + dateParts[1];
-
     // fin.
     return {
       id: hash.digest("hex"),
-      datePosted,
+      datePosted: getFormattedDate(new Date(record[0])),
       account: accountName,
       amount: convertStringCurrencyToNumber(record[4]),
       description: record[1],
