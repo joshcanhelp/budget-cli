@@ -1,16 +1,21 @@
-import { TransactionImported } from "../index.js";
+import { TransactionComplete, TransactionImported } from "../index.js";
 import { boaTranslator } from "./boa.mjs";
+import { boaCompletedTranslator } from "./boa-completed.mjs";
 import { nordstromsTranslator } from "./nordstroms.mjs";
 import { scuTranslator } from "./scu.mjs";
 
 export interface Translator {
   name: string;
-  translate: (record: string[]) => TransactionImported | null;
+  translate: (
+    record: string[]
+  ) => TransactionImported | TransactionComplete | null;
+  importCompleted?: boolean;
   transformFileData?: (data: string) => string;
 }
 
 const availableTranslators: Translator[] = [
   boaTranslator,
+  boaCompletedTranslator,
   scuTranslator,
   nordstromsTranslator,
 ];

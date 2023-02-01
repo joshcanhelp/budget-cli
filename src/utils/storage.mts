@@ -44,6 +44,10 @@ export class DB {
     });
     this.store.push(pushRow);
     this.save();
+    if (!this.transactionIds[row.account]) {
+      this.transactionIds[row.account] = [];
+    }
+    this.transactionIds[row.account].push(row.id);
   };
 
   public hasTransaction = (account: string, id: string): boolean => {

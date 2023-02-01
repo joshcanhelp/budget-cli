@@ -16,6 +16,7 @@ import {
 } from "../utils/index.mjs";
 import { DB } from "../utils/storage.mjs";
 import { getConfiguration } from "../utils/config.mjs";
+import { TransactionComplete } from "../index.js";
 
 const config = getConfiguration();
 
@@ -80,12 +81,12 @@ const run = async (): Promise<void> => {
         continue;
       }
 
-      const duplicateTransaction = db.hasTransaction(
+      const isDuplicate = db.hasTransaction(
         importedTransaction.account,
         importedTransaction.id
       );
 
-      if (duplicateTransaction) {
+      if (isDuplicate && !useTranslator.importCompleted) {
         console.log(`⏩ Skipping duplicate ${importedTransaction.id}`);
         continue;
       }
@@ -100,10 +101,15 @@ const run = async (): Promise<void> => {
         }
       });
 
+      if (useTranslator.importCompleted) {
+        db.saveRow(importedTransaction as TransactionComplete);
+        continue;
+      }
+
       const transactionPrompt = await promptTransaction();
       db.saveRow(mapTransaction(importedTransaction, transactionPrompt));
 
-      if (["expense", "income", "omit"].includes(transactionPrompt.category)) {
+      if (transactionPrompt.category !== "split") {
         continue;
       }
 
