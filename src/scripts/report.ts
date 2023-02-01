@@ -1,6 +1,7 @@
 import {
   convertStringCurrencyToNumber,
   formatCurrency,
+  getFormattedDate,
   hardNo,
   roundCurrency,
 } from "../utils/index.mjs";
@@ -9,7 +10,7 @@ import { getConfiguration } from "../utils/config.mjs";
 
 const config = getConfiguration();
 
-const getMonth: string = process.argv[2];
+const getMonth: string = process.argv[2] || getFormattedDate(new Date(), true);
 const dateRegex = /^[0-9]{4}-[0-9]{2}$/;
 if (!getMonth || !(getMonth.match(dateRegex) || []).length) {
   hardNo(`Invalid or missing date parameter (YYYY-MM): ${getMonth}`);
@@ -21,7 +22,9 @@ try {
 } catch (error: any) {
   hardNo(`Error loading transactions: ${error.message}`);
 }
+
 console.log(`🤖 Reading from ${config.outputFile}`);
+console.log(`🤖 Report for ${getMonth}`);
 
 const monthlyReport = async (): Promise<void> => {
   const reportData: any = {};
@@ -79,17 +82,23 @@ const monthlyReport = async (): Promise<void> => {
   console.log("-----------------");
   console.log(`${formatCurrency(remainingIncome)} remaining`);
   console.log("");
-  console.log("Budget breakdown");
-  console.log("================");
-  console.log(`${budgetNeed}% need (target 50%)`);
-  console.log(`${budgetWant}% want (target 30%)`);
-  console.log(`${budgetSaved}% saved (target 20%)`);
-  console.log("");
-  console.log("Totals");
-  console.log("================");
-  Object.keys(reportData).forEach((key: string) => {
-    console.log(key + " = $" + reportData[key]);
-  });
+  if (reportIncome) {
+    console.log("Budget breakdown");
+    console.log("================");
+    console.log(`${budgetNeed}% need (target 50%)`);
+    console.log(`${budgetWant}% want (target 30%)`);
+    console.log(`${budgetSaved}% saved (target 20%)`);
+    console.log("");
+  }
+
+  const reportDataKeys = Object.keys(reportData);
+  if (reportDataKeys.length) {
+    console.log("Totals");
+    console.log("================");
+    reportDataKeys.forEach((key: string) => {
+      console.log(key + " = $" + reportData[key]);
+    });
+  }
 };
 
 (async () => await monthlyReport())();
