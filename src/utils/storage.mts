@@ -22,7 +22,7 @@ export class DB {
   public init = () => {
     this.loadTransactions();
     this.loadTransactionIds();
-  }
+  };
 
   public saveRow = (row: TransactionComplete): void => {
     const pushRow: any[] = [];
@@ -84,5 +84,5 @@ export class DB {
     if (!this.transactionIds[account].includes(id)) {
       this.transactionIds[account].push(id);
     }
-  }
+  };
 }

@@ -13,7 +13,11 @@ export const boaCompletedTranslator: Translator = {
       .map((text: string): string => text.trim().toLowerCase());
 
     const category = terms[0];
-    const subCategory = terms[1].replace("josh", "dad").replace("anna", "mom");
+    const subCategory = terms[1]
+      .replace("josh", "dad")
+      .replace("anna", "mom")
+      .replace("fsa", "FSA")
+      .replace("hsa", "HSA");
 
     // fin.
     return {

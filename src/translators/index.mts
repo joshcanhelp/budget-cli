@@ -3,6 +3,7 @@ import { boaTranslator } from "./boa.mjs";
 import { boaCompletedTranslator } from "./boa-completed.mjs";
 import { nordstromsTranslator } from "./nordstroms.mjs";
 import { scuTranslator } from "./scu.mjs";
+import { scuCompletedTranslator } from "./scu-completed.mjs";
 
 export interface Translator {
   name: string;
@@ -16,8 +17,9 @@ export interface Translator {
 const availableTranslators: Translator[] = [
   boaTranslator,
   boaCompletedTranslator,
-  scuTranslator,
   nordstromsTranslator,
+  scuTranslator,
+  scuCompletedTranslator,
 ];
 
 export const getAccountNames = (): string[] => {
