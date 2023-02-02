@@ -16,9 +16,9 @@ if (!getMonth || !(getMonth.match(dateRegex) || []).length) {
   hardNo(`Invalid or missing date parameter (YYYY-MM): ${getMonth}`);
 }
 
-let db: DB;
+const db: DB = new DB(config.outputFile);
 try {
-  db = new DB(config.outputFile);
+  db.init();
 } catch (error: any) {
   hardNo(`Error loading transactions: ${error.message}`);
 }

@@ -32,9 +32,9 @@ try {
   hardNo(`Error getting import files: ${error.message}`);
 }
 
-let db: DB;
+const db: DB = new DB(config.outputFile);
 try {
-  db = new DB(config.outputFile);
+  db.init();
 } catch (error: any) {
   hardNo(`Error loading transactions: ${error.message}`);
 }

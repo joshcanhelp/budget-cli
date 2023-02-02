@@ -13,29 +13,16 @@ export class DB {
 
   constructor(outputFile: string) {
     this.outputFile = outputFile;
+  }
+
+  ////
+  /// Public
+  //
+
+  public init = () => {
     this.loadTransactions();
     this.loadTransactionIds();
   }
-
-  private loadTransactions = (): void => {
-    let data = readFileSync(this.outputFile, { encoding: "utf8" });
-    this.store = csvParse(data, {
-      skip_empty_lines: true,
-      from_line: 2,
-    });
-  };
-
-  private loadTransactionIds = (): void => {
-    this.store.forEach((transaction: any) => {
-      const [id, account] = transaction;
-      if (!this.transactionIds[account]) {
-        this.transactionIds[account] = [];
-      }
-      if (!this.transactionIds[account].includes(id)) {
-        this.transactionIds[account].push(id);
-      }
-    });
-  };
 
   public saveRow = (row: TransactionComplete): void => {
     const pushRow: any[] = [];
@@ -44,10 +31,7 @@ export class DB {
     });
     this.store.push(pushRow);
     this.save();
-    if (!this.transactionIds[row.account]) {
-      this.transactionIds[row.account] = [];
-    }
-    this.transactionIds[row.account].push(row.id);
+    this.addTransactionId(row);
   };
 
   public hasTransaction = (account: string, id: string): boolean => {
@@ -73,4 +57,32 @@ export class DB {
       return `${datePosted[0]}-${datePosted[1]}` === yyyymm;
     });
   };
+
+  ////
+  /// Private
+  //
+
+  private loadTransactions = (): void => {
+    let data = readFileSync(this.outputFile, { encoding: "utf8" });
+    this.store = csvParse(data, {
+      skip_empty_lines: true,
+      from_line: 2,
+    });
+  };
+
+  private loadTransactionIds = (): void => {
+    this.store.forEach((transaction: any) => {
+      this.addTransactionId(transaction);
+    });
+  };
+
+  private addTransactionId = (transaction: TransactionComplete): void => {
+    const { account, id } = transaction;
+    if (!this.transactionIds[account]) {
+      this.transactionIds[account] = [];
+    }
+    if (!this.transactionIds[account].includes(id)) {
+      this.transactionIds[account].push(id);
+    }
+  }
 }
