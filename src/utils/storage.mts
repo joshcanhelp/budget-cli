@@ -51,10 +51,10 @@ export class DB {
     );
   };
 
-  public getMonth = (yyyymm: string): string[][] => {
+  public getByDate = (dateRequested: string): string[][] => {
+    const searchRegex = new RegExp(`^${dateRequested}`, "g");
     return this.store.filter((transaction: string[]) => {
-      const datePosted = transaction[2].split("-");
-      return `${datePosted[0]}-${datePosted[1]}` === yyyymm;
+      return !!(transaction[2].match(searchRegex) || []).length;
     });
   };
 

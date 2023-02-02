@@ -10,10 +10,10 @@ import { getConfiguration } from "../utils/config.mjs";
 
 const config = getConfiguration();
 
-const getMonth: string = process.argv[2] || getFormattedDate(new Date(), true);
-const dateRegex = /^[0-9]{4}-[0-9]{2}$/;
-if (!getMonth || !(getMonth.match(dateRegex) || []).length) {
-  hardNo(`Invalid or missing date parameter (YYYY-MM): ${getMonth}`);
+const getDate: string = process.argv[2] || getFormattedDate(new Date(), true);
+const dateRegex = /^[0-9]{4}(?:-[0-9]{2})?(?:-[0-9]{2})?$/;
+if (!getDate || !(getDate.match(dateRegex) || []).length) {
+  hardNo(`Invalid or missing date parameter: ${getDate}`);
 }
 
 const db: DB = new DB(config.outputFile);
@@ -24,16 +24,22 @@ try {
 }
 
 console.log(`🤖 Reading from ${config.outputFile}`);
-console.log(`🤖 Report for ${getMonth}`);
+console.log(`🤖 Report for ${getDate}`);
 
-const monthlyReport = async (): Promise<void> => {
+const runReport = async (): Promise<void> => {
   const reportData: any = {};
   let reportIncome = 0;
   let reportExpenses = 0;
   let reportExpensesWant = 0;
   let reportExpensesNeed = 0;
 
-  db.getMonth(getMonth)
+  const transactions = db.getByDate(getDate);
+  if (!transactions.length) {
+    hardNo("No transactions found for this date.")
+    return;
+  }
+
+  transactions
     .filter((transaction: string[]): boolean => {
       return transaction[9] !== "omit" && transaction[9] !== "split";
     })
@@ -75,14 +81,14 @@ const monthlyReport = async (): Promise<void> => {
   const budgetSaved = Math.round((remainingIncome / reportIncome) * 100);
 
   console.log("");
-  console.log("Monthly progress");
+  console.log("Reported transactions");
   console.log("================");
   console.log(`${formatCurrency(reportIncome)} <- Total reported income`);
   console.log(`${formatCurrency(reportExpenses)} <- Total reported expenses`);
   console.log("-----------------");
   console.log(`${formatCurrency(remainingIncome)} remaining`);
   console.log("");
-  if (reportIncome) {
+  if (reportIncome && budgetNeed && budgetWant && budgetSaved) {
     console.log("Budget breakdown");
     console.log("================");
     console.log(`${budgetNeed}% need (target 50%)`);
@@ -101,4 +107,4 @@ const monthlyReport = async (): Promise<void> => {
   }
 };
 
-(async () => await monthlyReport())();
+(async () => await runReport())();
