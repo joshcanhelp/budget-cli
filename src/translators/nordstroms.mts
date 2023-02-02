@@ -3,7 +3,6 @@ import { Translator } from "./index.mjs";
 import {
   convertStringCurrencyToNumber,
   getFormattedDate,
-  padLeftZero,
 } from "../utils/index.mjs";
 
 const accountName = "Nordstroms";

@@ -41,13 +41,18 @@ try {
 
 const importYear: number = parseInt(process.argv[3], 10);
 
-console.log(`🤖 Writing to ${config.outputFile}`);
-
-if (importYear) {
-  console.log(`🤖 Importing transactions for ${importYear}`);
-}
-
 const run = async (): Promise<void> => {
+  if (!(await promptConfirm(`Write to ${config.outputFile}?`))) {
+    console.log(
+      "🤖 Change the import location with an outputFile property in .budget-cli.json"
+    );
+    return;
+  }
+
+  if (importYear) {
+    console.log(`🤖 Importing transactions for ${importYear} only`);
+  }
+
   // Iterate through all import files found
   for (const csvFile of importCsvs) {
     console.log(`🤖 Reading ${csvFile} ...`);
