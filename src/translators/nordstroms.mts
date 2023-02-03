@@ -19,7 +19,7 @@ export const nordstromsTranslator: Translator = {
       id: record[2],
       datePosted: getFormattedDate(new Date(record[0])),
       account: accountName,
-      amount: convertStringCurrencyToNumber(record[4]),
+      amount: -convertStringCurrencyToNumber(record[4]),
       description: record[3],
     };
   },
