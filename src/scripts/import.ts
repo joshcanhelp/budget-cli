@@ -29,8 +29,8 @@ if (!importPath) {
   hardNo("No path provided!");
 }
 
-const isDirImport = statSync(importPath).isDirectory();
-const importCsvs: string[] = isDirImport ? [] : [importPath];
+const isFileImport = statSync(importPath).isFile();
+const importCsvs: string[] = isFileImport ? [importPath] : [];
 if (!importCsvs.length) {
   try {
     getCsvInDir(importPath, importCsvs);
@@ -78,7 +78,7 @@ const run = async (): Promise<void> => {
       return;
     }
 
-    const currentFile = path.join(importPath, csvFile);
+    const currentFile = isFileImport ? csvFile : path.join(importPath, csvFile);
     const csvData = readCsv(currentFile, useTranslator.transformFileData);
 
     // Iterate through transactions
