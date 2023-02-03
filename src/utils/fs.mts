@@ -1,6 +1,10 @@
 import { readFileSync, readdirSync } from "fs";
 import { parse as csvParse } from "csv/sync";
 
+////
+/// Functions
+//
+
 export const getCsvInDir = (path: string, initial: string[] = []): string[] => {
   readdirSync(path, { withFileTypes: true }).forEach((dirent: any): void => {
     const extension = dirent.name.split(".").pop();

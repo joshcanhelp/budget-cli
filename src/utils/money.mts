@@ -1,3 +1,7 @@
+////
+/// Functions
+//
+
 export const convertStringCurrencyToNumber = (amountRaw: string): number => {
   amountRaw = amountRaw.trim().replaceAll("$", "").replaceAll(",", "");
   const amountParsed = parseFloat(amountRaw);

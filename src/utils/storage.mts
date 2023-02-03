@@ -1,8 +1,11 @@
 import { readFileSync, writeFileSync } from "fs";
 import { stringify, parse as csvParse } from "csv/sync";
 
-import { TransactionHeader, transactionHeaders } from "../utils/index.mjs";
-import { TransactionComplete } from "../index.js";
+import {
+  TransactionComplete,
+  TransactionHeader,
+  transactionHeaders,
+} from "../utils/transaction.mjs";
 
 export class DB {
   private store: string[][] = [];

@@ -1,4 +1,4 @@
-import { TransactionImported } from "..";
+import { TransactionImported } from "../utils/transaction.mjs";
 import { Translator } from "./index.mjs";
 import { convertStringCurrencyToNumber } from "../utils/money.mjs";
 import { getFormattedDate } from "../utils/date.mjs";

@@ -1,10 +1,14 @@
 import inquirer from "inquirer";
 
-import { TransactionComplete } from "../index.js";
+import { TransactionComplete } from "../utils/transaction.mjs";
 import { getAccountNames } from "../translators/index.mjs";
 import { getConfiguration } from "../utils/config.mjs";
 
 const config = getConfiguration();
+
+////
+/// Types
+//
 
 export interface TransactionPrompt {
   category: TransactionComplete["category"];
@@ -12,6 +16,10 @@ export interface TransactionPrompt {
   expenseType: TransactionComplete["expenseType"];
   notes: string;
 }
+
+////
+/// Functions
+//
 
 export const promptConfirm = async (
   message: string = "",

@@ -1,6 +1,16 @@
 import path from "path";
 import { readFileSync } from "fs";
 
+////
+/// Data
+//
+
+export const configPath = path.join(process.cwd(), ".budget-cli.json");
+
+////
+/// Functions
+//
+
 export interface Configuration {
   outputFile: string;
   subCategories: string[];
@@ -14,8 +24,6 @@ export interface Configuration {
     };
   };
 }
-
-export const configPath = path.join(process.cwd(), ".budget-cli.json");
 
 export const defaultConfig: Configuration = {
   outputFile: "./output/data.csv",

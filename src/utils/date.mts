@@ -1,5 +1,9 @@
 import { padLeftZero } from "./index.mjs";
 
+////
+/// Functions
+//
+
 export const getFormattedDate = (
   date: Date = new Date(),
   excludeDay: boolean = false

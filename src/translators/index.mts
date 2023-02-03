@@ -1,4 +1,7 @@
-import { TransactionComplete, TransactionImported } from "../index.js";
+import {
+  TransactionComplete,
+  TransactionImported,
+} from "../utils/transaction.mjs";
 import { boaTranslator } from "./boa.mjs";
 import { transactionCompleteTranslator } from "./transaction-complete.mjs";
 import { nordstromsTranslator } from "./nordstroms.mjs";

@@ -1,12 +1,11 @@
+import { DB } from "../utils/storage.mjs";
+import { getConfiguration } from "../utils/config.mjs";
+import { getFormattedDate } from "../utils/date.mjs";
+import { hardNo } from "../utils/index.mjs";
 import {
   convertStringCurrencyToNumber,
   formatCurrency,
-  getFormattedDate,
-  hardNo,
-  roundCurrency,
-} from "../utils/index.mjs";
-import { DB } from "../utils/storage.mjs";
-import { getConfiguration } from "../utils/config.mjs";
+} from "../utils/money.mjs";
 
 const config = getConfiguration();
 
@@ -114,16 +113,25 @@ const runReport = async (): Promise<void> => {
       console.log("");
       console.log(subCategory);
       console.log("-----------------");
-      console.log(formatCurrency(categoryTotals.expense[subCategory]) + " spent");
+      console.log(
+        formatCurrency(categoryTotals.expense[subCategory]) + " spent"
+      );
       if ("Annual" === reportType) {
         console.log(formatCurrency(allowance * 12) + " allowed");
         console.log(formatCurrency(carryover) + " carryover");
         console.log("-----------------");
-        console.log(formatCurrency(allowance * 12 + categoryTotals.expense[subCategory] + carryover) + " remaining");
+        console.log(
+          formatCurrency(
+            allowance * 12 + categoryTotals.expense[subCategory] + carryover
+          ) + " remaining"
+        );
       } else {
         console.log(formatCurrency(allowance) + " allowed");
         console.log("-----------------");
-        console.log(formatCurrency(allowance + categoryTotals.expense[subCategory]) + " remaining");
+        console.log(
+          formatCurrency(allowance + categoryTotals.expense[subCategory]) +
+            " remaining"
+        );
       }
     });
     console.log("");
@@ -141,8 +149,8 @@ const runReport = async (): Promise<void> => {
       Object.keys(categoryTotals[category]).forEach((subCategory: string) => {
         console.log(
           subCategory +
-          " = " +
-          formatCurrency(categoryTotals[category][subCategory])
+            " = " +
+            formatCurrency(categoryTotals[category][subCategory])
         );
       });
     });
