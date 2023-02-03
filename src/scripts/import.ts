@@ -20,6 +20,7 @@ import {
   convertStringCurrencyToNumber,
   roundCurrency,
 } from "../utils/money.mjs";
+import { statSync } from "fs";
 
 const config = getConfiguration();
 
@@ -28,11 +29,18 @@ if (!importPath) {
   hardNo("No path provided!");
 }
 
-const importCsvs: string[] = [];
-try {
-  getCsvInDir(importPath, importCsvs);
-} catch (error: any) {
-  hardNo(`Error getting import files: ${error.message}`);
+const isDirImport = statSync(importPath).isDirectory();
+const importCsvs: string[] = isDirImport ? [] : [importPath];
+if (!importCsvs.length) {
+  try {
+    getCsvInDir(importPath, importCsvs);
+  } catch (error: any) {
+    hardNo(`Error getting import files: ${error.message}`);
+  }
+}
+
+if (!importCsvs.length) {
+  hardNo(`No CSVs to import`);
 }
 
 const db: DB = new DB(config.outputFile);
