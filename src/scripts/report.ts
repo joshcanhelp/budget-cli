@@ -93,14 +93,13 @@ const runReport = async (): Promise<void> => {
   console.log("-----------------");
   console.log(`${formatCurrency(remainingIncome)} remaining`);
   console.log("");
-  if (reportIncome && budgetNeed && budgetWant && budgetSaved) {
-    console.log("Budget breakdown");
-    console.log("=================");
-    console.log(`${budgetNeed}% need (target 50%)`);
-    console.log(`${budgetWant}% want (target 30%)`);
-    console.log(`${budgetSaved}% saved (target 20%)`);
-    console.log("");
-  }
+
+  console.log("Budget breakdown");
+  console.log("=================");
+  console.log(`${budgetNeed}% need (target 50%)`);
+  console.log(`${budgetWant}% want (target 30%)`);
+  console.log(`${budgetSaved}% saved (target 20%)`);
+  console.log("");
 
   const reportDataKeys = Object.keys(reportData);
   if (reportDataKeys.length) {
