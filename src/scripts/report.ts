@@ -60,9 +60,7 @@ const runReport = async (): Promise<void> => {
       }
 
       const initialAmount = reportData[category][subCategory] || 0;
-      reportData[category][subCategory] = roundCurrency(
-        initialAmount + currentAmount
-      );
+      reportData[category][subCategory] = initialAmount + currentAmount;
 
       const skipSubCategories = config.subCategoriesSkipReport || [];
       if (!skipSubCategories.includes(subCategory)) {
@@ -105,8 +103,13 @@ const runReport = async (): Promise<void> => {
   if (reportDataKeys.length) {
     console.log("Totals");
     console.log("=================");
-    reportDataKeys.forEach((key: string) => {
-      console.log(key + " = $" + reportData[key]);
+    reportDataKeys.forEach((category: string) => {
+      console.log("");
+      console.log(category);
+      console.log("-----------------");
+      Object.keys(reportData[category]).forEach((subCategory: string) => {
+        console.log(subCategory + " = " + formatCurrency(reportData[category][subCategory]));
+      })
     });
   }
 };
