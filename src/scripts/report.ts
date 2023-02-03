@@ -96,9 +96,9 @@ const runReport = async (): Promise<void> => {
 
   console.log("Budget breakdown");
   console.log("=================");
-  console.log(`${budgetNeed}% need (target 50%)`);
-  console.log(`${budgetWant}% want (target 30%)`);
-  console.log(`${budgetSaved}% saved (target 20%)`);
+  console.log(`${budgetNeed}% need (target <= 50%)`);
+  console.log(`${budgetWant}% want (target <= 30%)`);
+  console.log(`${budgetSaved}% saved (target >= 20%)`);
   console.log("");
 
   const reportDataKeys = Object.keys(reportData);
