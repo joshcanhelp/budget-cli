@@ -9,7 +9,7 @@ export const roundCurrency = (amount: number): number => {
 };
 
 export const formatCurrency = (currency: number): string => {
-  const currencyParts = ("" + currency).split(".");
+  const currencyParts = ("" + roundCurrency(currency)).split(".");
   if (!currencyParts[1]) {
     return "$" + currency + ".00";
   }
