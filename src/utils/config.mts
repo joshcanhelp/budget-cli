@@ -16,12 +16,14 @@ export interface Configuration {
     };
   };
   monthlyAllowance?: {
-    expense?: {
-      [key: string]: number;
-    };
-    income?: {
-      [key: string]: number;
-    };
+    [key: string]: {
+      expense?: {
+        [key: string]: number;
+      };
+      income?: {
+        [key: string]: number;
+      };
+    }
   };
 }
 
