@@ -27,13 +27,12 @@ const getDateParts = getDate.split("-");
 const reportType = ["Annual", "Monthly"][getDateParts.length - 1];
 const reportYear = getDateParts[0];
 
-const allowances = config.monthlyAllowance?.[reportYear];
-const carryover = config.carryover?.[reportYear];
+const allowances: any = config.expenseAllowance?.[reportYear];
 
 console.log(`🤖 Reading from ${config.outputFile}`);
 // console.log(reportType); process.exit();
 const runReport = async (): Promise<void> => {
-  const reportData: any = {};
+  const categoryTotals: any = {};
   let reportIncome = 0;
   let reportExpenses = 0;
   let reportExpensesWant = 0;
@@ -41,7 +40,7 @@ const runReport = async (): Promise<void> => {
 
   const transactions = db.getByDate(getDate);
   if (!transactions.length) {
-    hardNo("No transactions found for this date.")
+    hardNo("No transactions found for this date.");
     return;
   }
 
@@ -55,19 +54,22 @@ const runReport = async (): Promise<void> => {
       const expenseType = transaction[11];
       const currentAmount = convertStringCurrencyToNumber(transaction[3]);
 
-      if (!reportData[category]) {
-        reportData[category] = {}
+      if (!categoryTotals[category]) {
+        categoryTotals[category] = {};
       }
 
-      const initialAmount = reportData[category][subCategory] || 0;
-      reportData[category][subCategory] = initialAmount + currentAmount;
+      // Process all expense and income transactions
+      const initialAmount = categoryTotals[category][subCategory] || 0;
+      categoryTotals[category][subCategory] = initialAmount + currentAmount;
 
+      // Process total income and expense
       const skipSubCategories = config.subCategoriesSkipReport || [];
       if (!skipSubCategories.includes(subCategory)) {
         reportIncome += category === "income" ? currentAmount : 0;
         reportExpenses += category === "expense" ? currentAmount : 0;
       }
 
+      // Process budget
       if (category === "expense") {
         reportExpensesNeed += expenseType === "need" ? currentAmount : 0;
         reportExpensesWant += expenseType === "want" ? currentAmount : 0;
@@ -89,27 +91,60 @@ const runReport = async (): Promise<void> => {
   console.log(`${formatCurrency(reportIncome)} <- Total reported income`);
   console.log(`${formatCurrency(reportExpenses)} <- Total reported expenses`);
   console.log("-----------------");
-  console.log(`${formatCurrency(remainingIncome)} remaining`);
+  console.log(`${formatCurrency(remainingIncome)} (${budgetSaved}%) remaining`);
+  console.log("");
   console.log("");
 
-  console.log("Budget breakdown");
-  console.log("=================");
-  console.log(`${budgetNeed}% need (target <= 50%)`);
-  console.log(`${budgetWant}% want (target <= 30%)`);
-  console.log(`${budgetSaved}% saved (target >= 20%)`);
-  console.log("");
+  if (budgetNeed && budgetWant) {
+    console.log("Budget breakdown");
+    console.log("=================");
+    console.log(`${budgetNeed}% need (target <= 50%)`);
+    console.log(`${budgetWant}% want (target <= 30%)`);
+    console.log(`${budgetSaved}% saved (target >= 20%)`);
+    console.log("");
+    console.log("");
+  }
 
-  const reportDataKeys = Object.keys(reportData);
-  if (reportDataKeys.length) {
+  const allowanceTotalsKeys = Object.keys(allowances);
+  if (Object.keys(allowanceTotalsKeys).length) {
+    console.log("Allowance breakdown");
+    console.log("=================");
+    allowanceTotalsKeys.forEach((subCategory: string) => {
+      const { allowance, carryover } = allowances[subCategory];
+      console.log("");
+      console.log(subCategory);
+      console.log("-----------------");
+      console.log(formatCurrency(categoryTotals.expense[subCategory]) + " spent");
+      if ("Annual" === reportType) {
+        console.log(formatCurrency(allowance * 12) + " allowed");
+        console.log(formatCurrency(carryover) + " carryover");
+        console.log("-----------------");
+        console.log(formatCurrency(allowance * 12 + categoryTotals.expense[subCategory] + carryover) + " remaining");
+      } else {
+        console.log(formatCurrency(allowance) + " allowed");
+        console.log("-----------------");
+        console.log(formatCurrency(allowance + categoryTotals.expense[subCategory]) + " remaining");
+      }
+    });
+    console.log("");
+    console.log("");
+  }
+
+  const categoryTotalsKeys = Object.keys(categoryTotals);
+  if (categoryTotalsKeys.length) {
     console.log("Totals");
     console.log("=================");
-    reportDataKeys.forEach((category: string) => {
+    categoryTotalsKeys.forEach((category: string) => {
       console.log("");
       console.log(category);
       console.log("-----------------");
-      Object.keys(reportData[category]).forEach((subCategory: string) => {
-        console.log(subCategory + " = " + formatCurrency(reportData[category][subCategory]));
-      })
+      Object.keys(categoryTotals[category]).forEach((subCategory: string) => {
+        console.log(
+          subCategory +
+          " = " +
+          formatCurrency(categoryTotals[category][subCategory])
+        );
+      });
     });
   }
 };

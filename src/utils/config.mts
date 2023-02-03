@@ -5,25 +5,13 @@ export interface Configuration {
   outputFile: string;
   subCategories: string[];
   subCategoriesSkipReport?: string[];
-  carryover?: {
+  expenseAllowance?: {
     [key: string]: {
-      expense?: {
-        [key: string]: number;
-      };
-      income?: {
-        [key: string]: number;
+      [key: string]: {
+        carryover: number;
+        allowance: number;
       };
     };
-  };
-  monthlyAllowance?: {
-    [key: string]: {
-      expense?: {
-        [key: string]: number;
-      };
-      income?: {
-        [key: string]: number;
-      };
-    }
   };
 }
 
