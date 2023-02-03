@@ -12,7 +12,7 @@ export interface TransactionHeader {
 
 export interface TransactionComplete extends TransactionImported {
   dateImported: string;
-  category: "expense" | "income" | "omit" | "split";
+  category: "expense" | "income" | "omit" | "split" | "skip";
   subCategory: string;
   expenseType: "need" | "want" | "";
   splitId: number;

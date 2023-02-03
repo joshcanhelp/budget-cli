@@ -123,6 +123,11 @@ const run = async (): Promise<void> => {
       }
 
       const transactionPrompt = await promptTransaction();
+
+      if (transactionPrompt.category === "skip") {
+        continue;
+      }
+
       db.saveRow(mapTransaction(importedTransaction, transactionPrompt));
 
       if (transactionPrompt.category !== "split") {

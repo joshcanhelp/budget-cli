@@ -65,7 +65,7 @@ export const promptTransaction = async (
       type: "list",
       choices: splitTransaction
         ? ["expense", "income"]
-        : ["expense", "income", "omit", "split"],
+        : ["expense", "income", "omit", "split", "skip"],
       message: "Which transaction category is this?",
     },
     {
@@ -74,7 +74,7 @@ export const promptTransaction = async (
       choices: config.subCategories,
       when: (answers) =>
         !!config.subCategories.length &&
-        !["omit", "split"].includes(answers.category),
+        !["omit", "split", "skip"].includes(answers.category),
       message: "Which transaction sub-category is this?",
     },
     {
@@ -87,7 +87,7 @@ export const promptTransaction = async (
     {
       name: "notes",
       type: "input",
-      when: (answers) => !["omit", "split"].includes(answers.category),
+      when: (answers) => !["omit", "split", "skip"].includes(answers.category),
       default: "",
       message: "Notes?",
     },
