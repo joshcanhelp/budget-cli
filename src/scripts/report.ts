@@ -17,7 +17,7 @@ if (!getDate || !(getDate.match(dateRegex) || []).length) {
 
 const db: DB = new DB(config.outputFile);
 try {
-  db.init();
+  db.loadTransactions();
 } catch (error: any) {
   hardNo(`Error loading transactions: ${error.message}`);
 }

@@ -22,8 +22,12 @@ export class DB {
   /// Public
   //
 
-  public init = () => {
-    this.loadTransactions();
+  public loadTransactions = (): void => {
+    let data = readFileSync(this.outputFile, { encoding: "utf8" });
+    this.store = csvParse(data, {
+      skip_empty_lines: true,
+      from_line: 2,
+    });
     this.loadTransactionIds();
   };
 
@@ -34,7 +38,7 @@ export class DB {
     });
     this.store.push(pushRow);
     this.save();
-    this.addTransactionId(row);
+    this.addTransactionId(pushRow);
   };
 
   public hasTransaction = (account: string, id: string): boolean => {
@@ -65,22 +69,14 @@ export class DB {
   /// Private
   //
 
-  private loadTransactions = (): void => {
-    let data = readFileSync(this.outputFile, { encoding: "utf8" });
-    this.store = csvParse(data, {
-      skip_empty_lines: true,
-      from_line: 2,
-    });
-  };
-
   private loadTransactionIds = (): void => {
     this.store.forEach((transaction: any) => {
       this.addTransactionId(transaction);
     });
   };
 
-  private addTransactionId = (transaction: TransactionComplete): void => {
-    const { account, id } = transaction;
+  private addTransactionId = (transaction: string[]): void => {
+    const [id, account] = transaction;
     if (!this.transactionIds[account]) {
       this.transactionIds[account] = [];
     }
