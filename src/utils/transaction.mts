@@ -33,6 +33,14 @@ export interface TransactionImported {
 /// Data
 //
 
+export const transactionCategories: TransactionComplete["category"][] = [
+  "expense",
+  "income",
+  "omit",
+  "split",
+  "skip",
+];
+
 export const transactionHeaders: TransactionHeader[] = [
   {
     // 0

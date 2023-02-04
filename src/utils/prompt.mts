@@ -1,6 +1,9 @@
 import inquirer from "inquirer";
 
-import { TransactionComplete } from "../utils/transaction.mjs";
+import {
+  transactionCategories,
+  TransactionComplete,
+} from "../utils/transaction.mjs";
 import { getAccountNames } from "../translators/index.mjs";
 import { getConfiguration } from "../utils/config.mjs";
 
@@ -63,9 +66,7 @@ export const promptTransaction = async (
     {
       name: "category",
       type: "list",
-      choices: splitTransaction
-        ? ["expense", "income"]
-        : ["expense", "income", "omit", "split", "skip"],
+      choices: splitTransaction ? ["expense", "income"] : transactionCategories,
       message: "Which transaction category is this?",
     },
     {

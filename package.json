@@ -4,7 +4,8 @@
     "dev": "tsc -w",
     "lint": "prettier --write ./src",
     "import": "node ./dist/scripts/import.js",
-    "report": "node ./dist/scripts/report.js"
+    "report": "node ./dist/scripts/report.js",
+    "transactions": "node ./dist/scripts/transactions.js"
   },
   "devDependencies": {
     "@types/inquirer": "^9.0.3",
