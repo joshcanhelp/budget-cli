@@ -21,12 +21,10 @@ import {
   roundCurrency,
 } from "../utils/money.mjs";
 import { statSync } from "fs";
-import { type } from "os";
 
 const config = getConfiguration();
 
 const importPath: string = process.argv[2];
-
 if (!importPath) {
   hardNo("No path provided!");
 }
@@ -61,7 +59,7 @@ try {
 }
 
 const run = async (): Promise<void> => {
-  if (!(await promptConfirm(`Write to ${config.outputFile}?`))) {
+  if (!(await promptConfirm(`Write to ${outputFile}?`))) {
     console.log(
       "🤖 Change the import location with an outputFile property in .budget-cli.json"
     );
