@@ -9,7 +9,8 @@ import {
 
 const config = getConfiguration();
 
-const getDate: string = process.argv[2] || "" + new Date().getFullYear();
+const currentYear = new Date().getFullYear();
+const getDate: string = process.argv[2] || "" + currentYear;
 const dateRegex = /^[0-9]{4}(?:-[0-9]{2})?$/;
 if (!getDate || !(getDate.match(dateRegex) || []).length) {
   hardNo(`Invalid or missing date parameter: ${getDate}`);
@@ -18,6 +19,7 @@ if (!getDate || !(getDate.match(dateRegex) || []).length) {
 const getDateParts = getDate.split("-");
 const reportType = ["Annual", "Monthly"][getDateParts.length - 1];
 const reportYear: string = getDateParts[0];
+const reportIsYtd = currentYear === parseInt(reportYear, 10);
 
 const allowances: any = config.expenseAllowance?.[reportYear];
 
@@ -122,12 +124,14 @@ const runReport = async (): Promise<void> => {
         formatCurrency(categoryTotals.expense[subCategory]) + " spent"
       );
       if ("Annual" === reportType) {
-        console.log(formatCurrency(allowance * 12) + " allowed");
+        const monthsCompleted: number = reportIsYtd ? new Date().getMonth() + 1 : 12;
+        const allowanceAllowed = allowance * monthsCompleted;
+        console.log(formatCurrency(allowanceAllowed) + " allowed");
         console.log(formatCurrency(carryover) + " carryover");
         console.log("-----------------");
         console.log(
           formatCurrency(
-            allowance * 12 + categoryTotals.expense[subCategory] + carryover
+            allowanceAllowed + categoryTotals.expense[subCategory] + carryover
           ) + " remaining"
         );
       } else {
