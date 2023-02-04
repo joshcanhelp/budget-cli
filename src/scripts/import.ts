@@ -21,10 +21,12 @@ import {
   roundCurrency,
 } from "../utils/money.mjs";
 import { statSync } from "fs";
+import { type } from "os";
 
 const config = getConfiguration();
 
 const importPath: string = process.argv[2];
+
 if (!importPath) {
   hardNo("No path provided!");
 }
@@ -38,19 +40,25 @@ if (!importCsvs.length) {
     hardNo(`Error getting import files: ${error.message}`);
   }
 }
-
 if (!importCsvs.length) {
   hardNo(`No CSVs to import`);
 }
 
-const db: DB = new DB(config.outputFile);
+const importYear: number = process.argv[3]
+  ? parseInt(process.argv[3], 10)
+  : new Date().getFullYear();
+
+const outputFile: string =
+  typeof config.outputFile === "object"
+    ? config.outputFile[importYear]
+    : config.outputFile;
+
+const db: DB = new DB(outputFile);
 try {
   db.loadTransactions();
 } catch (error: any) {
   hardNo(`Error loading transactions: ${error.message}`);
 }
-
-const importYear: number = parseInt(process.argv[3], 10);
 
 const run = async (): Promise<void> => {
   if (!(await promptConfirm(`Write to ${config.outputFile}?`))) {

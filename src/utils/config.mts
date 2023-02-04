@@ -11,8 +11,12 @@ export const configPath = path.join(process.cwd(), ".budget-cli.json");
 /// Functions
 //
 
+export interface OutputFiles {
+  [key: string]: string;
+}
+
 export interface Configuration {
-  outputFile: string;
+  outputFile: string | OutputFiles;
   subCategories: string[];
   subCategoriesSkipReport?: string[];
   expenseAllowance?: {
@@ -30,7 +34,7 @@ export const defaultConfig: Configuration = {
   subCategories: [],
 };
 
-export const getConfiguration = (): Configuration => {
+export const getConfiguration = (year?: string): Configuration => {
   let userConfig: string = "";
   try {
     userConfig = readFileSync(configPath, { encoding: "utf8" });
@@ -38,6 +42,7 @@ export const getConfiguration = (): Configuration => {
     console.log(`🤖 No configuration file found at ${configPath}.`);
     return defaultConfig;
   }
+
   const parsedUserConfig = JSON.parse(userConfig);
   return {
     ...defaultConfig,

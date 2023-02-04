@@ -9,27 +9,32 @@ import {
 
 const config = getConfiguration();
 
-const getDate: string = process.argv[2] || getFormattedDate(new Date(), true);
+const getDate: string = process.argv[2] || "" + new Date().getFullYear();
 const dateRegex = /^[0-9]{4}(?:-[0-9]{2})?$/;
 if (!getDate || !(getDate.match(dateRegex) || []).length) {
   hardNo(`Invalid or missing date parameter: ${getDate}`);
 }
 
-const db: DB = new DB(config.outputFile);
+const getDateParts = getDate.split("-");
+const reportType = ["Annual", "Monthly"][getDateParts.length - 1];
+const reportYear: string = getDateParts[0];
+
+const allowances: any = config.expenseAllowance?.[reportYear];
+
+const outputFile: string =
+  typeof config.outputFile === "object"
+    ? config.outputFile[reportYear]
+    : config.outputFile;
+
+const db: DB = new DB(outputFile);
 try {
   db.loadTransactions();
 } catch (error: any) {
   hardNo(`Error loading transactions: ${error.message}`);
 }
 
-const getDateParts = getDate.split("-");
-const reportType = ["Annual", "Monthly"][getDateParts.length - 1];
-const reportYear = getDateParts[0];
+console.log(`🤖 Reading from ${outputFile}`);
 
-const allowances: any = config.expenseAllowance?.[reportYear];
-
-console.log(`🤖 Reading from ${config.outputFile}`);
-// console.log(reportType); process.exit();
 const runReport = async (): Promise<void> => {
   const categoryTotals: any = {};
   let reportIncome = 0;
@@ -130,7 +135,7 @@ const runReport = async (): Promise<void> => {
         console.log("-----------------");
         console.log(
           formatCurrency(allowance + categoryTotals.expense[subCategory]) +
-            " remaining"
+          " remaining"
         );
       }
     });
@@ -149,8 +154,8 @@ const runReport = async (): Promise<void> => {
       Object.keys(categoryTotals[category]).forEach((subCategory: string) => {
         console.log(
           subCategory +
-            " = " +
-            formatCurrency(categoryTotals[category][subCategory])
+          " = " +
+          formatCurrency(categoryTotals[category][subCategory])
         );
       });
     });
