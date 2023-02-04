@@ -146,3 +146,13 @@ export const mapTransaction = (
     expenseType,
   };
 };
+
+export const sortTransactionsByDate = (a: string[], b: string[]): number => {
+  if (a[2] > b[2]) {
+    return 1;
+  }
+  if (a[2] < b[2]) {
+    return -1;
+  }
+  return 0;
+}
