@@ -97,23 +97,19 @@ const runReport = async (): Promise<void> => {
   console.log(`${formatCurrency(reportIncome)} <- Total reported income`);
   console.log(`${formatCurrency(reportExpenses)} <- Total reported expenses`);
   console.log("-----------------");
-  console.log(`${formatCurrency(remainingIncome)} (${budgetSaved}%) remaining`);
+  console.log(`${formatCurrency(remainingIncome)} remaining`);
   console.log("");
-  console.log("");
-
   if (budgetNeed && budgetWant) {
-    console.log("Budget breakdown");
-    console.log("=================");
     console.log(`${budgetNeed}% need (target <= 50%)`);
     console.log(`${budgetWant}% want (target <= 30%)`);
-    console.log(`${budgetSaved}% saved (target >= 20%)`);
-    console.log("");
-    console.log("");
   }
+  console.log(`${budgetSaved}% saved (target >= 20%)`);
+  console.log("");
+  console.log("");
 
   const allowanceTotalsKeys = Object.keys(allowances);
   if (Object.keys(allowanceTotalsKeys).length) {
-    console.log("Allowance breakdown");
+    console.log("Allowance");
     console.log("=================");
     allowanceTotalsKeys.forEach((subCategory: string) => {
       const { allowance, carryover } = allowances[subCategory];
@@ -152,16 +148,21 @@ const runReport = async (): Promise<void> => {
     console.log("Totals");
     console.log("=================");
     categoryTotalsKeys.forEach((category: string) => {
+      let total: number = 0;
       console.log("");
       console.log(category);
       console.log("-----------------");
       Object.keys(categoryTotals[category]).forEach((subCategory: string) => {
+        total += categoryTotals[category][subCategory];
         console.log(
           subCategory +
           " = " +
           formatCurrency(categoryTotals[category][subCategory])
         );
       });
+      console.log("-----------------");
+      console.log(`Total ${category} = ${formatCurrency(total)}`);
+      console.log("");
     });
   }
 };
