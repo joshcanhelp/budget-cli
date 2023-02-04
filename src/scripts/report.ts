@@ -1,6 +1,5 @@
 import { DB } from "../utils/storage.mjs";
 import { getConfiguration } from "../utils/config.mjs";
-import { getFormattedDate } from "../utils/date.mjs";
 import { hardNo } from "../utils/index.mjs";
 import {
   convertStringCurrencyToNumber,
@@ -120,7 +119,9 @@ const runReport = async (): Promise<void> => {
         formatCurrency(categoryTotals.expense[subCategory]) + " spent"
       );
       if ("Annual" === reportType) {
-        const monthsCompleted: number = reportIsYtd ? new Date().getMonth() + 1 : 12;
+        const monthsCompleted: number = reportIsYtd
+          ? new Date().getMonth() + 1
+          : 12;
         const allowanceAllowed = allowance * monthsCompleted;
         console.log(formatCurrency(allowanceAllowed) + " allowed");
         console.log(formatCurrency(carryover) + " carryover");
@@ -135,7 +136,7 @@ const runReport = async (): Promise<void> => {
         console.log("-----------------");
         console.log(
           formatCurrency(allowance + categoryTotals.expense[subCategory]) +
-          " remaining"
+            " remaining"
         );
       }
     });
@@ -156,8 +157,8 @@ const runReport = async (): Promise<void> => {
         total += categoryTotals[category][subCategory];
         console.log(
           subCategory +
-          " = " +
-          formatCurrency(categoryTotals[category][subCategory])
+            " = " +
+            formatCurrency(categoryTotals[category][subCategory])
         );
       });
       console.log("-----------------");

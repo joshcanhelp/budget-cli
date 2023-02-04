@@ -1,10 +1,7 @@
 import { DB } from "../utils/storage.mjs";
 import { getConfiguration } from "../utils/config.mjs";
 import { hardNo } from "../utils/index.mjs";
-import {
-  convertStringCurrencyToNumber,
-  formatCurrency,
-} from "../utils/money.mjs";
+import { formatCurrency } from "../utils/money.mjs";
 
 const config = getConfiguration();
 
@@ -35,12 +32,6 @@ try {
 console.log(`🤖 Reading from ${outputFile}`);
 
 const runReport = async (): Promise<void> => {
-  const categoryTotals: any = {};
-  let reportIncome = 0;
-  let reportExpenses = 0;
-  let reportExpensesWant = 0;
-  let reportExpensesNeed = 0;
-
   const transactions = db
     .getByTerms(reportCategory, reportSubCategory)
     .filter((transaction: string[]): boolean => {
@@ -49,7 +40,7 @@ const runReport = async (): Promise<void> => {
 
   if (!transactions.length) {
     hardNo(
-      `No reportable transactions found for ${reportCategory}.${reportSubCategory}`
+      `Nothing found for ${reportCategory}.${reportSubCategory}`
     );
     return;
   }
