@@ -8,10 +8,13 @@ const config = getConfiguration();
 
 const [, , dateRange, reportTerms] = process.argv;
 
+const dateRegex = /^[0-9]{4}(?:-[0-9]{2})?$/;
+if (!dateRange || !(dateRange.match(dateRegex) || []).length) {
+  hardNo("Invalid transaction date in 1st argument.");
+}
+
 if (!reportTerms) {
-  hardNo(
-    "Need valid transaction terms separated by a period as the 2nd argument."
-  );
+  hardNo("Invalid transaction terms in 2nd argument.");
 }
 
 const reportTermsParts = reportTerms.trim().split(".");
