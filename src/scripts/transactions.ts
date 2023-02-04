@@ -6,7 +6,7 @@ import { sortTransactionsByDate } from "../utils/transaction.mjs";
 
 const config = getConfiguration();
 
-const [, , reportYear, reportTerms] = process.argv;
+const [, , dateRange, reportTerms] = process.argv;
 
 if (!reportTerms) {
   hardNo(
@@ -20,7 +20,7 @@ const reportSubCategory = reportTermsParts[1] || "*";
 
 const outputFile: string =
   typeof config.outputFile === "object"
-    ? config.outputFile[reportYear]
+    ? config.outputFile[dateRange.split("-")[0]]
     : config.outputFile;
 
 const db: DB = new DB(outputFile);
@@ -33,10 +33,12 @@ try {
 console.log(`🤖 Reading from ${outputFile}`);
 
 const runReport = async (): Promise<void> => {
+  const dateRegex = new RegExp(`^${dateRange}`, "g");
   const transactions = db
     .getByTerms(reportCategory, reportSubCategory)
     .filter((transaction: string[]): boolean => {
-      return transaction[9] !== "omit" && transaction[9] !== "split";
+      const matchedDateRange = !!(transaction[2].match(dateRegex) || []).length;
+      return transaction[9] !== "omit" && transaction[9] !== "split" && matchedDateRange;
     });
 
   if (!transactions.length) {
