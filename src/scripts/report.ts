@@ -83,21 +83,19 @@ const runReport = async (): Promise<void> => {
   console.log("-=-=-=-=-=-=-=-=-");
   console.log("");
   console.log("");
-
-  const categoryTotalsKeys = Object.keys(categoryTotals);
   console.log("Totals");
   console.log("=================");
-  categoryTotalsKeys.forEach((category: string) => {
+  console.log("");
+  ["income", "expense"].forEach((category: string) => {
     let total: number = 0;
-    console.log("");
     console.log(category);
     console.log("-----------------");
     Object.keys(categoryTotals[category]).forEach((subCategory: string) => {
       total += categoryTotals[category][subCategory];
       console.log(
-        subCategory +
+        formatCurrency(categoryTotals[category][subCategory]) +
           " = " +
-          formatCurrency(categoryTotals[category][subCategory])
+          subCategory
       );
     });
     console.log("-----------------");
