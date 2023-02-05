@@ -1,11 +1,8 @@
 {
   "include": [
     "src/**/*",
-    ".eslintrc.js"
-  ],
-  "exclude": [
-    "node_modules",
-    "**/*.spec.ts"
+    ".eslintrc.js",
+    "jest.config.ts"
   ],
   "compilerOptions": {
     "removeComments": true,
