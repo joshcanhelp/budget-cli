@@ -23,18 +23,18 @@ export class DB {
   //
 
   public loadTransactions = (): void => {
-    let data = readFileSync(this.outputFile, { encoding: "utf8" });
-    this.store = csvParse(data, {
+    const data = readFileSync(this.outputFile, { encoding: "utf8" });
+    this.store = (csvParse(data, {
       skip_empty_lines: true,
       from_line: 2,
-    });
+    }) as string[][]);
     this.loadTransactionIds();
   };
 
   public saveRow = (row: TransactionComplete): void => {
-    const pushRow: any[] = [];
+    const pushRow: string[] = [];
     transactionHeaders.forEach((header: TransactionHeader) => {
-      pushRow.push(row[header.key as keyof TransactionComplete]);
+      pushRow.push(`${row[header.key as keyof TransactionComplete] || ""}`);
     });
     this.store.push(pushRow);
     this.save();
@@ -79,7 +79,7 @@ export class DB {
   //
 
   private loadTransactionIds = (): void => {
-    this.store.forEach((transaction: any) => {
+    this.store.forEach((transaction: string[]) => {
       this.addTransactionId(transaction);
     });
   };
