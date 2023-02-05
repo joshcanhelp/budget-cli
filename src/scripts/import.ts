@@ -8,6 +8,7 @@ import {
   getTransactionShape,
   mapTransaction,
   TransactionComplete,
+  TransactionImported,
 } from "../utils/transaction.mjs";
 import { getCsvInDir, readCsv } from "../utils/fs.mjs";
 import {
@@ -29,19 +30,19 @@ if (!importPath) {
   hardNo("No path provided!");
 }
 
-let isFileImport: boolean = false;
+let isFileImport = false;
 try {
   isFileImport = statSync(importPath).isFile();
-} catch (error: any) {
-  hardNo(`Error checking import path: ${error.message}`);
+} catch (error: unknown) {
+  hardNo(`Error checking import path`, error);
 }
 
 let importCsvs: string[] = [importPath];
 if (!isFileImport) {
   try {
     importCsvs = getCsvInDir(importPath);
-  } catch (error: any) {
-    hardNo(`Error getting import files: ${error.message}`);
+  } catch (error: unknown) {
+    hardNo(`Error getting import files`, error);
   }
 }
 
@@ -61,8 +62,8 @@ const outputFile: string =
 const db: DB = new DB(outputFile);
 try {
   db.loadTransactions();
-} catch (error: any) {
-  hardNo(`Error loading transactions: ${error.message}`);
+} catch (error: unknown) {
+  hardNo(`Error loading transactions`, error);
 }
 
 const run = async (): Promise<void> => {
@@ -123,8 +124,12 @@ const run = async (): Promise<void> => {
       console.log("👇 Importing");
       const transactionShape = getTransactionShape();
       Object.keys(importedTransaction).forEach((transactionProp: string) => {
-        const label = (transactionShape as any)[transactionProp];
-        const value = (importedTransaction as any)[transactionProp];
+        const label = transactionShape[
+          transactionProp as keyof TransactionComplete
+        ] as string;
+        const value: string = importedTransaction[
+          transactionProp as keyof TransactionImported
+        ] as string;
         if (value) {
           console.log(`${label}: ${value}`);
         }
@@ -148,15 +153,15 @@ const run = async (): Promise<void> => {
       }
 
       // Split the original amount
+      const originalAmount: number = importedTransaction.amount;
       let splitCount = 1;
-      let originalAmount = importedTransaction.amount;
       let originalAmountToSplit = Math.abs(originalAmount);
 
-      while (!!originalAmountToSplit) {
+      while (originalAmountToSplit) {
         console.log(
           `🔪 Split #${splitCount}, $${originalAmountToSplit} remaining`
         );
-        let splitAmount = convertStringCurrencyToNumber(await promptAmount());
+        const splitAmount = convertStringCurrencyToNumber(await promptAmount());
         const splitPrompt = await promptTransaction(true);
         const splitTransaction = {
           ...importedTransaction,
@@ -172,4 +177,4 @@ const run = async (): Promise<void> => {
   }
 };
 
-(async () => await run())();
+void (async () => await run())();

@@ -2,7 +2,9 @@
   "type": "module",
   "scripts": {
     "dev": "tsc -w",
-    "lint": "prettier --write ./src",
+    "eslint": "eslint src",
+    "prettier": "prettier --write ./src",
+    "format": "npm run eslint && npm run prettier",
     "import": "node ./dist/scripts/import.js",
     "report": "node ./dist/scripts/report.js",
     "transactions": "node ./dist/scripts/transactions.js"
@@ -10,12 +12,14 @@
   "devDependencies": {
     "@types/inquirer": "^9.0.3",
     "@types/node": "^18.11.18",
+    "@typescript-eslint/eslint-plugin": "^5.50.0",
+    "@typescript-eslint/parser": "^5.50.0",
+    "eslint": "^8.33.0",
     "prettier": "^2.8.3",
-    "typescript": "^4.9.4"
+    "typescript": "^4.9.5"
   },
   "dependencies": {
     "csv": "^6.2.5",
-    "g": "^2.0.1",
     "inquirer": "^9.1.4"
   },
   "prettier": {

@@ -19,10 +19,10 @@ export const getCsvInDir = (path: string): string[] => {
 export const readCsv = (
   filePath: string,
   transform?: (data: string) => string
-): any[] => {
+): string[][] => {
   let data = readFileSync(filePath, { encoding: "utf8" });
   if (typeof transform === "function") {
     data = transform(data);
   }
-  return csvParse(data, { skip_empty_lines: true });
+  return csvParse(data, { skip_empty_lines: true }) as string[][];
 };

@@ -118,7 +118,7 @@ export const getTransactionShape = (): TransactionComplete => {
   transactionHeaders.forEach((header) => {
     shape[header.key] = header.header;
   });
-  return shape;
+  return shape as TransactionComplete;
 };
 
 export const mapTransaction = (
