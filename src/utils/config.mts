@@ -7,8 +7,24 @@ import { readFileSync } from "fs";
 
 export const configPath = path.join(process.cwd(), ".budget-cli.json");
 
+export const defaultConfig: Configuration = {
+  outputFile: "./output/data.csv",
+  subCategories: {
+    income: ["salary", "reimbursable", "other"],
+    expense: [
+      "family",
+      "parent-1",
+      "parent-2",
+      "reimbursable",
+      "health",
+      "childcare",
+      "other",
+    ],
+  },
+};
+
 ////
-/// Functions
+/// Types
 //
 
 export interface OutputFiles {
@@ -33,21 +49,9 @@ export interface Configuration {
   };
 }
 
-export const defaultConfig: Configuration = {
-  outputFile: "./output/data.csv",
-  subCategories: {
-    income: ["mom", "dad", "reimbursable", "HSA", "FSA", "other"],
-    expense: [
-      "family",
-      "mom",
-      "dad",
-      "reimbursable",
-      "health",
-      "childcare",
-      "other",
-    ],
-  },
-};
+////
+/// Functions
+//
 
 export const getConfiguration = (year?: string): Configuration => {
   let userConfig: string = "";
