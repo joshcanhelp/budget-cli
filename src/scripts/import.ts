@@ -29,15 +29,22 @@ if (!importPath) {
   hardNo("No path provided!");
 }
 
-const isFileImport = statSync(importPath).isFile();
-const importCsvs: string[] = isFileImport ? [importPath] : [];
-if (!importCsvs.length) {
+let isFileImport: boolean = false;
+try {
+  isFileImport = statSync(importPath).isFile();
+} catch (error: any) {
+  hardNo(`Error checking import path: ${error.message}`);
+}
+
+let importCsvs: string[] = [importPath];
+if (!isFileImport) {
   try {
-    getCsvInDir(importPath, importCsvs);
+    importCsvs = getCsvInDir(importPath);
   } catch (error: any) {
     hardNo(`Error getting import files: ${error.message}`);
   }
 }
+
 if (!importCsvs.length) {
   hardNo(`No CSVs to import`);
 }

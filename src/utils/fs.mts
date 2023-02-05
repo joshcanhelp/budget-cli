@@ -5,14 +5,15 @@ import { parse as csvParse } from "csv/sync";
 /// Functions
 //
 
-export const getCsvInDir = (path: string, initial: string[] = []): string[] => {
+export const getCsvInDir = (path: string): string[] => {
+  const csvs: string[] = [];
   readdirSync(path, { withFileTypes: true }).forEach((dirent: any): void => {
     const extension = dirent.name.split(".").pop();
     if (dirent.isFile() && extension === "csv") {
-      initial.push(dirent.name);
+      csvs.push(dirent.name);
     }
   });
-  return initial;
+  return csvs;
 };
 
 export const readCsv = (
