@@ -1,10 +1,10 @@
-import { DB } from "../utils/storage.mjs";
-import { getConfiguration } from "../utils/config.mjs";
-import { hardNo } from "../utils/index.mjs";
+import { DB } from "../utils/storage.js";
+import { getConfiguration } from "../utils/config.js";
+import { hardNo } from "../utils/index.js";
 import {
   convertStringCurrencyToNumber,
   formatCurrency,
-} from "../utils/money.mjs";
+} from "../utils/money.js";
 
 const config = getConfiguration();
 

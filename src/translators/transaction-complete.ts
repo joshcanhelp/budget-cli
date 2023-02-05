@@ -1,7 +1,7 @@
-import { TransactionComplete } from "../utils/transaction.mjs";
-import { Translator } from "./index.mjs";
-import { convertStringCurrencyToNumber } from "../utils/money.mjs";
-import { getFormattedDate } from "../utils/date.mjs";
+import { TransactionComplete } from "../utils/transaction.js";
+import { Translator } from "./index.js";
+import { convertStringCurrencyToNumber } from "../utils/money.js";
+import { getFormattedDate } from "../utils/date.js";
 
 const accountName = "Import complete";
 export const transactionCompleteTranslator: Translator = {

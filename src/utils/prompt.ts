@@ -1,11 +1,8 @@
 import inquirer from "inquirer";
 
-import {
-  transactionCategories,
-  TransactionComplete,
-} from "../utils/transaction.mjs";
-import { getAccountNames } from "../translators/index.mjs";
-import { getConfiguration } from "../utils/config.mjs";
+import { transactionCategories, TransactionComplete } from "./transaction.js";
+import { getAccountNames } from "../translators/index.js";
+import { getConfiguration } from "./config.js";
 
 const config = getConfiguration();
 

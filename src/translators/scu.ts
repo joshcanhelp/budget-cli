@@ -1,9 +1,9 @@
 import { createHash } from "node:crypto";
 
-import { TransactionImported } from "../utils/transaction.mjs";
-import { Translator } from "./index.mjs";
-import { convertStringCurrencyToNumber } from "../utils/money.mjs";
-import { getFormattedDate } from "../utils/date.mjs";
+import { TransactionImported } from "../utils/transaction.js";
+import { Translator } from "./index.js";
+import { convertStringCurrencyToNumber } from "../utils/money.js";
+import { getFormattedDate } from "../utils/date.js";
 
 const accountName = "SCU";
 export const scuTranslator: Translator = {

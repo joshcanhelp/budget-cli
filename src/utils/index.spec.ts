@@ -1,4 +1,4 @@
-import { padLeftZero } from "./index.mjs";
+import { padLeftZero } from "./";
 
 describe("Function: padLeftZero", () => {
   it("pads a single digit with a zero", () => {

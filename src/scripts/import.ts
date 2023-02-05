@@ -1,26 +1,26 @@
 import path from "path";
 
-import { getTranslator } from "../translators/index.mjs";
-import { hardNo } from "../utils/index.mjs";
-import { DB } from "../utils/storage.mjs";
-import { getConfiguration } from "../utils/config.mjs";
+import { getTranslator } from "../translators/index.js";
+import { hardNo } from "../utils/index.js";
+import { DB } from "../utils/storage.js";
+import { getConfiguration } from "../utils/config.js";
 import {
   getTransactionShape,
   mapTransaction,
   TransactionComplete,
   TransactionImported,
-} from "../utils/transaction.mjs";
-import { getCsvInDir, readCsv } from "../utils/fs.mjs";
+} from "../utils/transaction.js";
+import { getCsvInDir, readCsv } from "../utils/fs.js";
 import {
   promptAccount,
   promptAmount,
   promptConfirm,
   promptTransaction,
-} from "../utils/prompt.mjs";
+} from "../utils/prompt.js";
 import {
   convertStringCurrencyToNumber,
   roundCurrency,
-} from "../utils/money.mjs";
+} from "../utils/money.js";
 import { statSync } from "fs";
 
 const config = getConfiguration();

@@ -1,8 +1,8 @@
-import { DB } from "../utils/storage.mjs";
-import { getConfiguration } from "../utils/config.mjs";
-import { hardNo } from "../utils/index.mjs";
-import { formatCurrency } from "../utils/money.mjs";
-import { sortTransactionsByDate } from "../utils/transaction.mjs";
+import { DB } from "../utils/storage.js";
+import { getConfiguration } from "../utils/config.js";
+import { hardNo } from "../utils/index.js";
+import { formatCurrency } from "../utils/money.js";
+import { sortTransactionsByDate } from "../utils/transaction.js";
 
 const config = getConfiguration();
 

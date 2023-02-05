@@ -1,5 +1,5 @@
-import { getFormattedDate } from "./date.mjs";
-import { TransactionPrompt } from "./prompt.mjs";
+import { getFormattedDate } from "./date.js";
+import { TransactionPrompt } from "./prompt.js";
 
 ////
 /// Types

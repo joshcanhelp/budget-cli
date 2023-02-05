@@ -5,7 +5,7 @@ import {
   TransactionComplete,
   TransactionHeader,
   transactionHeaders,
-} from "../utils/transaction.mjs";
+} from "./transaction.js";
 
 export class DB {
   private store: string[][] = [];

@@ -1,11 +1,11 @@
 import {
   TransactionComplete,
   TransactionImported,
-} from "../utils/transaction.mjs";
-import { boaTranslator } from "./boa.mjs";
-import { transactionCompleteTranslator } from "./transaction-complete.mjs";
-import { nordstromsTranslator } from "./nordstroms.mjs";
-import { scuTranslator } from "./scu.mjs";
+} from "../utils/transaction.js";
+import { boaTranslator } from "./boa.js";
+import { transactionCompleteTranslator } from "./transaction-complete.js";
+import { nordstromsTranslator } from "./nordstroms.js";
+import { scuTranslator } from "./scu.js";
 
 export interface Translator {
   name: string;

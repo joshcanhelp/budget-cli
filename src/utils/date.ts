@@ -1,4 +1,4 @@
-import { padLeftZero } from "./index.mjs";
+import { padLeftZero } from "./index.js";
 
 ////
 /// Functions
