@@ -68,7 +68,8 @@ export class DB {
   public getByTerms = (category: string, subCategory: string): string[][] => {
     return this.store.filter((transaction: string[]) => {
       const isCategoryMatch = category === transaction[9] || category === "*";
-      const isSubCategoryMatch = subCategory === transaction[10] || subCategory === "*";
+      const isSubCategoryMatch =
+        subCategory === transaction[10] || subCategory === "*";
       return isCategoryMatch && isSubCategoryMatch;
     });
   };

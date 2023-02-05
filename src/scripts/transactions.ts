@@ -41,13 +41,15 @@ const runReport = async (): Promise<void> => {
     .getByTerms(reportCategory, reportSubCategory)
     .filter((transaction: string[]): boolean => {
       const matchedDateRange = !!(transaction[2].match(dateRegex) || []).length;
-      return transaction[9] !== "omit" && transaction[9] !== "split" && matchedDateRange;
+      return (
+        transaction[9] !== "omit" &&
+        transaction[9] !== "split" &&
+        matchedDateRange
+      );
     });
 
   if (!transactions.length) {
-    hardNo(
-      `Nothing found for ${reportCategory}.${reportSubCategory}`
-    );
+    hardNo(`Nothing found for ${reportCategory}.${reportSubCategory}`);
     return;
   }
 
@@ -63,8 +65,12 @@ const runReport = async (): Promise<void> => {
     .forEach((transaction: string[]): void => {
       const [, , date, amount, description, , , , , , , , notes] = transaction;
       const parsedAmount = parseFloat(amount);
-      const displayNotes = notes || "<No notes>"
-      console.log(`${date}, ${formatCurrency(parsedAmount)}, ${description}, ${displayNotes}`);
+      const displayNotes = notes || "<No notes>";
+      console.log(
+        `${date}, ${formatCurrency(
+          parsedAmount
+        )}, ${description}, ${displayNotes}`
+      );
       runningTotal += parsedAmount;
     });
 

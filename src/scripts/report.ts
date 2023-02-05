@@ -96,8 +96,8 @@ const runReport = async (): Promise<void> => {
       total += categoryTotals[category][subCategory];
       console.log(
         subCategory +
-        " = " +
-        formatCurrency(categoryTotals[category][subCategory])
+          " = " +
+          formatCurrency(categoryTotals[category][subCategory])
       );
     });
     console.log("-----------------");
@@ -110,10 +110,20 @@ const runReport = async (): Promise<void> => {
   const budgetWant = Math.round((reportExpensesWant / reportIncome) * -100);
   const budgetSaved = Math.round((remainingIncome / reportIncome) * 100);
   if (budgetNeed && budgetWant) {
-    console.log(`${budgetNeed}% need (target <= 50%) - ${formatCurrency(reportExpensesNeed)}`);
-    console.log(`${budgetWant}% want (target <= 30%) - ${formatCurrency(reportExpensesWant)}`);
+    console.log(
+      `${budgetNeed}% need (target <= 50%) - ${formatCurrency(
+        reportExpensesNeed
+      )}`
+    );
+    console.log(
+      `${budgetWant}% want (target <= 30%) - ${formatCurrency(
+        reportExpensesWant
+      )}`
+    );
   }
-  console.log(`${budgetSaved}% saved (target >= 20%) - ${formatCurrency(remainingIncome)}`);
+  console.log(
+    `${budgetSaved}% saved (target >= 20%) - ${formatCurrency(remainingIncome)}`
+  );
   console.log("");
   console.log("");
 
@@ -147,7 +157,7 @@ const runReport = async (): Promise<void> => {
         console.log("-----------------");
         console.log(
           formatCurrency(allowance + categoryTotals.expense[subCategory]) +
-          " remaining"
+            " remaining"
         );
       }
     });

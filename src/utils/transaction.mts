@@ -155,4 +155,4 @@ export const sortTransactionsByDate = (a: string[], b: string[]): number => {
     return -1;
   }
   return 0;
-}
+};
