@@ -15,9 +15,14 @@ export interface OutputFiles {
   [key: string]: string;
 }
 
+export interface SubCategories {
+  income: string[];
+  expense: string[];
+}
+
 export interface Configuration {
   outputFile: string | OutputFiles;
-  subCategories: string[];
+  subCategories: SubCategories;
   expenseAllowance?: {
     [key: string]: {
       [key: string]: {
@@ -30,7 +35,18 @@ export interface Configuration {
 
 export const defaultConfig: Configuration = {
   outputFile: "./output/data.csv",
-  subCategories: [],
+  subCategories: {
+    income: ["mom", "dad", "reimbursable", "HSA", "FSA", "other"],
+    expense: [
+      "family",
+      "mom",
+      "dad",
+      "reimbursable",
+      "health",
+      "childcare",
+      "other",
+    ],
+  },
 };
 
 export const getConfiguration = (year?: string): Configuration => {

@@ -72,10 +72,13 @@ export const promptTransaction = async (
     {
       name: "subCategory",
       type: "list",
-      choices: config.subCategories,
-      when: (answers) =>
-        !!config.subCategories.length &&
-        !["omit", "split", "skip"].includes(answers.category),
+      choices: (answers) =>
+        answers.category === "income"
+          ? config.subCategories.income
+          : answers.category === "expense"
+          ? config.subCategories.expense
+          : [],
+      when: (answers) => !["omit", "split", "skip"].includes(answers.category),
       message: "Which transaction sub-category is this?",
     },
     {
