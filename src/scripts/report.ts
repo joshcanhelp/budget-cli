@@ -68,11 +68,8 @@ const runReport = async (): Promise<void> => {
       categoryTotals[category][subCategory] = initialAmount + currentAmount;
 
       // Process total income and expense
-      const skipSubCategories = config.subCategoriesSkipReport || [];
-      if (!skipSubCategories.includes(subCategory)) {
-        reportIncome += category === "income" ? currentAmount : 0;
-        reportExpenses += category === "expense" ? currentAmount : 0;
-      }
+      reportIncome += category === "income" ? currentAmount : 0;
+      reportExpenses += category === "expense" ? currentAmount : 0;
 
       // Process budget
       if (category === "expense") {

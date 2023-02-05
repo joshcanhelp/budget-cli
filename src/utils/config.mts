@@ -18,7 +18,6 @@ export interface OutputFiles {
 export interface Configuration {
   outputFile: string | OutputFiles;
   subCategories: string[];
-  subCategoriesSkipReport?: string[];
   expenseAllowance?: {
     [key: string]: {
       [key: string]: {
