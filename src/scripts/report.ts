@@ -78,28 +78,42 @@ const runReport = async (): Promise<void> => {
       }
     });
 
-  const remainingIncome = reportIncome + reportExpenses;
-  const budgetNeed = Math.round((reportExpensesNeed / reportIncome) * -100);
-  const budgetWant = Math.round((reportExpensesWant / reportIncome) * -100);
-  const budgetSaved = Math.round((remainingIncome / reportIncome) * 100);
-
   console.log("");
   console.log(`${reportType} report for ${getDate}`);
   console.log("-=-=-=-=-=-=-=-=-");
   console.log("");
   console.log("");
-  console.log("Reported transactions");
+
+  const categoryTotalsKeys = Object.keys(categoryTotals);
+  console.log("Totals");
   console.log("=================");
-  console.log(`${formatCurrency(reportIncome)} <- Total reported income`);
-  console.log(`${formatCurrency(reportExpenses)} <- Total reported expenses`);
-  console.log("-----------------");
-  console.log(`${formatCurrency(remainingIncome)} remaining`);
-  console.log("");
+  categoryTotalsKeys.forEach((category: string) => {
+    let total: number = 0;
+    console.log("");
+    console.log(category);
+    console.log("-----------------");
+    Object.keys(categoryTotals[category]).forEach((subCategory: string) => {
+      total += categoryTotals[category][subCategory];
+      console.log(
+        subCategory +
+        " = " +
+        formatCurrency(categoryTotals[category][subCategory])
+      );
+    });
+    console.log("-----------------");
+    console.log(`Total ${category} = ${formatCurrency(total)}`);
+    console.log("");
+  });
+
+  const remainingIncome = reportIncome + reportExpenses;
+  const budgetNeed = Math.round((reportExpensesNeed / reportIncome) * -100);
+  const budgetWant = Math.round((reportExpensesWant / reportIncome) * -100);
+  const budgetSaved = Math.round((remainingIncome / reportIncome) * 100);
   if (budgetNeed && budgetWant) {
-    console.log(`${budgetNeed}% need (target <= 50%)`);
-    console.log(`${budgetWant}% want (target <= 30%)`);
+    console.log(`${budgetNeed}% need (target <= 50%) - ${formatCurrency(reportExpensesNeed)}`);
+    console.log(`${budgetWant}% want (target <= 30%) - ${formatCurrency(reportExpensesWant)}`);
   }
-  console.log(`${budgetSaved}% saved (target >= 20%)`);
+  console.log(`${budgetSaved}% saved (target >= 20%) - ${formatCurrency(remainingIncome)}`);
   console.log("");
   console.log("");
 
@@ -133,35 +147,12 @@ const runReport = async (): Promise<void> => {
         console.log("-----------------");
         console.log(
           formatCurrency(allowance + categoryTotals.expense[subCategory]) +
-            " remaining"
+          " remaining"
         );
       }
     });
     console.log("");
     console.log("");
-  }
-
-  const categoryTotalsKeys = Object.keys(categoryTotals);
-  if (categoryTotalsKeys.length) {
-    console.log("Totals");
-    console.log("=================");
-    categoryTotalsKeys.forEach((category: string) => {
-      let total: number = 0;
-      console.log("");
-      console.log(category);
-      console.log("-----------------");
-      Object.keys(categoryTotals[category]).forEach((subCategory: string) => {
-        total += categoryTotals[category][subCategory];
-        console.log(
-          subCategory +
-            " = " +
-            formatCurrency(categoryTotals[category][subCategory])
-        );
-      });
-      console.log("-----------------");
-      console.log(`Total ${category} = ${formatCurrency(total)}`);
-      console.log("");
-    });
   }
 };
 
