@@ -14,12 +14,12 @@ export const roundCurrency = (amount: number): number => {
 
 export const formatCurrency = (currency: number): string => {
   currency = roundCurrency(currency);
-  const currencyParts = ("" + currency).split(".");
+  const currencyParts = `${currency}`.split(".");
   if (!currencyParts[1]) {
-    return "$" + currency + ".00";
+    return `$${currency}.00`;
   }
   if (currencyParts[1].length === 1) {
-    return "$" + currencyParts[0] + "." + currencyParts[1] + "0";
+    return `$${currencyParts[0]}.${currencyParts[1]}0`;
   }
-  return "$" + currency;
+  return `$${currency}`;
 };
