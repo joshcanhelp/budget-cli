@@ -1,6 +1,6 @@
 import { DB } from "../utils/storage.js";
 import { Allowance, Configuration } from "../utils/config.js";
-import { hardNo } from "../utils/index.js";
+import { hardNo, print } from "../utils/index.js";
 import { convertStringCurrencyToNumber, formatCurrency } from "../utils/money.js";
 import { CommandArgs } from "../cli.js";
 
@@ -47,7 +47,7 @@ export const run = (config: Configuration, cliArgs: CommandArgs): void => {
     hardNo(`Error loading transactions`, error);
   }
 
-  console.log(`🤖 Reading from ${outputFile}`);
+  print(`🤖 Reading from ${outputFile}`);
 
   const transactions = db.getByDate(getDate);
   if (!transactions.length) {
@@ -101,7 +101,7 @@ export const run = (config: Configuration, cliArgs: CommandArgs): void => {
   );
   const percentSaved = Math.round((amountSaved / aggregateData.income._total) * 100);
 
-  console.log(`
+  print(`
 
 $$$$$$$$$$$$$$$$$$$$$$$$$
 $ ${reportType} report for ${getDate}
@@ -160,7 +160,5 @@ Allowances
     allowanceOutput += "\n";
   });
 
-  console.log(
-    allowanceOutput === "" ? "None found in .budget-cli.json" : allowanceOutput
-  );
+  print(allowanceOutput === "" ? "None found in .budget-cli.json" : allowanceOutput);
 };

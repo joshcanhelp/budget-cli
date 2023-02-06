@@ -19,6 +19,7 @@ import {
 import { convertStringCurrencyToNumber, roundCurrency } from "../utils/money.js";
 import { statSync } from "fs";
 import { CommandArgs } from "../cli.js";
+import { print } from "../utils/index.js";
 
 export const run = async (
   config: Configuration,
@@ -40,20 +41,20 @@ export const run = async (
   db.loadTransactions();
 
   if (!(await promptConfirm(`Write to ${outputFile}?`))) {
-    console.log("🤖 Change the file with --output flag or .budget-cli.json");
+    print("🤖 Change the file with --output flag or .budget-cli.json");
     return;
   }
 
   const importYear = cliArgs.year ? parseInt(cliArgs.year, 10) : undefined;
   if (importYear) {
-    console.log(`🤖 Importing transactions for ${importYear} only`);
+    print(`🤖 Importing transactions for ${importYear} only`);
   }
 
   ////
   /// Iterate through all import files found
   //
   for (const csvFile of importCsvs) {
-    console.log(`🤖 Reading ${csvFile} ...`);
+    print(`🤖 Reading ${csvFile} ...`);
     if (!(await promptConfirm("Import this file?"))) {
       continue;
     }
@@ -81,7 +82,7 @@ export const run = async (
         10
       );
       if (importYear && importYear !== transactionYear) {
-        console.log(`⏩ Skipping transaction in year ${transactionYear}`);
+        print(`⏩ Skipping transaction in year ${transactionYear}`);
         continue;
       }
 
@@ -91,11 +92,11 @@ export const run = async (
       );
 
       if (isDuplicate && !useTranslator.importCompleted) {
-        console.log(`⏩ Skipping duplicate ${importedTransaction.id}`);
+        print(`⏩ Skipping duplicate ${importedTransaction.id}`);
         continue;
       }
 
-      console.log("👇 Importing");
+      print("👇 Importing");
       Object.keys(importedTransaction).forEach((transactionProp: string) => {
         const label: string =
           transactionHeaders.find((header) => header.key === transactionProp)
@@ -104,7 +105,7 @@ export const run = async (
           transactionProp as keyof TransactionImported
         ] as string;
         if (value) {
-          console.log(`${label}: ${value}`);
+          print(`${label}: ${value}`);
         }
       });
 
@@ -131,7 +132,7 @@ export const run = async (
       let originalAmountToSplit = Math.abs(originalAmount);
 
       while (originalAmountToSplit) {
-        console.log(`🔪 Split #${splitCount}, $${originalAmountToSplit} remaining`);
+        print(`🔪 Split #${splitCount}, $${originalAmountToSplit} remaining`);
         const splitAmount = convertStringCurrencyToNumber(await promptAmount());
         const splitPrompt = await promptTransaction(true);
         const splitTransaction = {

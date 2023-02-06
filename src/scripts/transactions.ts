@@ -1,6 +1,6 @@
 import { DB } from "../utils/storage.js";
 import { Configuration } from "../utils/config.js";
-import { hardNo } from "../utils/index.js";
+import { hardNo, print } from "../utils/index.js";
 import { formatCurrency } from "../utils/money.js";
 import { sortTransactionsByDate } from "../utils/transaction.js";
 import { CommandArgs } from "../cli.js";
@@ -30,42 +30,41 @@ export const run = (config: Configuration, cliArgs: CommandArgs): void => {
     hardNo(`Error loading transactions`, error);
   }
 
-  console.log(`🤖 Reading from ${outputFile}`);
+  print(`🤖 Reading from ${outputFile}`);
 
   const datePostedRegex = new RegExp(`^${getDate}`, "g");
   const transactions = db
     .getByTerms(reportCategory, reportSubCategory)
-    .filter((transaction: string[]): boolean => {
-      const matchedDateRange = !!(transaction[2].match(datePostedRegex) || [])
-        .length;
-      return (
-        transaction[9] !== "omit" && transaction[9] !== "split" && matchedDateRange
-      );
-    });
+    .filter((t: string[]): boolean => {
+      const isMatchedDate = !!(t[2].match(datePostedRegex) || []).length;
+      const isSkippedCategory = t[9] === "omit" || t[9] === "split";
+      return !isSkippedCategory && isMatchedDate;
+    })
+    .sort(sortTransactionsByDate);
 
-  if (!transactions.length) {
+  const totalTransactions = transactions.length;
+  if (!totalTransactions) {
     hardNo(`Nothing found for ${reportCategory}.${reportSubCategory}`);
+    return;
   }
 
-  console.log("");
-  console.log(
-    `Transactions for ${reportCategory}.${reportSubCategory} (${transactions.length})`
+  print("");
+  print(
+    `${totalTransactions} transactions for ${reportCategory}.${reportSubCategory}`
   );
-  console.log("================");
+  print("================");
 
   let runningTotal = 0;
-  transactions
-    .sort(sortTransactionsByDate)
-    .forEach((transaction: string[]): void => {
-      const [, , date, amount, description, , , , , , , , notes] = transaction;
-      const parsedAmount = parseFloat(amount);
-      const displayNotes = notes || "<No notes>";
-      console.log(
-        `${date}, ${formatCurrency(parsedAmount)}, ${description}, ${displayNotes}`
-      );
-      runningTotal += parsedAmount;
-    });
+  transactions.sort(sortTransactionsByDate).forEach((t: string[]): void => {
+    const [, , date, amount, description, , , , , , , , notes] = t;
+    const parsedAmount = parseFloat(amount);
+    const displayNotes = notes || "<No notes>";
+    print(
+      `${date}, ${formatCurrency(parsedAmount)}, ${description}, ${displayNotes}`
+    );
+    runningTotal += parsedAmount;
+  });
 
-  console.log("----------------");
-  console.log(formatCurrency(runningTotal));
+  print("----------------");
+  print(formatCurrency(runningTotal));
 };
