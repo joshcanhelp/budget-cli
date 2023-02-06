@@ -6,9 +6,9 @@
     "eslint": "eslint src",
     "prettier": "prettier --write ./src",
     "format": "npm run eslint && npm run prettier",
-    "import": "node ./dist/scripts/import.js",
-    "report": "node ./dist/scripts/report.js",
-    "transactions": "node ./dist/scripts/transactions.js"
+    "import": "node ./dist/src/scripts/import.js",
+    "report": "node ./dist/src/scripts/report.js",
+    "transactions": "node ./dist/src/scripts/transactions.js"
   },
   "devDependencies": {
     "@types/inquirer": "^9.0.3",

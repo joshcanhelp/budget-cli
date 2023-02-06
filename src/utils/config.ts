@@ -36,16 +36,18 @@ export interface SubCategories {
   expense: string[];
 }
 
+export interface Allowance {
+  [key: string]: {
+    carryover: number;
+    allowance: number;
+  };
+}
+
 export interface Configuration {
   outputFile: string | OutputFiles;
   subCategories: SubCategories;
   expenseAllowance?: {
-    [key: string]: {
-      [key: string]: {
-        carryover: number;
-        allowance: number;
-      };
-    };
+    [key: string]: Allowance;
   };
 }
 

@@ -24,10 +24,10 @@ export class DB {
 
   public loadTransactions = (): void => {
     const data = readFileSync(this.outputFile, { encoding: "utf8" });
-    this.store = (csvParse(data, {
+    this.store = csvParse(data, {
       skip_empty_lines: true,
       from_line: 2,
-    }) as string[][]);
+    }) as string[][];
     this.loadTransactionIds();
   };
 
