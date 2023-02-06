@@ -61,12 +61,8 @@ if (!transactions.length) {
 }
 
 const aggregateData: Aggregate = {
-  income: {
-    _total: 0,
-  },
-  expense: {
-    _total: 0,
-  },
+  income: { _total: 0 },
+  expense: { _total: 0 },
   want: 0,
   need: 0,
 };

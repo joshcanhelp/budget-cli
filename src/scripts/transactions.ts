@@ -29,53 +29,49 @@ const outputFile: string =
 const db: DB = new DB(outputFile);
 try {
   db.loadTransactions();
-} catch (error: any) {
-  hardNo(`Error loading transactions: ${error.message}`);
+} catch (error: unknown) {
+  hardNo(`Error loading transactions`, error);
 }
 
 console.log(`🤖 Reading from ${outputFile}`);
 
-const runReport = async (): Promise<void> => {
-  const dateRegex = new RegExp(`^${dateRange}`, "g");
-  const transactions = db
-    .getByTerms(reportCategory, reportSubCategory)
-    .filter((transaction: string[]): boolean => {
-      const matchedDateRange = !!(transaction[2].match(dateRegex) || []).length;
-      return (
-        transaction[9] !== "omit" &&
-        transaction[9] !== "split" &&
-        matchedDateRange
-      );
-    });
+const datePostedRegex = new RegExp(`^${dateRange}`, "g");
+const transactions = db
+  .getByTerms(reportCategory, reportSubCategory)
+  .filter((transaction: string[]): boolean => {
+    const matchedDateRange = !!(transaction[2].match(datePostedRegex) || [])
+      .length;
+    return (
+      transaction[9] !== "omit" &&
+      transaction[9] !== "split" &&
+      matchedDateRange
+    );
+  });
 
-  if (!transactions.length) {
-    hardNo(`Nothing found for ${reportCategory}.${reportSubCategory}`);
-    return;
-  }
+if (!transactions.length) {
+  hardNo(`Nothing found for ${reportCategory}.${reportSubCategory}`);
+}
 
-  console.log("");
-  console.log(
-    `Transactions for ${reportCategory}.${reportSubCategory} (${transactions.length})`
-  );
-  console.log("================");
+console.log("");
+console.log(
+  `Transactions for ${reportCategory}.${reportSubCategory} (${transactions.length})`
+);
+console.log("================");
 
-  let runningTotal: number = 0;
-  transactions
-    .sort(sortTransactionsByDate)
-    .forEach((transaction: string[]): void => {
-      const [, , date, amount, description, , , , , , , , notes] = transaction;
-      const parsedAmount = parseFloat(amount);
-      const displayNotes = notes || "<No notes>";
-      console.log(
-        `${date}, ${formatCurrency(
-          parsedAmount
-        )}, ${description}, ${displayNotes}`
-      );
-      runningTotal += parsedAmount;
-    });
+let runningTotal = 0;
+transactions
+  .sort(sortTransactionsByDate)
+  .forEach((transaction: string[]): void => {
+    const [, , date, amount, description, , , , , , , , notes] = transaction;
+    const parsedAmount = parseFloat(amount);
+    const displayNotes = notes || "<No notes>";
+    console.log(
+      `${date}, ${formatCurrency(
+        parsedAmount
+      )}, ${description}, ${displayNotes}`
+    );
+    runningTotal += parsedAmount;
+  });
 
-  console.log("----------------");
-  console.log(formatCurrency(runningTotal));
-};
-
-(async () => await runReport())();
+console.log("----------------");
+console.log(formatCurrency(runningTotal));
