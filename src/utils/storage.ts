@@ -43,8 +43,7 @@ export class DB {
 
   public hasTransaction = (account: string, id: string): boolean => {
     return (
-      !!this.transactionIds[account] &&
-      this.transactionIds[account].includes(id)
+      !!this.transactionIds[account] && this.transactionIds[account].includes(id)
     );
   };
 

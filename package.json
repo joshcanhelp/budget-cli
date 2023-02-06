@@ -26,12 +26,5 @@
   "dependencies": {
     "csv": "^6.2.5",
     "inquirer": "^9.1.4"
-  },
-  "prettier": {
-    "trailingComma": "es5",
-    "tabWidth": 2,
-    "semi": true,
-    "singleQuote": false,
-    "quoteProps": "consistent"
   }
 }

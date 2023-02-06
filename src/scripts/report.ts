@@ -1,10 +1,7 @@
 import { DB } from "../utils/storage.js";
 import { Allowance, getConfiguration } from "../utils/config.js";
 import { hardNo } from "../utils/index.js";
-import {
-  convertStringCurrencyToNumber,
-  formatCurrency,
-} from "../utils/money.js";
+import { convertStringCurrencyToNumber, formatCurrency } from "../utils/money.js";
 
 ////
 /// Types
@@ -105,9 +102,7 @@ const percentNeed = Math.round(
 const percentWant = Math.round(
   (aggregateData.want / aggregateData.income._total) * -100
 );
-const percentSaved = Math.round(
-  (amountSaved / aggregateData.income._total) * 100
-);
+const percentSaved = Math.round((amountSaved / aggregateData.income._total) * 100);
 
 console.log(`
 
@@ -146,9 +141,7 @@ allowanceTotalsKeys.forEach((subCategory: string) => {
   allowanceOutput +=
     "\n " + formatCurrency(aggregateData.expense[subCategory]) + " spent";
   if ("Annual" === reportType) {
-    const monthsCompleted: number = reportIsYtd
-      ? new Date().getMonth() + 1
-      : 12;
+    const monthsCompleted: number = reportIsYtd ? new Date().getMonth() + 1 : 12;
     const allowanceAllowed = allowance * monthsCompleted;
     allowanceOutput += `\n ${formatCurrency(allowanceAllowed)} allowed`;
     allowanceOutput += `\n ${formatCurrency(carryover)} carryover`;

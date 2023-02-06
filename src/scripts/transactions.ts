@@ -39,12 +39,9 @@ const datePostedRegex = new RegExp(`^${dateRange}`, "g");
 const transactions = db
   .getByTerms(reportCategory, reportSubCategory)
   .filter((transaction: string[]): boolean => {
-    const matchedDateRange = !!(transaction[2].match(datePostedRegex) || [])
-      .length;
+    const matchedDateRange = !!(transaction[2].match(datePostedRegex) || []).length;
     return (
-      transaction[9] !== "omit" &&
-      transaction[9] !== "split" &&
-      matchedDateRange
+      transaction[9] !== "omit" && transaction[9] !== "split" && matchedDateRange
     );
   });
 
@@ -59,19 +56,15 @@ console.log(
 console.log("================");
 
 let runningTotal = 0;
-transactions
-  .sort(sortTransactionsByDate)
-  .forEach((transaction: string[]): void => {
-    const [, , date, amount, description, , , , , , , , notes] = transaction;
-    const parsedAmount = parseFloat(amount);
-    const displayNotes = notes || "<No notes>";
-    console.log(
-      `${date}, ${formatCurrency(
-        parsedAmount
-      )}, ${description}, ${displayNotes}`
-    );
-    runningTotal += parsedAmount;
-  });
+transactions.sort(sortTransactionsByDate).forEach((transaction: string[]): void => {
+  const [, , date, amount, description, , , , , , , , notes] = transaction;
+  const parsedAmount = parseFloat(amount);
+  const displayNotes = notes || "<No notes>";
+  console.log(
+    `${date}, ${formatCurrency(parsedAmount)}, ${description}, ${displayNotes}`
+  );
+  runningTotal += parsedAmount;
+});
 
 console.log("----------------");
 console.log(formatCurrency(runningTotal));

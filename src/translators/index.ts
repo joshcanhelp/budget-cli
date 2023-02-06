@@ -1,7 +1,4 @@
-import {
-  TransactionComplete,
-  TransactionImported,
-} from "../utils/transaction.js";
+import { TransactionComplete, TransactionImported } from "../utils/transaction.js";
 import { boaTranslator } from "./boa.js";
 import { transactionCompleteTranslator } from "./transaction-complete.js";
 import { nordstromsTranslator } from "./nordstroms.js";
@@ -9,9 +6,7 @@ import { scuTranslator } from "./scu.js";
 
 export interface Translator {
   name: string;
-  translate: (
-    record: string[]
-  ) => TransactionImported | TransactionComplete | null;
+  translate: (record: string[]) => TransactionImported | TransactionComplete | null;
   importCompleted?: boolean;
   transformFileData?: (data: string) => string;
 }
