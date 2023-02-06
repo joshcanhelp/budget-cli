@@ -111,12 +111,9 @@ const percentSaved = Math.round(
 
 console.log(`
 
-${reportType} report for ${getDate}
--=-=-=-=-=-=-=-=-
-
-
-Totals
-=================
+$$$$$$$$$$$$$$$$$$$$$$$$$
+$ ${reportType} report for ${getDate}
+$$$$$$$$$$$$$$$$$$$$$$$$$
 
 Income: 
 ----------------- ${incomeOutput}
