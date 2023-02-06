@@ -2,34 +2,6 @@ import { getFormattedDate } from "./date.js";
 import { TransactionPrompt } from "./prompt.js";
 
 ////
-/// Types
-//
-
-export interface TransactionHeader {
-  key: keyof TransactionComplete;
-  header: string;
-}
-
-export interface TransactionComplete extends TransactionImported {
-  dateImported: string;
-  category: "expense" | "income" | "omit" | "split" | "skip";
-  subCategory: string;
-  expenseType: "need" | "want" | "";
-  splitId: number;
-  notes?: string;
-}
-
-export interface TransactionImported {
-  id: string;
-  datePosted: string;
-  account: string;
-  amount: number;
-  description: string;
-  comments?: string;
-  checkNumber?: number;
-}
-
-////
 /// Data
 //
 
@@ -108,6 +80,34 @@ export const transactionHeaders: TransactionHeader[] = [
     header: "Notes",
   },
 ];
+
+////
+/// Types
+//
+
+export interface TransactionHeader {
+  key: keyof TransactionComplete;
+  header: string;
+}
+
+export interface TransactionComplete extends TransactionImported {
+  dateImported: string;
+  category: "expense" | "income" | "omit" | "split" | "skip";
+  subCategory: string;
+  expenseType: "need" | "want" | "";
+  splitId: number;
+  notes?: string;
+}
+
+export interface TransactionImported {
+  id: string;
+  datePosted: string;
+  account: string;
+  amount: number;
+  description: string;
+  comments?: string;
+  checkNumber?: number;
+}
 
 ////
 /// Functions
