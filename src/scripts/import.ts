@@ -30,6 +30,7 @@ export const run = async (
     throw new Error("No import path provided in command");
   }
 
+  // Allow for single file import or directory
   const isFileImport = statSync(importPath).isFile();
   const importCsvs: string[] = isFileImport ? [importPath] : getCsvInDir(importPath);
   if (!importCsvs.length) {
@@ -37,14 +38,17 @@ export const run = async (
   }
 
   const outputFile = config.getOutputFile(cliArgs);
-  const db: DB = new DB(outputFile);
-  db.loadTransactions();
 
+  // Make sure we're importing to the correct place
   if (!(await promptConfirm(`Write to ${outputFile}?`))) {
     print("🤖 Change the file with --output flag or .budget-cli.json");
     return;
   }
 
+  const db: DB = new DB(outputFile);
+  db.loadTransactions();
+
+  // Filter imports by year to account for files with older data
   const importYear = cliArgs.year ? parseInt(cliArgs.year, 10) : undefined;
   if (importYear) {
     print(`🤖 Importing transactions for ${importYear} only`);
@@ -54,17 +58,20 @@ export const run = async (
   /// Iterate through all import files found
   //
   for (const csvFile of importCsvs) {
+    // Allow for single file importing in a directory with multiple
     print(`🤖 Reading ${csvFile} ...`);
     if (!(await promptConfirm("Import this file?"))) {
       continue;
     }
 
+    // Determine what account translator we're using
     const importAccountName = await promptAccount();
     const useTranslator = getTranslator(importAccountName);
     if (!useTranslator) {
       throw new Error(`Translator for ${importAccountName} not found`);
     }
 
+    // Single file imports should be a direct path to the file
     const currentFile = isFileImport ? csvFile : path.join(importPath, csvFile);
     const csvData = readCsv(currentFile, useTranslator.transformFileData);
 
@@ -72,20 +79,24 @@ export const run = async (
     /// Iterate through transactions
     //
     for (const transaction of csvData) {
+      // Allow for automatically skipped headers and rows
       const importedTransaction = useTranslator.translate(transaction);
       if (!importedTransaction) {
         continue;
       }
 
+      // Split out the year and compare to the command argument
       const transactionYear = parseInt(
         importedTransaction.datePosted.split("-")[0],
         10
       );
+
       if (importYear && importYear !== transactionYear) {
         print(`⏩ Skipping transaction in year ${transactionYear}`);
         continue;
       }
 
+      // Check for an existing transaction for this account
       const isDuplicate = db.hasTransaction(
         importedTransaction.account,
         importedTransaction.id
@@ -96,7 +107,7 @@ export const run = async (
         continue;
       }
 
-      print("👇 Importing");
+      // Output all values from the imported transaction for inspection
       Object.keys(importedTransaction).forEach((transactionProp: string) => {
         const label: string =
           transactionHeaders.find((header) => header.key === transactionProp)
@@ -109,6 +120,7 @@ export const run = async (
         }
       });
 
+      // If we're importing a complete transaction, save and on to the next
       if (useTranslator.importCompleted) {
         db.saveRow(importedTransaction as TransactionComplete);
         continue;
@@ -116,27 +128,38 @@ export const run = async (
 
       const transactionPrompt = await promptTransaction();
 
+      // Force a skipped transaction, no record created in the output file
       if (transactionPrompt.category === "skip") {
         continue;
       }
 
+      // Save the row as-is now
       db.saveRow(mapTransaction(importedTransaction, transactionPrompt));
 
+      // Everything that's not skip or split is done
       if (transactionPrompt.category !== "split") {
         continue;
       }
 
-      // Split the original amount
       const originalAmount: number = importedTransaction.amount;
-      let splitCount = 1;
+
+      // Accumulator for the amount, always positive for better UX
       let originalAmountToSplit = Math.abs(originalAmount);
 
+      let splitCount = 1;
+
+      // Split the original amount
       while (originalAmountToSplit) {
         print(`🔪 Split #${splitCount}, $${originalAmountToSplit} remaining`);
-        const splitAmount = convertStringCurrencyToNumber(await promptAmount());
+
+        // Make sure we're dealing with a positive number
+        const splitAmount = Math.abs(
+          convertStringCurrencyToNumber(await promptAmount())
+        );
         const splitPrompt = await promptTransaction(true);
         const splitTransaction = {
           ...importedTransaction,
+          // Convert split amount back to original sign
           amount: originalAmount > 0 ? splitAmount : splitAmount * -1,
         };
         db.saveRow(mapTransaction(splitTransaction, splitPrompt, splitCount));
