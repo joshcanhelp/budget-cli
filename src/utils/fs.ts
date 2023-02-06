@@ -1,4 +1,4 @@
-import { readFileSync, readdirSync } from "fs";
+import { readFileSync, readdirSync, Dirent } from "fs";
 import { parse as csvParse } from "csv/sync";
 
 ////
@@ -7,7 +7,7 @@ import { parse as csvParse } from "csv/sync";
 
 export const getCsvInDir = (path: string): string[] => {
   const csvs: string[] = [];
-  readdirSync(path, { withFileTypes: true }).forEach((dirent: any): void => {
+  readdirSync(path, { withFileTypes: true }).forEach((dirent: Dirent): void => {
     const extension = dirent.name.split(".").pop();
     if (dirent.isFile() && extension === "csv") {
       csvs.push(dirent.name);

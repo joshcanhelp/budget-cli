@@ -9,7 +9,7 @@ export const nordstromsTranslator: Translator = {
   transformFileData: (data: string): string => {
     return data.replaceAll(`",="`, `","`);
   },
-  translate: (record: any): TransactionImported | null => {
+  translate: (record: string[]): TransactionImported | null => {
     if (record[4].trim() === "Amount") {
       return null;
     }

@@ -10,7 +10,7 @@ export const transactionCompleteTranslator: Translator = {
   transformFileData: (data: string): string => {
     return data.replaceAll(`",="`, `","`);
   },
-  translate: (record: any): TransactionComplete | null => {
+  translate: (record: string[]): TransactionComplete | null => {
     // fin.
     return {
       id: record[0],
@@ -22,9 +22,9 @@ export const transactionCompleteTranslator: Translator = {
       checkNumber: record[6] ? parseInt(record[6], 10) : undefined,
       splitId: parseInt(record[7], 0),
       dateImported: getFormattedDate(),
-      category: record[9],
+      category: record[9] as TransactionComplete["category"],
       subCategory: record[10],
-      expenseType: record[11] || "",
+      expenseType: (record[11] as TransactionComplete["expenseType"]) || "",
       notes: record[12] || "",
     };
   },

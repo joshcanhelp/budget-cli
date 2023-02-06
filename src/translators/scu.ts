@@ -8,7 +8,7 @@ import { getFormattedDate } from "../utils/date.js";
 const accountName = "SCU";
 export const scuTranslator: Translator = {
   name: accountName,
-  translate: (record: any): TransactionImported | null => {
+  translate: (record: string[]): TransactionImported | null => {
     if (record[4] === "Amount") {
       return null;
     }

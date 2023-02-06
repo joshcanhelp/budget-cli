@@ -6,7 +6,7 @@ import { getFormattedDate } from "../utils/date.js";
 const accountName = "BoA";
 export const boaTranslator: Translator = {
   name: accountName,
-  translate: (record: any): TransactionImported | null => {
+  translate: (record: string[]): TransactionImported | null => {
     if (record[4] === "Amount") {
       return null;
     }

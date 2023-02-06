@@ -113,18 +113,18 @@ export const transactionHeaders: TransactionHeader[] = [
 /// Functions
 //
 
-export const getTransactionShape = (): TransactionComplete => {
+export const getTransactionShape = (): any => {
   const shape: any = {};
   transactionHeaders.forEach((header) => {
     shape[header.key] = header.header;
   });
-  return shape as TransactionComplete;
+  return shape;
 };
 
 export const mapTransaction = (
   imported: TransactionImported,
   prompt: TransactionPrompt,
-  splitId: number = 1
+  splitId = 1
 ): TransactionComplete => {
   const { category } = prompt;
   let { subCategory, expenseType } = prompt;

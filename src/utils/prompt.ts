@@ -22,10 +22,10 @@ export interface TransactionPrompt {
 //
 
 export const promptConfirm = async (
-  message: string = "",
-  defaultValue: boolean = true
+  message = "",
+  defaultValue = true
 ): Promise<boolean> => {
-  return (
+  return !!(
     await inquirer.prompt({
       name: "continue",
       type: "confirm",
@@ -36,30 +36,30 @@ export const promptConfirm = async (
 };
 
 export const promptAccount = async (): Promise<string> => {
-  return (
-    await inquirer.prompt({
-      name: "account",
-      type: "list",
-      choices: getAccountNames(),
-      message: "Which account?",
-    })
-  ).account;
+  const answers = (await inquirer.prompt({
+    name: "account",
+    type: "list",
+    choices: getAccountNames(),
+    message: "Which account?",
+  })) as { account: string };
+
+  return answers?.account || "";
 };
 
 export const promptAmount = async (): Promise<string> => {
-  return (
-    await inquirer.prompt({
-      name: "amount",
-      type: "input",
-      message: "How much (positive amount)?",
-    })
-  ).amount;
+  const answers: { amount: string } = await inquirer.prompt({
+    name: "amount",
+    type: "input",
+    message: "How much (positive amount)?",
+  });
+
+  return answers?.amount || "";
 };
 
 export const promptTransaction = async (
-  splitTransaction: boolean = false
+  splitTransaction = false
 ): Promise<TransactionPrompt> => {
-  return await inquirer.prompt([
+  return (await inquirer.prompt([
     {
       name: "category",
       type: "list",
@@ -69,28 +69,30 @@ export const promptTransaction = async (
     {
       name: "subCategory",
       type: "list",
-      choices: (answers) =>
+      choices: (answers: { category: string }) =>
         answers.category === "income"
           ? config.subCategories.income
           : answers.category === "expense"
           ? config.subCategories.expense
           : [],
-      when: (answers) => !["omit", "split", "skip"].includes(answers.category),
+      when: (answers: { category: string }) =>
+        !["omit", "split", "skip"].includes(answers.category),
       message: "Which transaction sub-category is this?",
     },
     {
       name: "expenseType",
       type: "list",
       choices: ["need", "want"],
-      when: (answers) => "expense" === answers.category,
+      when: (answers: { category: string }) => "expense" === answers.category,
       message: "Which expense type is this?",
     },
     {
       name: "notes",
       type: "input",
-      when: (answers) => !["omit", "split", "skip"].includes(answers.category),
+      when: (answers: { category: string }) =>
+        !["omit", "split", "skip"].includes(answers.category),
       default: "",
       message: "Notes?",
     },
-  ]);
+  ])) as TransactionPrompt;
 };

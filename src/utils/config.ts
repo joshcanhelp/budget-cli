@@ -55,16 +55,16 @@ export interface Configuration {
 /// Functions
 //
 
-export const getConfiguration = (year?: string): Configuration => {
-  let userConfig: string = "";
+export const getConfiguration = (): Configuration => {
+  let userConfig = "";
   try {
     userConfig = readFileSync(configPath, { encoding: "utf8" });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.log(`🤖 No configuration file found at ${configPath}.`);
     return defaultConfig;
   }
 
-  const parsedUserConfig = JSON.parse(userConfig);
+  const parsedUserConfig = JSON.parse(userConfig) as Configuration;
   return {
     ...defaultConfig,
     ...parsedUserConfig,
