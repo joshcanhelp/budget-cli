@@ -10,7 +10,7 @@ import {
 export class DB {
   private store: string[][] = [];
   private outputFile: string;
-  private transactionIds: {
+  private tids: {
     [key: string]: string[];
   } = {};
 
@@ -34,7 +34,7 @@ export class DB {
   public saveRow = (row: TransactionComplete): void => {
     const pushRow: string[] = [];
     transactionHeaders.forEach((header: TransactionHeader) => {
-      pushRow.push(`${row[header.key ] || ""}`);
+      pushRow.push(`${row[header.key] || ""}`);
     });
     this.store.push(pushRow);
     this.save();
@@ -42,9 +42,7 @@ export class DB {
   };
 
   public hasTransaction = (account: string, id: string): boolean => {
-    return (
-      !!this.transactionIds[account] && this.transactionIds[account].includes(id)
-    );
+    return !!this.tids[account] && this.tids[account].includes(id);
   };
 
   public save = (): void => {
@@ -85,11 +83,11 @@ export class DB {
 
   private addTransactionId = (transaction: string[]): void => {
     const [id, account] = transaction;
-    if (!this.transactionIds[account]) {
-      this.transactionIds[account] = [];
+    if (!this.tids[account]) {
+      this.tids[account] = [];
     }
-    if (!this.transactionIds[account].includes(id)) {
-      this.transactionIds[account].push(id);
+    if (!this.tids[account].includes(id)) {
+      this.tids[account].push(id);
     }
   };
 }
