@@ -5,9 +5,9 @@ import { hardNo } from "../utils/index.js";
 import { DB } from "../utils/storage.js";
 import { getConfiguration } from "../utils/config.js";
 import {
-  getTransactionShape,
   mapTransaction,
   TransactionComplete,
+  transactionHeaders,
   TransactionImported,
 } from "../utils/transaction.js";
 import { getCsvInDir, readCsv } from "../utils/fs.js";
@@ -119,11 +119,10 @@ const run = async (): Promise<void> => {
       }
 
       console.log("👇 Importing");
-      const transactionShape = getTransactionShape();
       Object.keys(importedTransaction).forEach((transactionProp: string) => {
-        const label = transactionShape[
-          transactionProp as keyof TransactionComplete
-        ] as string;
+        const label: string =
+          transactionHeaders.find((header) => header.key === transactionProp)
+            ?.header || "<unknown>";
         const value: string = importedTransaction[
           transactionProp as keyof TransactionImported
         ] as string;

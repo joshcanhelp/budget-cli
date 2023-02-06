@@ -113,14 +113,6 @@ export const transactionHeaders: TransactionHeader[] = [
 /// Functions
 //
 
-export const getTransactionShape = (): any => {
-  const shape: any = {};
-  transactionHeaders.forEach((header) => {
-    shape[header.key] = header.header;
-  });
-  return shape;
-};
-
 export const mapTransaction = (
   imported: TransactionImported,
   prompt: TransactionPrompt,
