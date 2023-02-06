@@ -1,14 +1,20 @@
 {
   "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "bin": {
+    "budgetcli": "dist/src/cli.js"
+  },
   "scripts": {
     "test": "jest",
     "dev": "tsc -w",
     "eslint": "eslint --fix src",
     "prettier": "prettier --write ./src",
     "format": "npm run eslint && npm run prettier",
-    "import": "node ./dist/src/scripts/import.js",
-    "report": "node ./dist/src/scripts/report.js",
-    "transactions": "node ./dist/src/scripts/transactions.js"
+    "import": "node ./dist/src/cli.js import",
+    "report": "node ./dist/src/cli.js report",
+    "transactions": "node ./dist/src/cli.js transactions"
   },
   "devDependencies": {
     "@types/inquirer": "^9.0.3",

@@ -1,5 +1,6 @@
 import path from "path";
 import { readFileSync } from "fs";
+import { CommandArgs } from "../cli";
 
 ////
 /// Data
@@ -7,7 +8,7 @@ import { readFileSync } from "fs";
 
 export const configPath = path.join(process.cwd(), ".budget-cli.json");
 
-export const defaultConfig: Configuration = {
+export const defaultConfig = {
   outputFile: "./output/data.csv",
   subCategories: {
     income: ["salary", "reimbursable", "other"],
@@ -46,6 +47,7 @@ export interface Allowance {
 export interface Configuration {
   outputFile: string | OutputFiles;
   subCategories: SubCategories;
+  getOutputFile: (args?: CommandArgs) => string;
   expenseAllowance?: {
     [key: string]: Allowance;
   };
@@ -61,12 +63,35 @@ export const getConfiguration = (): Configuration => {
     userConfig = readFileSync(configPath, { encoding: "utf8" });
   } catch (error: unknown) {
     console.log(`🤖 No configuration file found at ${configPath}.`);
-    return defaultConfig;
+    return {
+      ...defaultConfig,
+      getOutputFile: () => defaultConfig.outputFile,
+    };
   }
 
   const parsedUserConfig = JSON.parse(userConfig) as Configuration;
-  return {
+  const mergedConfig: Configuration = {
     ...defaultConfig,
     ...parsedUserConfig,
   };
+
+  mergedConfig.getOutputFile = (cliArgs?: CommandArgs) => {
+    const { date, output } = cliArgs || {};
+
+    if (output) {
+      return output;
+    }
+
+    if (typeof mergedConfig.outputFile === "string") {
+      return mergedConfig.outputFile;
+    }
+
+    if (typeof mergedConfig.outputFile === "object" && date) {
+      return mergedConfig.outputFile[date.split("-")[0]];
+    }
+
+    return defaultConfig.outputFile;
+  };
+
+  return mergedConfig;
 };

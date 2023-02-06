@@ -1,9 +1,8 @@
 import path from "path";
 
 import { getTranslator } from "../translators/index.js";
-import { hardNo } from "../utils/index.js";
 import { DB } from "../utils/storage.js";
-import { getConfiguration } from "../utils/config.js";
+import { Configuration } from "../utils/config.js";
 import {
   mapTransaction,
   TransactionComplete,
@@ -19,63 +18,40 @@ import {
 } from "../utils/prompt.js";
 import { convertStringCurrencyToNumber, roundCurrency } from "../utils/money.js";
 import { statSync } from "fs";
+import { CommandArgs } from "../cli.js";
 
-const config = getConfiguration();
-
-const importPath: string = process.argv[2];
-if (!importPath) {
-  hardNo("No path provided!");
-}
-
-let isFileImport = false;
-try {
-  isFileImport = statSync(importPath).isFile();
-} catch (error: unknown) {
-  hardNo(`Error checking import path`, error);
-}
-
-let importCsvs: string[] = [importPath];
-if (!isFileImport) {
-  try {
-    importCsvs = getCsvInDir(importPath);
-  } catch (error: unknown) {
-    hardNo(`Error getting import files`, error);
+export const run = async (
+  config: Configuration,
+  cliArgs: CommandArgs
+): Promise<void> => {
+  const importPath = cliArgs.input;
+  if (!importPath) {
+    throw new Error("No import path provided in command");
   }
-}
 
-if (!importCsvs.length) {
-  hardNo(`No CSVs to import`);
-}
+  const isFileImport = statSync(importPath).isFile();
+  const importCsvs: string[] = isFileImport ? [importPath] : getCsvInDir(importPath);
+  if (!importCsvs.length) {
+    throw new Error(`No CSVs to import from ${importPath}`);
+  }
 
-const importYear: number = process.argv[3]
-  ? parseInt(process.argv[3], 10)
-  : new Date().getFullYear();
-
-const outputFile: string =
-  typeof config.outputFile === "object"
-    ? config.outputFile[importYear]
-    : config.outputFile;
-
-const db: DB = new DB(outputFile);
-try {
+  const outputFile = config.getOutputFile(cliArgs);
+  const db: DB = new DB(outputFile);
   db.loadTransactions();
-} catch (error: unknown) {
-  hardNo(`Error loading transactions`, error);
-}
 
-const run = async (): Promise<void> => {
   if (!(await promptConfirm(`Write to ${outputFile}?`))) {
-    console.log(
-      "🤖 Change the import location with an outputFile property in .budget-cli.json"
-    );
+    console.log("🤖 Change the file with --output flag or .budget-cli.json");
     return;
   }
 
+  const importYear = cliArgs.year ? parseInt(cliArgs.year, 10) : undefined;
   if (importYear) {
     console.log(`🤖 Importing transactions for ${importYear} only`);
   }
 
-  // Iterate through all import files found
+  ////
+  /// Iterate through all import files found
+  //
   for (const csvFile of importCsvs) {
     console.log(`🤖 Reading ${csvFile} ...`);
     if (!(await promptConfirm("Import this file?"))) {
@@ -85,14 +61,15 @@ const run = async (): Promise<void> => {
     const importAccountName = await promptAccount();
     const useTranslator = getTranslator(importAccountName);
     if (!useTranslator) {
-      hardNo(`Translator for ${importAccountName} not found!`);
-      return;
+      throw new Error(`Translator for ${importAccountName} not found`);
     }
 
     const currentFile = isFileImport ? csvFile : path.join(importPath, csvFile);
     const csvData = readCsv(currentFile, useTranslator.transformFileData);
 
-    // Iterate through transactions
+    ////
+    /// Iterate through transactions
+    //
     for (const transaction of csvData) {
       const importedTransaction = useTranslator.translate(transaction);
       if (!importedTransaction) {
@@ -168,5 +145,3 @@ const run = async (): Promise<void> => {
     }
   }
 };
-
-void (async () => await run())();
