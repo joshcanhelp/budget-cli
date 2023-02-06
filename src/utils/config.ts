@@ -6,9 +6,9 @@ import { CommandArgs } from "../cli";
 /// Data
 //
 
-export const configPath = path.join(process.cwd(), ".budget-cli.json");
+const configPath = path.join(process.cwd(), ".budget-cli.json");
 
-export const defaultConfig = {
+const defaultConfig = {
   outputFile: "./output/data.csv",
   subCategories: {
     income: ["salary", "reimbursable", "other"],
@@ -76,7 +76,7 @@ export const getConfiguration = (): Configuration => {
   };
 
   mergedConfig.getOutputFile = (cliArgs?: CommandArgs) => {
-    const { date, output } = cliArgs || {};
+    const { year, output } = cliArgs || {};
 
     if (output) {
       return output;
@@ -86,8 +86,8 @@ export const getConfiguration = (): Configuration => {
       return mergedConfig.outputFile;
     }
 
-    if (typeof mergedConfig.outputFile === "object" && date) {
-      return mergedConfig.outputFile[date.split("-")[0]];
+    if (typeof mergedConfig.outputFile === "object" && year) {
+      return mergedConfig.outputFile[year];
     }
 
     return defaultConfig.outputFile;
