@@ -45,16 +45,6 @@ export class DB {
     return !!this.tids[account] && this.tids[account].includes(id);
   };
 
-  public save = (): void => {
-    const csvHeaders = transactionHeaders.map(
-      (header: TransactionHeader) => header.header
-    );
-    writeFileSync(
-      this.outputFile,
-      stringify(this.store, { columns: csvHeaders, header: true })
-    );
-  };
-
   public getByDate = (dateRequested: string): string[][] => {
     const searchRegex = new RegExp(`^${dateRequested}`, "g");
     return this.store.filter((transaction: string[]) => {
@@ -74,6 +64,16 @@ export class DB {
   ////
   /// Private
   //
+
+  private save = (): void => {
+    const csvHeaders = transactionHeaders.map(
+      (header: TransactionHeader) => header.header
+    );
+    writeFileSync(
+      this.outputFile,
+      stringify(this.store, { columns: csvHeaders, header: true })
+    );
+  };
 
   private loadTransactionIds = (): void => {
     this.store.forEach((transaction: string[]) => {
