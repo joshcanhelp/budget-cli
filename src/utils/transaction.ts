@@ -6,7 +6,7 @@ import { TransactionPrompt } from "./prompt.js";
 //
 
 export interface TransactionHeader {
-  key: string;
+  key: keyof TransactionComplete;
   header: string;
 }
 

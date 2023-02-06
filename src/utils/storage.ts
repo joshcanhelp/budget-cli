@@ -34,7 +34,7 @@ export class DB {
   public saveRow = (row: TransactionComplete): void => {
     const pushRow: string[] = [];
     transactionHeaders.forEach((header: TransactionHeader) => {
-      pushRow.push(`${row[header.key as keyof TransactionComplete] || ""}`);
+      pushRow.push(`${row[header.key ] || ""}`);
     });
     this.store.push(pushRow);
     this.save();

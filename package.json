@@ -3,7 +3,7 @@
   "scripts": {
     "test": "jest",
     "dev": "tsc -w",
-    "eslint": "eslint src",
+    "eslint": "eslint --fix src",
     "prettier": "prettier --write ./src",
     "format": "npm run eslint && npm run prettier",
     "import": "node ./dist/src/scripts/import.js",
