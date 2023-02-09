@@ -9,7 +9,7 @@ export const run = (config: Configuration, cliArgs: CommandArgs): void => {
   const getDate = cliArgs.date || `${new Date().getFullYear()}`;
   const dateRegex = /^[0-9]{4}(?:-[0-9]{2})?$/;
   if (!getDate || !(getDate.match(dateRegex) || []).length) {
-    hardNo("Invalid transaction date in 1st argument.");
+    hardNo("Invalid transaction date argument.");
   }
 
   const reportTerms = cliArgs.terms?.trim() || "";
@@ -21,7 +21,7 @@ export const run = (config: Configuration, cliArgs: CommandArgs): void => {
   const reportCategory = reportTermsParts[0] || "*";
   const reportSubCategory = reportTermsParts[1] || "*";
 
-  const outputFile = config.getOutputFile({ date: getDate });
+  const outputFile = config.getOutputFile({ year: getDate.split("-")[0] });
 
   const db: DB = new DB(outputFile);
   try {
