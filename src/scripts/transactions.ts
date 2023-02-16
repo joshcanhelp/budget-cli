@@ -56,11 +56,14 @@ export const run = (config: Configuration, cliArgs: CommandArgs): void => {
 
   let runningTotal = 0;
   transactions.sort(sortTransactionsByDate).forEach((t: string[]): void => {
-    const [, , date, amount, description, , , , , , , , notes] = t;
+    const [, account, date, amount, description, , , , , , , , notes] = t;
     const parsedAmount = parseFloat(amount);
     const displayNotes = notes || "<No notes>";
+    
     print(
-      `${date}, ${formatCurrency(parsedAmount)}, ${description}, ${displayNotes}`
+      `${date}, ${formatCurrency(
+        parsedAmount
+      )}, ${account}, ${description}, ${displayNotes}`
     );
     runningTotal += parsedAmount;
   });
