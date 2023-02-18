@@ -12,14 +12,12 @@ jobs:
   setup:
     runs-on: ubuntu-latest
     steps: 
-      - name: Install NodeJS
-        uses: actions/setup-node@v2
+      - uses: actions/setup-node@v2
         with:
           node-version: ${{ env.NODE_VERSION }}
-      - name: Check out Git repository
-        uses: actions/checkout@v3
-      - name: Enter directory
-        run: cd budget-cli
+      - uses: actions/checkout@v3
+        with: 
+          path: "./"
       - name: Install Dependencies
         run: npm ci
   typescript:
