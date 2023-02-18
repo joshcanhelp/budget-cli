@@ -20,7 +20,7 @@ const scriptMap: {
   [key: string]: (
     config: Configuration,
     cliArgs: CommandArgs
-  ) => Promise<void> | void
+  ) => Promise<void> | void;
 } = {
   import: runImport,
   report: runReport,
@@ -33,16 +33,16 @@ try {
     allowPositionals: true,
     options: {
       input: {
-        type: "string"
+        type: "string",
       },
       output: {
-        type: "string"
+        type: "string",
       },
       year: {
-        type: "string"
+        type: "string",
       },
       date: {
-        type: "string"
+        type: "string",
       },
       terms: {
         type: "string",
@@ -50,9 +50,12 @@ try {
     },
   });
 
-  const { values, positionals }: {
-    values: CommandArgs,
-    positionals: string[]
+  const {
+    values,
+    positionals,
+  }: {
+    values: CommandArgs;
+    positionals: string[];
   } = parsedArgs;
 
   if (!positionals.length) {
