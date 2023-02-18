@@ -84,15 +84,15 @@ The first thing you will need for this to do anything for you are some transacti
 Assuming we have a CSV from one of the supported banks, we can run the importer, indicating a specific file or a directory containing one or more CSV files. 
 
 ```bash
-$ npm run import '/path/to/directory'
+$ npm run import -- --input='/path/to/directory'
 # ... or
-$ npm run import '/path/to/directory/transactions.csv'
+$ npm run import -- --input='/path/to/directory/transactions.csv'
 ```
 
 By default, the script will only import transactions for the current year. To import from a year in the past (or, I guess, the future), add a `year` argument to the command.
 
 ```bash
-$ npm run import '/path/to/directory' --year='2022'
+$ npm run import -- --input='/path/to/directory' --year='2022'
 ```
 
 ## Contributing 

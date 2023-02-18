@@ -92,14 +92,17 @@ export const run = (config: Configuration, cliArgs: CommandArgs): void => {
   const incomeOutput = keyValTemplate(aggregateData.income);
   const expenseOutput = keyValTemplate(aggregateData.expense);
 
-  const amountSaved = aggregateData.income._total + aggregateData.expense._total;
+  const totalIncome = aggregateData.income._total;
+  const totalExpense = aggregateData.expense._total;
+  const amountSaved = totalIncome + totalExpense;
+
   const percentNeed = Math.round(
-    (aggregateData.need / aggregateData.income._total) * -100
+    (aggregateData.need / totalIncome) * -100
   );
   const percentWant = Math.round(
-    (aggregateData.want / aggregateData.income._total) * -100
+    (aggregateData.want / totalIncome) * -100
   );
-  const percentSaved = Math.round((amountSaved / aggregateData.income._total) * 100);
+  const percentSaved = Math.round((amountSaved / totalIncome) * 100);
 
   print(`
 
@@ -110,21 +113,26 @@ $$$$$$$$$$$$$$$$$$$$$$$$$
 Income: 
 ----------------- ${incomeOutput}
 -----------------
- ${formatCurrency(aggregateData.income._total)} total income
+ ${formatCurrency(totalIncome)} total income
 
 Expense: 
 -----------------${expenseOutput}
 -----------------
- ${formatCurrency(aggregateData.expense._total)} total expense
-
-
+ ${formatCurrency(totalExpense)} total expense
+`
+  );
+  if (totalIncome) {
+    print(`
 Simple budget
 =================
- ${formatCurrency(aggregateData.need)} need (${percentNeed}%, target <= 50%)
- ${formatCurrency(aggregateData.want)} want (${percentWant}%, target <= 30%)
- ${formatCurrency(amountSaved)} saved (${percentSaved}% , target <= 30%)
+  ${formatCurrency(aggregateData.need)} need (${percentNeed}%, target <= 50%)
+  ${formatCurrency(aggregateData.want)} want (${percentWant}%, target <= 30%)
+  ${formatCurrency(amountSaved)} saved (${percentSaved}% , target <= 20%)
+    `
+    );
+  }
 
-
+  print(`
 Allowances
 =================`);
 
