@@ -1,5 +1,7 @@
-.env
-.budget-cli.json
 dist/
 node_modules/
 output/
+
+.env
+.budget-cli.json
+npm-debug.log

@@ -39,8 +39,8 @@ export interface SubCategories {
 
 export interface Allowance {
   [key: string]: {
-    carryover: number;
     allowance: number;
+    carryover?: number;
   };
 }
 
