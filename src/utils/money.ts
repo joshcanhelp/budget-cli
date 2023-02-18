@@ -13,7 +13,7 @@ export const roundCurrency = (amount: number): number => {
 };
 
 export const formatCurrency = (currency: number): string => {
-  currency = roundCurrency(currency);
+  currency = roundCurrency(currency || 0);
   const currencyParts = `${currency}`.split(".");
   if (!currencyParts[1]) {
     return `$${currency}.00`;
