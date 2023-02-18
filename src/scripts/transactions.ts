@@ -59,7 +59,7 @@ export const run = (config: Configuration, cliArgs: CommandArgs): void => {
     const [, account, date, amount, description, , , , , , , , notes] = t;
     const parsedAmount = parseFloat(amount);
     const displayNotes = notes || "<No notes>";
-    
+
     print(
       `${date}, ${formatCurrency(
         parsedAmount
