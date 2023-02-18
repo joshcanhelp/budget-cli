@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   run-linters:
-    name: Run ESLint
+    name: Run Prettier
     runs-on: ubuntu-latest
 
     steps:
@@ -24,4 +24,5 @@ jobs:
       - name: Run linters
         uses: wearerequired/lint-action@v2
         with:
+          auto_fix: false
           prettier: true
