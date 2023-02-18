@@ -10,7 +10,7 @@ Clone this repo and install dependencies:
 
 ```bash
 $ git clone git@github.com:joshcanhelp/budget-cli.git
-$ npm install
+$ npm ci
 ```
 
 Build the TS files:
@@ -95,5 +95,15 @@ By default, the script will only import transactions for the current year. To im
 $ npm run import -- --input='/path/to/directory' --year='2022'
 ```
 
-## Contributing 
+If the command checks out, you will be prompted to confirm the import file. This will help you determine if the configuration file is working. Next, it will prompt you for the first CSV it finds from your import path. Answering `n` will move on to the next CSV found, if there is one. 
+
+If you confirm the import file, it will prompt you for the importer you want to use.
+
+## Contributing
+
+Contributions to this repo are welcome! I recognize that not everyone using this tool will not be able to contribute code so read through the following list for how I can help. 
+
+### I want to make code changes!
+
+That's great, thank you so much! This project is written in TypeScript, checked with ESLint, and formatted with prettier. 
 
