@@ -10,6 +10,7 @@ env:
   NODE_VERSION: 18
 jobs:
   setup:
+    runs-on: ubuntu-latest
     steps: 
       - name: Install NodeJS
         uses: actions/setup-node@v2
@@ -20,21 +21,18 @@ jobs:
       - name: Install Dependencies
         run: npm ci
   typescript:
-    name: TypeScript
     runs-on: ubuntu-latest
     needs: setup
     steps:
       - name: Run Prettier
         run: npm run build
   eslint:
-    name: ESLint
     runs-on: ubuntu-latest
     needs: setup
     steps:
       - name: Run ESLint
         run: npm run eslint-ci
   prettier:
-    name: Prettier
     runs-on: ubuntu-latest
     needs: setup
     steps:
