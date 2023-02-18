@@ -6,13 +6,13 @@ import { sortTransactionsByDate } from "../utils/transaction.js";
 import { CommandArgs } from "../cli.js";
 
 export const run = (config: Configuration, cliArgs: CommandArgs): void => {
-  const getDate = cliArgs.date || `${new Date().getFullYear()}`;
+  const getDate = cliArgs.date as string || `${new Date().getFullYear()}`;
   const dateRegex = /^[0-9]{4}(?:-[0-9]{2})?$/;
   if (!getDate || !(getDate.match(dateRegex) || []).length) {
     hardNo("Invalid transaction date argument.");
   }
 
-  const reportTerms = cliArgs.terms?.trim() || "";
+  const reportTerms = (cliArgs.terms as string || "").trim();
   if (!reportTerms) {
     hardNo("Invalid transaction terms in 2nd argument.");
   }

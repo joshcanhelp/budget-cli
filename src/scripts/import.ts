@@ -25,7 +25,7 @@ export const run = async (
   config: Configuration,
   cliArgs: CommandArgs
 ): Promise<void> => {
-  const importPath = cliArgs.input;
+  const importPath = cliArgs.input as string;
   if (!importPath) {
     throw new Error("No import path provided in command");
   }
@@ -49,7 +49,7 @@ export const run = async (
   db.loadTransactions();
 
   // Filter imports by year to account for files with older data
-  const importYear = cliArgs.year ? parseInt(cliArgs.year, 10) : undefined;
+  const importYear = cliArgs.year ? parseInt(cliArgs.year as string, 10) : undefined;
   if (importYear) {
     print(`🤖 Importing transactions for ${importYear} only`);
   }

@@ -24,7 +24,7 @@ export const getAccountNames = (): string[] => {
 
 export const getTranslator = (accountName: string): Translator | undefined => {
   let useTranslator: Translator | undefined;
-  availableTranslators.some((translator) => {
+  availableTranslators.some((translator): boolean | void => {
     if (translator.name === accountName) {
       useTranslator = translator;
       return true;

@@ -5,6 +5,8 @@
     "jest.config.ts"
   ],
   "compilerOptions": {
+    "noImplicitReturns": true,
+    "noImplicitAny": true,
     "removeComments": true,
     "target": "es2022",
     "module": "es2022",
