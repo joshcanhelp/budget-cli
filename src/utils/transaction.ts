@@ -8,8 +8,8 @@ import { TransactionPrompt } from "./prompt.js";
 export const transactionCategories: TransactionComplete["category"][] = [
   "expense",
   "income",
-  "omit",
   "split",
+  "omit",
   "skip",
 ];
 
