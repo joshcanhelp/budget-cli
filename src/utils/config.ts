@@ -76,7 +76,7 @@ export const getConfiguration = (): Configuration => {
   };
 
   mergedConfig.getOutputFile = (cliArgs?: CommandArgs) => {
-    const { year, output } = cliArgs || {};
+    const { date, year, output } = cliArgs || {};
 
     if (output && typeof output === "string") {
       return output;
@@ -86,8 +86,9 @@ export const getConfiguration = (): Configuration => {
       return mergedConfig.outputFile;
     }
 
-    if (typeof mergedConfig.outputFile === "object" && year) {
-      return mergedConfig.outputFile[year as string];
+    if (typeof mergedConfig.outputFile === "object" && (date || year)) {
+      const reportYear = (year as string) || (date as string).split("-")[0];
+      return mergedConfig.outputFile[reportYear];
     }
 
     return defaultConfig.outputFile;
