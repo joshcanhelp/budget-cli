@@ -12,11 +12,7 @@ export const run = (config: Configuration, cliArgs: CommandArgs): void => {
     hardNo("Invalid transaction date argument.");
   }
 
-  const reportTerms = ((cliArgs.terms as string) || "").trim();
-  if (!reportTerms) {
-    hardNo("Invalid transaction terms in 2nd argument.");
-  }
-
+  const reportTerms = ((cliArgs.terms as string) || "").trim() || ".";
   const reportTermsParts = reportTerms.split(".");
   const reportCategory = reportTermsParts[0] || "*";
   const reportSubCategory = reportTermsParts[1] || "*";
