@@ -51,7 +51,7 @@ export const run = (config: Configuration, cliArgs: CommandArgs): void => {
 
   const transactions = db.getByDate(getDate);
   if (!transactions.length) {
-    hardNo("No transactions found for this date.");
+    hardNo(`No transactions found for ${getDate}.`);
   }
 
   const aggregateData: Aggregate = {
