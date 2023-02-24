@@ -34,7 +34,8 @@ export const run = (config: Configuration, cliArgs: CommandArgs): void => {
     .filter((t: string[]): boolean => {
       const isMatchedDate = !!(t[2].match(datePostedRegex) || []).length;
       const isSkippedCategory = t[9] === "omit" || t[9] === "split";
-      return !isSkippedCategory && isMatchedDate;
+      const isMatchedAccount = cliArgs.account ? t[1] === cliArgs.account : true;
+      return !isSkippedCategory && isMatchedDate && isMatchedAccount;
     })
     .sort(sortTransactionsByDate);
 

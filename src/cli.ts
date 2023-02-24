@@ -14,6 +14,7 @@ export interface CommandArgs {
   date?: string | boolean;
   year?: string | boolean;
   terms?: string | boolean;
+  account?: string | boolean;
 }
 
 const scriptMap: {
@@ -45,6 +46,9 @@ try {
         type: "string",
       },
       terms: {
+        type: "string",
+      },
+      account: {
         type: "string",
       },
     },
