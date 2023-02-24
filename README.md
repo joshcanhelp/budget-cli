@@ -142,7 +142,13 @@ $ npm run transactions -- --date='2023'
 $ npm run transactions -- --date='2023-02'
 ```
 
-Or both!
+You can also pass in an account name:
+
+```bash
+$ npm run transactions -- --account='Chase'
+```
+
+Or all three at once!
 
 ### Reporting
 
