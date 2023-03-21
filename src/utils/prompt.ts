@@ -52,7 +52,7 @@ export const promptAmount = async (defaultAmount = 0): Promise<string> => {
     type: "input",
     message: "How much (positive amount)?",
     default: defaultAmount,
-    validate: (input) => input - defaultAmount <= 0
+    validate: (input) => input - defaultAmount <= 0,
   });
 
   return answers?.amount || "";

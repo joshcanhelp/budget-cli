@@ -16,7 +16,11 @@ import {
   promptConfirm,
   promptTransaction,
 } from "../utils/prompt.js";
-import { convertStringCurrencyToNumber, formatCurrency, roundCurrency } from "../utils/money.js";
+import {
+  convertStringCurrencyToNumber,
+  formatCurrency,
+  roundCurrency,
+} from "../utils/money.js";
 import { statSync } from "fs";
 import { CommandArgs } from "../cli.js";
 import { print } from "../utils/index.js";
@@ -150,11 +154,13 @@ export const run = async (
 
       // Split the original amount
       while (splitRemaining) {
-        print(`🔪 Split #${splitCount}, ${formatCurrency(splitRemaining)} remaining`);
+        print(
+          `🔪 Split #${splitCount}, ${formatCurrency(splitRemaining)} remaining`
+        );
 
         // Make sure we're dealing with a positive number
         const splitAmount = Math.abs(
-          convertStringCurrencyToNumber(await promptAmount(splitRemaining) + "")
+          convertStringCurrencyToNumber((await promptAmount(splitRemaining)) + "")
         );
         const splitPrompt = await promptTransaction(true);
         const splitTransaction = {
