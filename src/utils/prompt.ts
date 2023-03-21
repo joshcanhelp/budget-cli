@@ -46,11 +46,13 @@ export const promptAccount = async (): Promise<string> => {
   return answers?.account || "";
 };
 
-export const promptAmount = async (): Promise<string> => {
+export const promptAmount = async (defaultAmount = 0): Promise<string> => {
   const answers: { amount: string } = await inquirer.prompt({
     name: "amount",
     type: "input",
     message: "How much (positive amount)?",
+    default: defaultAmount,
+    validate: (input) => input - defaultAmount <= 0
   });
 
   return answers?.amount || "";

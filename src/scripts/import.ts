@@ -16,7 +16,7 @@ import {
   promptConfirm,
   promptTransaction,
 } from "../utils/prompt.js";
-import { convertStringCurrencyToNumber, roundCurrency } from "../utils/money.js";
+import { convertStringCurrencyToNumber, formatCurrency, roundCurrency } from "../utils/money.js";
 import { statSync } from "fs";
 import { CommandArgs } from "../cli.js";
 import { print } from "../utils/index.js";
@@ -144,17 +144,17 @@ export const run = async (
       const originalAmount: number = importedTransaction.amount;
 
       // Accumulator for the amount, always positive for better UX
-      let originalAmountToSplit = Math.abs(originalAmount);
+      let splitRemaining = Math.abs(originalAmount);
 
       let splitCount = 1;
 
       // Split the original amount
-      while (originalAmountToSplit) {
-        print(`🔪 Split #${splitCount}, $${originalAmountToSplit} remaining`);
+      while (splitRemaining) {
+        print(`🔪 Split #${splitCount}, ${formatCurrency(splitRemaining)} remaining`);
 
         // Make sure we're dealing with a positive number
         const splitAmount = Math.abs(
-          convertStringCurrencyToNumber(await promptAmount())
+          convertStringCurrencyToNumber(await promptAmount(splitRemaining) + "")
         );
         const splitPrompt = await promptTransaction(true);
         const splitTransaction = {
@@ -164,7 +164,7 @@ export const run = async (
         };
         db.saveRow(mapTransaction(splitTransaction, splitPrompt, splitCount));
         splitCount++;
-        originalAmountToSplit = roundCurrency(originalAmountToSplit - splitAmount);
+        splitRemaining = roundCurrency(splitRemaining - splitAmount);
       }
     }
   }
