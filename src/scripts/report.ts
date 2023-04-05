@@ -122,7 +122,7 @@ Simple budget
 =================
   ${formatCurrency(aggregateData.need)} need (${percentNeed}%, target <= 50%)
   ${formatCurrency(aggregateData.want)} want (${percentWant}%, target <= 30%)
-  ${formatCurrency(amountSaved)} saved (${percentSaved}% , target <= 20%)
+  ${formatCurrency(amountSaved)} saved (${percentSaved}% , target >= 20%)
     `);
   }
 
