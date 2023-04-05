@@ -17,6 +17,11 @@ export interface TransactionPrompt {
   notes: string;
 }
 
+export interface TransactionAnswers {
+  category: string;
+  subCategory: string;
+}
+
 ////
 /// Functions
 //
@@ -61,6 +66,8 @@ export const promptAmount = async (defaultAmount = 0): Promise<string> => {
 export const promptTransaction = async (
   splitTransaction = false
 ): Promise<TransactionPrompt> => {
+  const { subCategories, expenseTypeMapping } = config;
+  const mappedExpenses = Object.keys(expenseTypeMapping);
   return (await inquirer.prompt([
     {
       name: "category",
@@ -71,11 +78,11 @@ export const promptTransaction = async (
     {
       name: "subCategory",
       type: "list",
-      choices: (answers: { category: string }) =>
+      choices: (answers: TransactionAnswers) =>
         answers.category === "income"
-          ? config.subCategories.income
+          ? subCategories.income
           : answers.category === "expense"
-          ? config.subCategories.expense
+          ? subCategories.expense
           : [],
       when: (answers: { category: string }) =>
         !["omit", "split", "skip"].includes(answers.category),
@@ -85,7 +92,9 @@ export const promptTransaction = async (
       name: "expenseType",
       type: "list",
       choices: ["need", "want"],
-      when: (answers: { category: string }) => "expense" === answers.category,
+      when: (answers: TransactionAnswers) =>
+        "expense" === answers.category &&
+        !mappedExpenses.includes(answers.subCategory),
       message: "Which expense type is this?",
     },
     {

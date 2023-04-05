@@ -137,6 +137,13 @@ export const run = async (
         continue;
       }
 
+      // Force a skipped transaction, no record created in the output file
+      const mappedExpenses = Object.keys(config.expenseTypeMapping);
+      if (mappedExpenses.includes(transactionPrompt.subCategory)) {
+        transactionPrompt.expenseType =
+          config.expenseTypeMapping[transactionPrompt.subCategory];
+      }
+
       // Save the row as-is now
       db.saveRow(mapTransaction(importedTransaction, transactionPrompt));
 

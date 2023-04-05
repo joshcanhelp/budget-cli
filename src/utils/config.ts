@@ -10,6 +10,7 @@ const configPath = path.join(process.cwd(), ".budget-cli.json");
 
 const defaultConfig = {
   outputFile: "./output/data.csv",
+  expenseTypeMapping: {},
   subCategories: {
     income: ["salary", "reimbursable", "other"],
     expense: [
@@ -48,6 +49,7 @@ export interface Configuration {
   outputFile: string | OutputFiles;
   subCategories: SubCategories;
   getOutputFile: (args?: CommandArgs) => string;
+  expenseTypeMapping: { [key: string]: "need" | "want" };
   expenseAllowance?: {
     [key: string]: Allowance;
   };
