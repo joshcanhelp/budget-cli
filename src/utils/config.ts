@@ -89,7 +89,10 @@ export const getConfiguration = (): Configuration => {
     }
 
     if (typeof mergedConfig.outputFile === "object") {
-      const reportYear = (year as string) || date ? (date as string).split("-")[0] : (new Date()).getFullYear();
+      const reportYear =
+        (year as string) || date
+          ? (date as string).split("-")[0]
+          : new Date().getFullYear();
       return mergedConfig.outputFile[reportYear];
     }
 
