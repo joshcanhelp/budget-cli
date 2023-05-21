@@ -78,8 +78,8 @@ export const run = (config: Configuration, cliArgs: CommandArgs): void => {
       aggregateData[category][subCategory] = initialAmount + currentAmount;
 
       // Process budget split
-      aggregateData.need += expenseType === "need" ? currentAmount : 0;
-      aggregateData.want += expenseType === "want" ? currentAmount : 0;
+      aggregateData.need += (category === "expense" && expenseType === "need") ? currentAmount : 0;
+      aggregateData.want += (category === "expense" && expenseType === "want") ? currentAmount : 0;
     });
 
   const keyValTemplate = (totalsObject: { [key: string]: number }) => {
