@@ -139,7 +139,10 @@ export const run = async (
 
       // Force a skipped transaction, no record created in the output file
       const mappedExpenses = Object.keys(config.expenseTypeMapping);
-      if (mappedExpenses.includes(transactionPrompt.subCategory)) {
+      if (
+        transactionPrompt.category === "expense" &&
+        mappedExpenses.includes(transactionPrompt.subCategory)
+      ) {
         transactionPrompt.expenseType =
           config.expenseTypeMapping[transactionPrompt.subCategory];
       }
