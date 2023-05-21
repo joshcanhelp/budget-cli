@@ -14,7 +14,8 @@
     "format": "npm run eslint && npm run prettier",
     "import": "node ./dist/src/cli.js import",
     "report": "node ./dist/src/cli.js report",
-    "transactions": "node ./dist/src/cli.js transactions"
+    "transactions": "node ./dist/src/cli.js transactions",
+    "fix": "node ./dist/src/cli.js fix"
   },
   "devDependencies": {
     "@types/inquirer": "^9.0.3",

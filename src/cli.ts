@@ -3,6 +3,7 @@
 import { parseArgs } from "node:util";
 
 import { run as runImport } from "./scripts/import.js";
+import { run as runFix } from "./scripts/fix.js";
 import { run as runReport } from "./scripts/report.js";
 import { run as runTransactions } from "./scripts/transactions.js";
 import { getConfiguration, Configuration } from "./utils/config.js";
@@ -24,6 +25,7 @@ const scriptMap: {
   ) => Promise<void> | void;
 } = {
   import: runImport,
+  fix: runFix,
   report: runReport,
   transactions: runTransactions,
 };

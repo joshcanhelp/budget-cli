@@ -81,6 +81,8 @@ export const transactionHeaders: TransactionHeader[] = [
   },
 ];
 
+export const transactionFields: string[] = transactionHeaders.map(header => header.header);
+
 ////
 /// Types
 //

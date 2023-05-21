@@ -7,6 +7,8 @@ import {
   transactionHeaders,
 } from "./transaction.js";
 
+export type TransactionTransform = (transaction: string[]) => string[];
+
 export class DB {
   private store: string[][] = [];
   private outputFile: string;
@@ -60,6 +62,12 @@ export class DB {
       return isCategoryMatch && isSubCategoryMatch;
     });
   };
+
+  public bulkEdit = (transform: TransactionTransform): void => {
+    const newStore = this.store.map((transform));
+    this.store = newStore;
+    this.save();
+  }
 
   ////
   /// Private
