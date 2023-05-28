@@ -6,7 +6,7 @@ import { sortTransactionsByDate } from "../utils/transaction.js";
 import { CommandArgs } from "../cli.js";
 
 export const run = (config: Configuration, cliArgs: CommandArgs): void => {
-  const getDate = (cliArgs.date as string) || `${new Date().getFullYear()}`;
+  const getDate = (cliArgs.date as string) || (cliArgs.year as string) || `${new Date().getFullYear()}`;
   const dateRegex = /^[0-9]{4}(?:-[0-9]{2})?$/;
   if (!getDate || !(getDate.match(dateRegex) || []).length) {
     hardNo("Invalid transaction date argument.");
@@ -17,7 +17,7 @@ export const run = (config: Configuration, cliArgs: CommandArgs): void => {
   const reportCategory = reportTermsParts[0] || "*";
   const reportSubCategory = reportTermsParts[1] || "*";
 
-  const outputFile = config.getOutputFile({ year: getDate.split("-")[0] });
+  const outputFile = config.getOutputFile({ date: getDate });
 
   const db: DB = new DB(outputFile);
   try {
