@@ -1,6 +1,11 @@
 import inquirer from "inquirer";
 
-import { transactionCategories, TransactionComplete, TransactionHeader, transactionHeaders } from "./transaction.js";
+import {
+  transactionCategories,
+  TransactionComplete,
+  TransactionHeader,
+  transactionHeaders,
+} from "./transaction.js";
 import { getAccountNames } from "../translators/index.js";
 import { getConfiguration } from "./config.js";
 

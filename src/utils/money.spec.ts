@@ -35,12 +35,10 @@ describe("Function: roundCurrency", () => {
 describe("Function: formatCurrency", () => {
   it("handles positive decimals", () => {
     expect(formatCurrency(0.1)).toEqual(" $0.10");
-    expect(formatCurrency(0.10)).toEqual(" $0.10");
     expect(formatCurrency(0.12)).toEqual(" $0.12");
     expect(formatCurrency(0.123)).toEqual(" $0.12");
     expect(formatCurrency(1)).toEqual(" $1.00");
     expect(formatCurrency(1.5)).toEqual(" $1.50");
-    expect(formatCurrency(1.50)).toEqual(" $1.50");
     expect(formatCurrency(1.51)).toEqual(" $1.51");
     expect(formatCurrency(1.511)).toEqual(" $1.51");
     expect(formatCurrency(1.519)).toEqual(" $1.52");

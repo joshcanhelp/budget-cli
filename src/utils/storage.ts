@@ -64,10 +64,10 @@ export class DB {
   };
 
   public bulkEdit = (transform: TransactionTransform): void => {
-    const newStore = this.store.map((transform));
+    const newStore = this.store.map(transform);
     this.store = newStore;
     this.save();
-  }
+  };
 
   ////
   /// Private

@@ -93,7 +93,7 @@ export const getConfiguration = (): Configuration => {
         (year as string) || date
           ? (date as string).split("-")[0]
           : new Date().getFullYear();
-      
+
       return mergedConfig.outputFile[reportYear];
     }
 

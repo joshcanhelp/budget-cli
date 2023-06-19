@@ -3,10 +3,15 @@ import { Configuration } from "../utils/config.js";
 import { hardNo, print } from "../utils/index.js";
 import { CommandArgs } from "../cli.js";
 import { promptFix } from "../utils/prompt.js";
-import { transactionFields, transactionHeaders } from "../utils/transaction.js";
+import { transactionFields } from "../utils/transaction.js";
 
-export const run = async (config: Configuration, cliArgs: CommandArgs): Promise<void> => {
-  const outputFile = cliArgs.output as string || config.getOutputFile(cliArgs.year ? { year: cliArgs.year } : {} );
+export const run = async (
+  config: Configuration,
+  cliArgs: CommandArgs
+): Promise<void> => {
+  const outputFile =
+    (cliArgs.output as string) ||
+    config.getOutputFile(cliArgs.year ? { year: cliArgs.year } : {});
 
   const db: DB = new DB(outputFile);
   try {
@@ -19,12 +24,16 @@ export const run = async (config: Configuration, cliArgs: CommandArgs): Promise<
 
   const fixDirections = await promptFix();
 
-  const ifIndex: number = transactionFields.findIndex(field => field === fixDirections.if);
-  const thenIndex: number = transactionFields.findIndex(field => field === fixDirections.then);
+  const ifIndex: number = transactionFields.findIndex(
+    (field) => field === fixDirections.if
+  );
+  const thenIndex: number = transactionFields.findIndex(
+    (field) => field === fixDirections.then
+  );
   db.bulkEdit((transaction: string[]): string[] => {
     if (transaction[ifIndex] === fixDirections.this) {
       transaction[thenIndex] = fixDirections.that;
     }
     return transaction;
-  }); 
+  });
 };
