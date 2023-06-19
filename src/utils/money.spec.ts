@@ -33,14 +33,33 @@ describe("Function: roundCurrency", () => {
 });
 
 describe("Function: formatCurrency", () => {
-  it("handles decimals", () => {
-    expect(formatCurrency(0.1)).toEqual("$0.10");
-    expect(formatCurrency(0.1)).toEqual("$0.10");
-    expect(formatCurrency(0.123)).toEqual("$0.12");
+  it("handles positive decimals", () => {
+    expect(formatCurrency(0.1)).toEqual(" $0.10");
+    expect(formatCurrency(0.10)).toEqual(" $0.10");
+    expect(formatCurrency(0.12)).toEqual(" $0.12");
+    expect(formatCurrency(0.123)).toEqual(" $0.12");
+    expect(formatCurrency(1)).toEqual(" $1.00");
+    expect(formatCurrency(1.5)).toEqual(" $1.50");
+    expect(formatCurrency(1.50)).toEqual(" $1.50");
+    expect(formatCurrency(1.51)).toEqual(" $1.51");
+    expect(formatCurrency(1.511)).toEqual(" $1.51");
+    expect(formatCurrency(1.519)).toEqual(" $1.52");
   });
-  it("handles whole dollars", () => {
-    expect(formatCurrency(1)).toEqual("$1.00");
-    expect(formatCurrency(1.5)).toEqual("$1.50");
-    expect(formatCurrency(1000)).toEqual("$1000.00");
+
+  it("handles negative decimals", () => {
+    expect(formatCurrency(-1)).toEqual("-$1.00");
+    expect(formatCurrency(-1.1)).toEqual("-$1.10");
+    expect(formatCurrency(-1.111)).toEqual("-$1.11");
+  });
+
+  it("handles commas", () => {
+    expect(formatCurrency(100)).toEqual(" $100.00");
+    expect(formatCurrency(-100)).toEqual("-$100.00");
+    expect(formatCurrency(1000)).toEqual(" $1,000.00");
+    expect(formatCurrency(-1000)).toEqual("-$1,000.00");
+    expect(formatCurrency(10000)).toEqual(" $10,000.00");
+    expect(formatCurrency(-10000)).toEqual("-$10,000.00");
+    expect(formatCurrency(100000)).toEqual(" $100,000.00");
+    expect(formatCurrency(-100000)).toEqual("-$100,000.00");
   });
 });
