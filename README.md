@@ -25,14 +25,15 @@ The script defaults to `./output/data.csv` for it's database so, to test it out,
 
 ```bash
 $ mkdir output
-$ touch output.csv
+$ touch output/data.csv
 ```
 
 You should see the following output:
 
 ```
+$ npm run report
 🤖 Reading from ./output/data.csv
-❌ No transactions found for this date.
+❌ No transactions found for 2023.
 ```
 
 You are now (probably) ready to go!
