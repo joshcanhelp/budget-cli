@@ -8,8 +8,10 @@ import {
 } from "./transaction.js";
 import { getAccountNames } from "../translators/index.js";
 import { getConfiguration } from "./config.js";
+import { dateRegex } from "./date.js";
 
 const config = getConfiguration();
+const { subCategories, expenseTypeMapping } = config;
 
 ////
 /// Types
@@ -32,6 +34,14 @@ export interface FixPrompt {
 export interface TransactionAnswers {
   category: string;
   subCategory: string;
+}
+
+export interface FilterPrompt {
+  date: string;
+  category: string;
+  subCategory: string;
+  expenseType: string;
+  account: string;
 }
 
 ////
@@ -78,7 +88,6 @@ export const promptAmount = async (defaultAmount = 0): Promise<string> => {
 export const promptTransaction = async (
   splitTransaction = false
 ): Promise<TransactionPrompt> => {
-  const { subCategories, expenseTypeMapping } = config;
   const mappedExpenses = Object.keys(expenseTypeMapping);
   return (await inquirer.prompt([
     {
@@ -145,4 +154,58 @@ export const promptFix = async (): Promise<FixPrompt> => {
       message: "What to change it to?",
     },
   ])) as FixPrompt;
+};
+
+export const promptFilter = async (): Promise<FilterPrompt> => {
+  return (await inquirer.prompt([
+    {
+      message: "Filter by date? YYYY-MM-DD format, MM and DD optional",
+      name: "date",
+      type: "input",
+      validate: (input: string) => (input ? dateRegex.test(input) : true),
+    },
+    {
+      message: "Filter by category?",
+      name: "category",
+      type: "list",
+      choices: [
+        "*",
+        ...transactionCategories.filter((category) => category !== "skip"),
+      ],
+    },
+    {
+      message: "Filter by sub-category?",
+      name: "subCategory",
+      type: "list",
+      when: (answers: { category: string }) =>
+        ["expense", "income", "*"].includes(answers.category),
+      choices: (answers: TransactionAnswers) => {
+        switch (answers.category) {
+          case "*":
+            return [
+              ...new Set(["*", ...subCategories.expense, ...subCategories.income]),
+            ];
+          case "expense":
+            return ["*", ...subCategories.expense];
+          case "income":
+            return ["*", ...subCategories.income];
+          default:
+            return [];
+        }
+      },
+    },
+    {
+      message: "Filter by expense type?",
+      name: "expenseType",
+      type: "list",
+      choices: ["*", "want", "need"],
+      when: (answers: { category: string }) => answers.category === "expense",
+    },
+    {
+      message: "Filter by account?",
+      name: "account",
+      type: "list",
+      choices: ["*", ...getAccountNames()],
+    },
+  ])) as FilterPrompt;
 };

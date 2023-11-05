@@ -5,23 +5,19 @@ import { formatCurrency } from "../utils/money.js";
 import { sortTransactionsByDate } from "../utils/transaction.js";
 import { CommandArgs } from "../cli.js";
 import { dateRegex } from "../utils/date.js";
+import { promptFilter } from "../utils/prompt.js";
 
-export const run = (config: Configuration, cliArgs: CommandArgs): void => {
+export const run = async (
+  config: Configuration,
+  cliArgs: CommandArgs
+): Promise<void> => {
   const getDate =
     (cliArgs.date as string) ||
     (cliArgs.year as string) ||
     `${new Date().getFullYear()}`;
 
-  if (!getDate || !dateRegex.test(getDate)) {
-    hardNo("Invalid transaction date argument.");
-  }
-
-  const reportTerms = ((cliArgs.terms as string) || "").trim() || ".";
-  const reportTermsParts = reportTerms.split(".");
-  const reportCategory = reportTermsParts[0] || "*";
-  const reportSubCategory = reportTermsParts[1] || "*";
-
   const outputFile = config.getOutputFile({ date: getDate });
+  print(`🤖 Reading from ${outputFile}`);
 
   const db: DB = new DB(outputFile);
   try {
@@ -30,30 +26,47 @@ export const run = (config: Configuration, cliArgs: CommandArgs): void => {
     hardNo(`Error loading transactions`, error);
   }
 
-  print(`🤖 Reading from ${outputFile}`);
+  const filters = await promptFilter();
 
-  const datePostedRegex = new RegExp(`^${getDate}`, "g");
   const transactions = db
-    .getByTerms(reportCategory, reportSubCategory)
+    .getAll()
     .filter((t: string[]): boolean => {
-      const isMatchedDate = !!(t[2].match(datePostedRegex) || []).length;
-      const isSkippedCategory = t[9] === "omit" || t[9] === "split";
-      const isMatchedAccount = cliArgs.account ? t[1] === cliArgs.account : true;
-      return !isSkippedCategory && isMatchedDate && isMatchedAccount;
+      const matchedAccount =
+        !filters.account || filters.account === "*"
+          ? true
+          : t[1] === filters.account;
+      const matchedDate = filters.date
+        ? new RegExp(`^${filters.date}`, "g").test(t[2])
+        : true;
+      const matchedCategory =
+        !filters.category || filters.category === "*"
+          ? true
+          : t[9] === filters.category;
+      const matchedSubCategory =
+        !filters.subCategory || filters.subCategory === "*"
+          ? true
+          : t[10] === filters.subCategory;
+      const matchedExpType =
+        !filters.expenseType || filters.expenseType === "*"
+          ? true
+          : t[11] === filters.expenseType;
+      return (
+        matchedAccount &&
+        matchedDate &&
+        matchedCategory &&
+        matchedSubCategory &&
+        matchedExpType
+      );
     })
     .sort(sortTransactionsByDate);
 
   const totalTransactions = transactions.length;
   if (!totalTransactions) {
-    hardNo(`Nothing found for ${reportCategory}.${reportSubCategory}`);
+    hardNo(`Nothing found`);
     return;
   }
 
   print("");
-  print(
-    `${totalTransactions} transactions for ${reportCategory}.${reportSubCategory}`
-  );
-  print("================");
 
   let runningTotal = 0;
   transactions.sort(sortTransactionsByDate).forEach((t: string[]): void => {
@@ -70,5 +83,5 @@ export const run = (config: Configuration, cliArgs: CommandArgs): void => {
   });
 
   print("----------------");
-  print(formatCurrency(runningTotal));
+  print(formatCurrency(runningTotal) + ` for ${totalTransactions} transactions`);
 };

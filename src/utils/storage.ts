@@ -47,19 +47,12 @@ export class DB {
     return !!this.tids[account] && this.tids[account].includes(id);
   };
 
+  public getAll= (): string[][] => this.store;
+
   public getByDate = (dateRequested: string): string[][] => {
     const searchRegex = new RegExp(`^${dateRequested}`, "g");
     return this.store.filter((transaction: string[]) => {
       return !!(transaction[2].match(searchRegex) || []).length;
-    });
-  };
-
-  public getByTerms = (category: string, subCategory: string): string[][] => {
-    return this.store.filter((transaction: string[]) => {
-      const isCategoryMatch = category === transaction[9] || category === "*";
-      const isSubCategoryMatch =
-        subCategory === transaction[10] || subCategory === "*";
-      return isCategoryMatch && isSubCategoryMatch;
     });
   };
 
