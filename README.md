@@ -135,31 +135,7 @@ You can also use the command line to see transactions. To see all stored transac
 $ npm run transactions
 ```
 
-You can also pass in a category and/or sub-category like so:
-
-```bash
-$ npm run transactions -- --terms='category.sub_category'
-# ... or just a category
-$ npm run transactions -- --terms='category.'
-# ... or just a sub-category
-$ npm run transactions -- --terms='.sub_category'
-```
-
-You can also pass in a date:
-
-```bash
-$ npm run transactions -- --date='2023'
-# ... or
-$ npm run transactions -- --date='2023-02'
-```
-
-You can also pass in an account name:
-
-```bash
-$ npm run transactions -- --account='Chase'
-```
-
-Or all three at once!
+You'll be prompted with options to filter transactions.
 
 ### Reporting
 
