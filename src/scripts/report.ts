@@ -3,6 +3,7 @@ import { Allowance, Configuration } from "../utils/config.js";
 import { hardNo, print } from "../utils/index.js";
 import { convertStringCurrencyToNumber, formatCurrency } from "../utils/money.js";
 import { CommandArgs } from "../cli.js";
+import { dateRegex } from "../utils/date.js";
 
 ////
 /// Types
@@ -28,8 +29,7 @@ export interface Aggregate {
 export const run = (config: Configuration, cliArgs: CommandArgs): void => {
   const currentYear = new Date().getFullYear();
   const getDate = (cliArgs.date || cliArgs.year || `${currentYear}`) as string;
-  const dateRegex = /^[0-9]{4}(?:-[0-9]{2})?$/;
-  if (!getDate || !(getDate.match(dateRegex) || []).length) {
+  if (!getDate || !!dateRegex.test(getDate)) {
     hardNo(`Invalid or missing date parameter: ${getDate}`);
   }
 
