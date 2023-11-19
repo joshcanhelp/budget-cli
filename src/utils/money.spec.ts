@@ -17,6 +17,12 @@ describe("Function: convertStringCurrencyToNumber", () => {
   it("handles additional decimals", () => {
     expect(convertStringCurrencyToNumber("100.011")).toEqual(100.01);
   });
+  it("handles parentheses", () => {
+    expect(convertStringCurrencyToNumber("($10.33)")).toEqual(-10.33);
+  });
+  it("handles all the things at once", () => {
+    expect(convertStringCurrencyToNumber(" ($2,334.932) ")).toEqual(-2334.93);
+  });
 });
 
 describe("Function: roundCurrency", () => {

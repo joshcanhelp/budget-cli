@@ -3,8 +3,11 @@
 //
 
 export const convertStringCurrencyToNumber = (amountRaw: string): number => {
-  amountRaw = amountRaw.trim().replaceAll("$", "").replaceAll(",", "");
-  const amountParsed = parseFloat(amountRaw);
+  let amountInProcess = amountRaw.trim().replaceAll("$", "").replaceAll(",", "");
+  if (amountInProcess.match(/^\(\d*\.?\d*\)$/)) {
+    amountInProcess = amountInProcess.replace("(", "-").replace(")", "");
+  }
+  const amountParsed = parseFloat(amountInProcess);
   return roundCurrency(amountParsed);
 };
 
