@@ -4,6 +4,8 @@ This little command line tool is the culmination of many years of frustration ma
 
 [Read more about how this came to be 〉](https://www.joshcanhelp.com/budget-cli/)
 
+**Please note:** I use this weekly to manage our money so I try to keep it bug-free. That said, this is currently an unversioned, often-changing project. For that reason, make sure to check imported transactions after updates and [let me know](/joshcanhelp/budget-cli/issues/new) if you find any problems.
+
 ## Getting Started
 
 This tool is written in TypeScript and targets Node 16 and above but it may work in earlier versions. You will need to have Node and `npm` installed (I recommend [nvm](https://github.com/nvm-sh/nvm#installing-and-updating) for this) before following the steps below.
