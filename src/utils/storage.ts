@@ -47,7 +47,7 @@ export class DB {
     return !!this.tids[account] && this.tids[account].includes(id);
   };
 
-  public getAll= (): string[][] => this.store;
+  public getAll = (): string[][] => this.store;
 
   public getByDate = (dateRequested: string): string[][] => {
     const searchRegex = new RegExp(`^${dateRequested}`, "g");

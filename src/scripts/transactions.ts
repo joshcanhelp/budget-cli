@@ -4,7 +4,6 @@ import { hardNo, print } from "../utils/index.js";
 import { formatCurrency } from "../utils/money.js";
 import { sortTransactionsByDate } from "../utils/transaction.js";
 import { CommandArgs } from "../cli.js";
-import { dateRegex } from "../utils/date.js";
 import { promptFilter } from "../utils/prompt.js";
 
 export const run = async (

@@ -1,6 +1,6 @@
 import { padLeftZero } from "./index.js";
 
-export const dateRegex = /^[0-9]{4}(?:-[0-9]{2})?(?:-[0-9]{2})?$/
+export const dateRegex = /^[0-9]{4}(?:-[0-9]{2})?(?:-[0-9]{2})?$/;
 
 ////
 /// Functions
