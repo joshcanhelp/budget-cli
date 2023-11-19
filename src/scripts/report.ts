@@ -29,7 +29,7 @@ export interface Aggregate {
 export const run = (config: Configuration, cliArgs: CommandArgs): void => {
   const currentYear = new Date().getFullYear();
   const getDate = (cliArgs.date || cliArgs.year || `${currentYear}`) as string;
-  if (!getDate || !!dateRegex.test(getDate)) {
+  if (!getDate || !dateRegex.test(getDate)) {
     hardNo(`Invalid or missing date parameter: ${getDate}`);
   }
 
