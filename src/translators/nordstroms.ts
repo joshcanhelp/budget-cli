@@ -2,6 +2,7 @@ import { getFormattedDate } from "../utils/date.js";
 import { convertStringCurrencyToNumber } from "../utils/money.js";
 import { TransactionImported } from "../utils/transaction.js";
 import { Translator } from "./index.js";
+import { generateHash } from "../utils/index.js";
 
 const accountName = "Nordstroms";
 export const nordstromsTranslator: Translator = {
@@ -14,9 +15,16 @@ export const nordstromsTranslator: Translator = {
       return null;
     }
 
+    let transactionId = record[2].trim();
+    if (!transactionId) {
+      transactionId = generateHash(
+        `${record[0]}::${record[1]}::${record[3]}::${record[4]}`
+      );
+    }
+
     // fin.
     return {
-      id: record[2],
+      id: transactionId,
       datePosted: getFormattedDate(new Date(record[0])),
       account: accountName,
       amount: -convertStringCurrencyToNumber(record[4]),
