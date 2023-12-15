@@ -1,4 +1,5 @@
 import path from "path";
+import { renameSync } from "fs";
 
 import { getTranslator } from "../translators/index.js";
 import { DB } from "../utils/storage.js";
@@ -182,6 +183,11 @@ export const run = async (
         splitCount++;
         splitRemaining = roundCurrency(splitRemaining - splitAmount);
       }
+    }
+
+    const destination = config.moveFilesAfterImport[importAccountName];
+    if (destination) {
+      renameSync(currentFile, path.join(destination, csvFile));
     }
   }
 };

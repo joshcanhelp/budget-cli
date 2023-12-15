@@ -11,6 +11,7 @@ const configPath = path.join(process.cwd(), ".budget-cli.json");
 const defaultConfig = {
   outputFile: "./output/data.csv",
   expenseTypeMapping: {},
+  moveFilesAfterImport: {},
   subCategories: {
     income: ["salary", "reimbursable", "other"],
     expense: [
@@ -50,6 +51,7 @@ export interface Configuration {
   subCategories: SubCategories;
   getOutputFile: (args?: CommandArgs) => string;
   expenseTypeMapping: { [key: string]: "need" | "want" };
+  moveFilesAfterImport: { [key: string]: string };
   expenseAllowance?: {
     [key: string]: Allowance;
   };
