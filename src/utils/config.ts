@@ -91,9 +91,9 @@ export const getConfiguration = (): Configuration => {
     }
 
     if (typeof mergedConfig.outputFile === "object") {
-      let reportYear = (new Date().getFullYear()).toString();
+      let reportYear = new Date().getFullYear().toString();
       if (year) {
-        reportYear = (year as string);
+        reportYear = year as string;
       } else if (date) {
         reportYear = (date as string).split("-")[0];
       }
