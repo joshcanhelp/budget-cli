@@ -25,6 +25,7 @@ import {
 import { statSync } from "fs";
 import { CommandArgs } from "../cli.js";
 import { print } from "../utils/index.js";
+import { getFormattedDate } from "../utils/date.js";
 
 export const run = async (
   config: Configuration,
@@ -187,7 +188,11 @@ export const run = async (
 
     const destination = config.moveFilesAfterImport[importAccountName];
     if (destination) {
-      renameSync(currentFile, path.join(destination, csvFile));
+      const newCsvFile = csvFile.replace(
+        ".csv",
+        `-IMPORTED-${getFormattedDate()}.csv`
+      );
+      renameSync(currentFile, path.join(destination, newCsvFile));
     }
   }
 };
