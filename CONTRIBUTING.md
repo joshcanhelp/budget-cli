@@ -1,6 +1,6 @@
 # Contributing
 
-Contributions to this repo are welcome! I recognize that not everyone using this tool will not be able to contribute code so read through the following list for how I can help. 
+Thank you in advance! I'm happy to accept issues reporting problems or desired functionality so contributionsof all types are welcome! I recognize that not everyone using this tool will not be able to contribute code so read through the following list for how I can help. 
 
 ### I want to add a translator!
 
