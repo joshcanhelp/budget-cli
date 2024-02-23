@@ -25,7 +25,7 @@ import {
 import { statSync } from "fs";
 import { CommandArgs } from "../cli.js";
 import { print } from "../utils/index.js";
-import { getFormattedDate } from "../utils/date.js";
+import { getFormattedDate, getReportYear } from "../utils/date.js";
 
 export const run = async (
   config: Configuration,
@@ -55,7 +55,7 @@ export const run = async (
   db.loadTransactions();
 
   // Filter imports by year to account for files with older data
-  const importYear = cliArgs.year ? parseInt(cliArgs.year as string, 10) : undefined;
+  const importYear = parseInt(getReportYear(cliArgs), 10);
   if (importYear) {
     print(`🤖 Importing transactions for ${importYear} only`);
   }

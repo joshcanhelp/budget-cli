@@ -1,6 +1,7 @@
 import path from "path";
 import { readFileSync } from "fs";
-import { CommandArgs } from "../cli";
+import { CommandArgs } from "../cli.js";
+import { getReportYear } from "./date.js";
 
 ////
 /// Data
@@ -80,7 +81,7 @@ export const getConfiguration = (): Configuration => {
   };
 
   mergedConfig.getOutputFile = (cliArgs?: CommandArgs) => {
-    const { date, year, output } = cliArgs || {};
+    const { output } = cliArgs || {};
 
     if (output && typeof output === "string") {
       return output;
@@ -91,13 +92,7 @@ export const getConfiguration = (): Configuration => {
     }
 
     if (typeof mergedConfig.outputFile === "object") {
-      let reportYear = new Date().getFullYear().toString();
-      if (year) {
-        reportYear = year as string;
-      } else if (date) {
-        reportYear = (date as string).split("-")[0];
-      }
-
+      const reportYear = getReportYear(cliArgs);
       return mergedConfig.outputFile[reportYear] || defaultConfig.outputFile;
     }
 
