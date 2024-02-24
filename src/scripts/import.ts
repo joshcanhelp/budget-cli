@@ -8,8 +8,6 @@ import {
   mapTransaction,
   printTransaction,
   TransactionComplete,
-  transactionHeaders,
-  TransactionImported,
 } from "../utils/transaction.js";
 import { getCsvInDir, readCsv } from "../utils/fs.js";
 import {
