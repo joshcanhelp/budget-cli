@@ -41,7 +41,8 @@ This tool can be configured using a `.budget-cli.json` file in the root of this 
   "moveFilesAfterImport": {
     "AccountTranslatorName1": "/path/to/destination/directory/for/TranslatorName1",
     "AccountTranslatorName2": "/path/to/destination/directory/for/TranslatorName2",
-  }
+  },
+  "defaultImportDir": "/path/to/default/import/directory"
 }
 ```
 
@@ -52,3 +53,4 @@ All keys are optional and will provide defaults.
 - `expenseTypeMapping`: The keys in the object are expense categories and the values are an expense type of "need" or "want" to automatically map expense categories to types.
 - `expenseAllowance`: This can be set to an object with keys indicating a specific year. Each year should be set to an object with expense sub-categories as keys. Each sub-category should be set to an object with the keys `allowance`, indicating how much is allowed per month, and `carryover`, indicating any rollover from the previous year (or `0` if none).
 - `moveFilesAfterImport`: This can be set to an object with keys indicating an account name and values indicating an absolute path to a local directory. If a destination path is set for a specific account, the CSV file will be moved there after successful import.
+- `defaultImportDir`: This can be set to a directory where the import command will look for CSV files. If this is not present then the command will require a directory path in the `input` flag.

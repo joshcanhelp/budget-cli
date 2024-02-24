@@ -53,6 +53,7 @@ export interface Configuration {
   getOutputFile: (args?: CommandArgs) => string;
   expenseTypeMapping: { [key: string]: "need" | "want" };
   moveFilesAfterImport: { [key: string]: string };
+  defaultImportDir?: string;
   expenseAllowance?: {
     [key: string]: Allowance;
   };

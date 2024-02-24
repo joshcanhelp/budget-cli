@@ -1,5 +1,5 @@
 import path from "path";
-import { renameSync } from "fs";
+import { existsSync, renameSync } from "fs";
 
 import { getTranslator } from "../translators/index.js";
 import { DB } from "../utils/storage.js";
@@ -31,9 +31,9 @@ export const run = async (
   config: Configuration,
   cliArgs: CommandArgs
 ): Promise<void> => {
-  const importPath = cliArgs.input as string;
-  if (!importPath) {
-    throw new Error("No import path provided in command");
+  const importPath = (cliArgs.input as string) || config.defaultImportDir;
+  if (!importPath || !existsSync(importPath)) {
+    throw new Error("No valid import path provided or configured");
   }
 
   // Allow for single file import or directory
