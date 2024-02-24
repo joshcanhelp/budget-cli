@@ -24,10 +24,4 @@ The CSVs that are downloaded are, in my mind, fairly important to keep, even if 
 
 Once they're downloaded, it's time to run an import. It looks like all the defaults are working well for the import year but it could probably have a config option to point to a default directory. ✅
 
-One big problem with importing is that if you make a mistake you need to cancel the process and start over. 
-
-
-**Year review**
-
-- Taxes
-- Reconciliation
+One big problem with importing is that if you make a mistake you need to cancel the process and start over. I looked into this before and it didn't look like there was anything in [prompt.js](https://www.npmjs.com/package/prompt) to help with this. I think the most simple way around this is to provide a summary of everything before saving it and requiring the user to accept it. This is one more step but would dovetail with the auto-categorization.

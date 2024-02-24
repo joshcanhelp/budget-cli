@@ -6,6 +6,7 @@ import { DB } from "../utils/storage.js";
 import { Configuration } from "../utils/config.js";
 import {
   mapTransaction,
+  printTransaction,
   TransactionComplete,
   transactionHeaders,
   TransactionImported,
@@ -114,17 +115,7 @@ export const run = async (
       }
 
       // Output all values from the imported transaction for inspection
-      Object.keys(importedTransaction).forEach((transactionProp: string) => {
-        const label: string =
-          transactionHeaders.find((header) => header.key === transactionProp)
-            ?.header || "<unknown>";
-        const value: string = importedTransaction[
-          transactionProp as keyof TransactionImported
-        ] as string;
-        if (value) {
-          print(`${label}: ${value}`);
-        }
-      });
+      printTransaction(importedTransaction);
 
       // If we're importing a complete transaction, save and on to the next
       if (useTranslator.importCompleted) {

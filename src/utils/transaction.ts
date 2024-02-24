@@ -1,4 +1,5 @@
 import { getFormattedDate } from "./date.js";
+import { print } from "./index.js";
 import { TransactionPrompt } from "./prompt.js";
 
 ////
@@ -151,4 +152,18 @@ export const sortTransactionsByDate = (a: string[], b: string[]): number => {
     return -1;
   }
   return 0;
+};
+
+export const printTransaction = (
+  transaction: TransactionImported | TransactionComplete
+) => {
+  for (const transProp in transaction) {
+    const label = transactionHeaders.find(
+      (header) => header.key === transProp
+    )?.header;
+    const value = transaction[transProp as keyof TransactionImported];
+    if (value) {
+      print(`${label || "<unknown>"}: ${value || "<none>"}`);
+    }
+  }
 };
