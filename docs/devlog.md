@@ -4,11 +4,10 @@ Notes taken during development, newest to oldest.
 
 TODO:
 - [ ] Auto-categorization rules
+- [ ] Deal with mistakes during import (summarize and accept or allow restarting)
 - [ ] Editing transactions
 - [ ] Deleting transactions
 - [ ] Reconciling transactions against a folder of CSVs
-- [ ] Get rid of the `--` in the npm command
-- [ ] When `--year` is present (maybe `--date` too), limit the transactions imported to that date
 - [ ] Investigate Plaid importing
 
 ## [[2024-02-23]]
@@ -17,4 +16,18 @@ This tool has been very useful for me for the last year. The satisfaction of bui
 
 Today, I'm importing 2 months worth of transactions and working through our taxes for 2023. I'm going to take notes here while I do that, focusing on making small improvements along the way and taking notes about larger ones. 
 
-First things first: collecting all the necessary CSVs. 
+**Budget importing**
+
+First things first: collecting all the necessary CSVs. This is a big pain in the butt, lots of manual labor here. I need to figure out what the latest transaction is for a specific account, then log in and download the right file, then import. Some banks make this worse than others. 
+
+The CSVs that are downloaded are, in my mind, fairly important to keep, even if they are't used for importing, as they are the Source of Truth for transactions. The problem is that some banks only allow you to download a limited number of files (like, only 12 months) so this needs to be done on a regular basis (even if only annually). The only option I can think of is some kind of browser extension or automation or headless to do the steps. It has to be downloaded directly from the bank app so I don't know that there is a solution here. 
+
+Once they're downloaded, it's time to run an import. It looks like all the defaults are working well for the import year but it could probably have a config option to point to a default directory. ✅
+
+One big problem with importing is that if you make a mistake you need to cancel the process and start over. 
+
+
+**Year review**
+
+- Taxes
+- Reconciliation
