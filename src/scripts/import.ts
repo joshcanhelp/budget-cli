@@ -5,6 +5,7 @@ import { getTranslator } from "../translators/index.js";
 import { DB } from "../utils/storage.js";
 import { Configuration } from "../utils/config.js";
 import {
+  autoCategorize,
   mapTransaction,
   printTransaction,
   TransactionComplete,
@@ -112,15 +113,27 @@ export const run = async (
         continue;
       }
 
-      // Output all values from the imported transaction for inspection
-      printTransaction(importedTransaction);
-
       // If we're importing a complete transaction, save and on to the next
       if (useTranslator.importCompleted) {
         db.saveRow(importedTransaction as TransactionComplete);
         continue;
       }
 
+      const autoCategorization = autoCategorize(importedTransaction, config);
+      if (autoCategorization !== null) {
+        const mappedTransaction = mapTransaction(
+          importedTransaction,
+          autoCategorization
+        );
+        printTransaction(mappedTransaction);
+        if (await promptConfirm("Save this transaction and continue?")) {
+          db.saveRow(mappedTransaction);
+          continue;
+        }
+      }
+
+      // Output all values from the imported transaction for inspection
+      printTransaction(importedTransaction);
       const transactionPrompt = await promptTransaction();
 
       // Force a skipped transaction, no record created in the output file

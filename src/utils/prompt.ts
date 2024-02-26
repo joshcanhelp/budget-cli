@@ -21,7 +21,7 @@ export interface TransactionPrompt {
   category: TransactionComplete["category"];
   subCategory: TransactionComplete["subCategory"];
   expenseType: TransactionComplete["expenseType"];
-  notes: string;
+  notes?: string;
 }
 
 export interface FixPrompt {

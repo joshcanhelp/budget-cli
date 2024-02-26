@@ -2,6 +2,7 @@ import path from "path";
 import { readFileSync } from "fs";
 import { CommandArgs } from "../cli.js";
 import { getReportYear } from "./date.js";
+import { TransactionComplete } from "./transaction.js";
 
 ////
 /// Data
@@ -47,6 +48,22 @@ export interface Allowance {
   };
 }
 
+export interface AutoCategorization {
+  description?: string;
+  amount?: {
+    gt?: number;
+    gte?: number;
+    lt?: number;
+    lte?: number;
+  };
+  categorization: {
+    category: TransactionComplete["category"];
+    subCategory: TransactionComplete["subCategory"];
+    expenseType: TransactionComplete["expenseType"];
+    notes?: string;
+  };
+}
+
 export interface Configuration {
   outputFile: string | OutputFiles;
   subCategories: SubCategories;
@@ -54,6 +71,7 @@ export interface Configuration {
   expenseTypeMapping: { [key: string]: "need" | "want" };
   moveFilesAfterImport: { [key: string]: string };
   defaultImportDir?: string;
+  autoCategorization?: AutoCategorization[];
   expenseAllowance?: {
     [key: string]: Allowance;
   };
@@ -68,7 +86,6 @@ export const getConfiguration = (): Configuration => {
   try {
     userConfig = readFileSync(configPath, { encoding: "utf8" });
   } catch (error: unknown) {
-    console.log(`🤖 No configuration file found at ${configPath}.`);
     return {
       ...defaultConfig,
       getOutputFile: () => defaultConfig.outputFile,

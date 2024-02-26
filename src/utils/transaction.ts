@@ -1,3 +1,4 @@
+import { Configuration } from "./config.js";
 import { getFormattedDate } from "./date.js";
 import { print } from "./index.js";
 import { TransactionPrompt } from "./prompt.js";
@@ -97,10 +98,10 @@ export interface TransactionHeader {
 
 export interface TransactionComplete extends TransactionImported {
   dateImported: string;
+  splitId: number;
   category: "expense" | "income" | "omit" | "split" | "skip";
   subCategory: string;
   expenseType: "need" | "want" | "";
-  splitId: number;
   notes?: string;
 }
 
@@ -136,7 +137,7 @@ export const mapTransaction = (
   return {
     ...imported,
     dateImported: getFormattedDate(),
-    notes: prompt.notes,
+    notes: prompt.notes || "",
     splitId,
     category,
     subCategory,
@@ -155,15 +156,53 @@ export const sortTransactionsByDate = (a: string[], b: string[]): number => {
 };
 
 export const printTransaction = (
-  transaction: TransactionImported | TransactionComplete
+  transaction: TransactionImported | TransactionComplete | TransactionPrompt
 ) => {
   for (const transProp in transaction) {
     const label = transactionHeaders.find(
       (header) => header.key === transProp
     )?.header;
-    const value = transaction[transProp as keyof TransactionImported];
+    const value = transaction[transProp as keyof typeof transaction];
     if (value) {
-      print(`${label || "<unknown>"}: ${value || "<none>"}`);
+      print(`${label || "<unknown>"}: ${value ? value : "<none>"}`);
     }
   }
+};
+
+export const autoCategorize = (
+  transaction: TransactionImported,
+  config: Configuration
+): TransactionPrompt | null => {
+  if (!config.autoCategorization) {
+    return null;
+  }
+
+  for (const matchCriteria of config.autoCategorization) {
+    const { description, amount, categorization } = matchCriteria;
+
+    let matchedDescription = true;
+    if (description) {
+      matchedDescription = transaction.description.includes(description);
+    }
+
+    let matchedAmount = true;
+    if (typeof amount?.gt === "number") {
+      matchedAmount = transaction.amount > amount.gt;
+    }
+    if (matchedAmount && typeof amount?.gte === "number") {
+      matchedAmount = transaction.amount >= amount.gte;
+    }
+    if (matchedAmount && typeof amount?.lt === "number") {
+      matchedAmount = transaction.amount < amount.lt;
+    }
+    if (matchedAmount && typeof amount?.lte === "number") {
+      matchedAmount = transaction.amount <= amount.lte;
+    }
+
+    if (matchedDescription && matchedAmount) {
+      return categorization;
+    }
+  }
+
+  return null;
 };
