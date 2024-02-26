@@ -159,12 +159,17 @@ export const printTransaction = (
   transaction: TransactionImported | TransactionComplete | TransactionPrompt
 ) => {
   for (const transProp in transaction) {
+    if (["dateImported", "account", "splitId"].includes(transProp)) {
+      continue;
+    }
     const label = transactionHeaders.find(
       (header) => header.key === transProp
     )?.header;
     const value = transaction[transProp as keyof typeof transaction];
     if (value) {
-      print(`${label || "<unknown>"}: ${value ? value : "<none>"}`);
+      print(
+        `\u001B[1m${label || "<unknown>"}\u001B[0m: ${value ? value : "<none>"}`
+      );
     }
   }
 };
