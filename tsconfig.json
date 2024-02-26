@@ -1,7 +1,7 @@
 {
   "include": [
     "src/**/*",
-    ".eslintrc.js",
+    ".eslintrc.cjs",
     "jest.config.ts"
   ],
   "compilerOptions": {

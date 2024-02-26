@@ -1,3 +1,4 @@
+/* globals module, __dirname */
 module.exports = {
   extends: [
     "eslint:recommended",
@@ -10,5 +11,13 @@ module.exports = {
     tsconfigRootDir: __dirname,
   },
   plugins: ["@typescript-eslint"],
-  root: true
+  root: true,
+  overrides: [
+    {
+      files: ["*.spec.*"],
+      rules: {
+        "@typescript-eslint/no-non-null-assertion": "off"
+      }
+    }
+  ]
 };
