@@ -134,28 +134,41 @@ export const run = async (
 
       // Output all values from the imported transaction for inspection
       printTransaction(importedTransaction);
-      const transactionPrompt = await promptTransaction();
 
-      // Force a skipped transaction, no record created in the output file
-      if (transactionPrompt.category === "skip") {
+      let mappedTransaction;
+      let promptForCategories = true;
+      do {
+        const transactionPrompt = await promptTransaction();
+        const mappedExpenses = Object.keys(config.expenseTypeMapping);
+        if (
+          transactionPrompt.category === "expense" &&
+          mappedExpenses.includes(transactionPrompt.subCategory)
+        ) {
+          transactionPrompt.expenseType =
+            config.expenseTypeMapping[transactionPrompt.subCategory];
+        }
+
+        mappedTransaction = mapTransaction(importedTransaction, transactionPrompt);
+        printTransaction(mappedTransaction);
+
+        const promptMessage =
+          mappedTransaction.category === "split"
+            ? "Save and define splits?"
+            : "Save this transaction and continue?";
+
+        if (await promptConfirm(promptMessage)) {
+          promptForCategories = false;
+        }
+      } while (promptForCategories);
+
+      if (mappedTransaction.category === "skip") {
         continue;
       }
 
-      // Force a skipped transaction, no record created in the output file
-      const mappedExpenses = Object.keys(config.expenseTypeMapping);
-      if (
-        transactionPrompt.category === "expense" &&
-        mappedExpenses.includes(transactionPrompt.subCategory)
-      ) {
-        transactionPrompt.expenseType =
-          config.expenseTypeMapping[transactionPrompt.subCategory];
-      }
-
-      // Save the row as-is now
-      db.saveRow(mapTransaction(importedTransaction, transactionPrompt));
+      db.saveRow(mappedTransaction);
 
       // Everything that's not skip or split is done
-      if (transactionPrompt.category !== "split") {
+      if (mappedTransaction.category !== "split") {
         continue;
       }
 
