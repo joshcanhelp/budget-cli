@@ -168,7 +168,7 @@ export const printTransaction = (
     const value = transaction[transProp as keyof typeof transaction];
     if (value) {
       print(
-        `\u001B[1m${label || "<unknown>"}\u001B[0m: ${value ? value : "<none>"}`
+        `  | \u001B[1m${label || "<unknown>"}\u001B[0m: ${value ? value : "<none>"}`
       );
     }
   }
