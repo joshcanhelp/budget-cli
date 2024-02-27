@@ -183,11 +183,15 @@ export const autoCategorize = (
   }
 
   for (const matchCriteria of config.autoCategorization) {
-    const { description, amount, categorization } = matchCriteria;
+    const { descriptions, amount, categorization } = matchCriteria;
 
     let matchedDescription = true;
-    if (description) {
-      matchedDescription = transaction.description.includes(description);
+    if (descriptions && descriptions.length) {
+      matchedDescription = false;
+      for (const description of descriptions) {
+        matchedDescription =
+          matchedDescription || transaction.description.includes(description);
+      }
     }
 
     let matchedAmount = true;

@@ -49,7 +49,7 @@ export interface Allowance {
 }
 
 export interface AutoCategorization {
-  description?: string;
+  descriptions?: string[];
   amount?: {
     gt?: number;
     gte?: number;

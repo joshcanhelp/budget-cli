@@ -35,7 +35,10 @@ describe("Function: autoCategorize", () => {
   it("auto-categorizes when the description is matched", () => {
     mockTransaction.description = "__TEST_DESCRIPTION__";
     mockConfig.autoCategorization = [{ ...mockAutoCategorization }];
-    mockConfig.autoCategorization[0].description = "TEST_DESCRIPTION";
+    mockConfig.autoCategorization[0].descriptions = [
+      "TEST_DESCRIPTION",
+      "NOT_MATCHING",
+    ];
 
     expect(autoCategorize(mockTransaction, mockConfig)).toEqual(
       mockConfig.autoCategorization[0].categorization
@@ -46,7 +49,10 @@ describe("Function: autoCategorize", () => {
     mockTransaction.description = "__TEST_DESCRIPTION__";
 
     mockConfig.autoCategorization = [{ ...mockAutoCategorization }];
-    mockConfig.autoCategorization[0].description = "NOT_MATCHING";
+    mockConfig.autoCategorization[0].descriptions = [
+      "NOT_MATCHING",
+      "ALSO_NOT_MATCHING",
+    ];
 
     expect(autoCategorize(mockTransaction, mockConfig)).toBeNull();
   });
@@ -136,7 +142,7 @@ describe("Function: autoCategorize", () => {
     mockTransaction.amount = 150;
 
     mockConfig.autoCategorization = [{ ...mockAutoCategorization }];
-    mockConfig.autoCategorization[0].description = "TEST_DESCRIPTION";
+    mockConfig.autoCategorization[0].descriptions = ["TEST_DESCRIPTION"];
     mockConfig.autoCategorization[0].amount = {
       gt: 100,
       lt: 200,
@@ -152,7 +158,7 @@ describe("Function: autoCategorize", () => {
     mockTransaction.amount = 150;
 
     mockConfig.autoCategorization = [{ ...mockAutoCategorization }];
-    mockConfig.autoCategorization[0].description = "NOT_MATCHED";
+    mockConfig.autoCategorization[0].descriptions = ["NOT_MATCHED"];
     mockConfig.autoCategorization[0].amount = {
       gt: 100,
       lt: 200,
@@ -166,7 +172,7 @@ describe("Function: autoCategorize", () => {
     mockTransaction.amount = 250;
 
     mockConfig.autoCategorization = [{ ...mockAutoCategorization }];
-    mockConfig.autoCategorization[0].description = "TEST_DESCRIPTION";
+    mockConfig.autoCategorization[0].descriptions = ["TEST_DESCRIPTION"];
     mockConfig.autoCategorization[0].amount = {
       gt: 100,
       lt: 200,
