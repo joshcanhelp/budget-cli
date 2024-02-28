@@ -2,7 +2,7 @@ import {
   convertStringCurrencyToNumber,
   roundCurrency,
   formatCurrency,
-} from "./money";
+} from "./money.js";
 
 describe("Function: convertStringCurrencyToNumber", () => {
   it("handles dollar signs", () => {

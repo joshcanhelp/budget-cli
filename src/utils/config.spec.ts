@@ -1,6 +1,6 @@
 import { readFileSync } from "fs";
 
-import { Configuration, getConfiguration } from "./config";
+import { Configuration, getConfiguration } from "./config.js";
 
 jest.mock("fs", () => ({
   readFileSync: jest.fn(),

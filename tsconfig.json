@@ -5,16 +5,34 @@
     "jest.config.ts"
   ],
   "compilerOptions": {
-    "noImplicitReturns": true,
-    "noImplicitAny": true,
-    "removeComments": true,
-    "target": "es2022",
-    "module": "es2022",
-    "outDir": "./dist",
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
     "strict": true,
+    "outDir": "./dist",
+    "target": "es2022",
+    "module": "nodenext",
+    "esModuleInterop": true,
     "skipLibCheck": true,
-    "moduleResolution": "node"
+    "declaration": true,
+    "declarationMap": true,                          
+    "sourceMap": true,
+    "isolatedModules": true,
+		"newLine": "lf",
+		"useDefineForClassFields": true,
+    "allowUnreachableCode": false, 
+    "allowUnusedLabels": false,
+		"noEmitOnError": true,
+		"noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+		"noImplicitOverride": true,
+		"noImplicitReturns": true,
+		"noPropertyAccessFromIndexSignature": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"forceConsistentCasingInFileNames": true,
+  },
+  "ts-node": {
+    "esm": true,
+    "transpileOnly": true,
+    "files": true,
+    "experimentalResolver": true
   }
 }

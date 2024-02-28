@@ -1,4 +1,4 @@
-import { padLeftZero } from "./";
+import { padLeftZero } from "./index.js";
 
 describe("Function: padLeftZero", () => {
   it("pads a single digit with a zero", () => {

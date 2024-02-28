@@ -1,5 +1,5 @@
-import { AutoCategorization, Configuration, getConfiguration } from "./config";
-import { TransactionImported, autoCategorize } from "./transaction";
+import { AutoCategorization, Configuration, getConfiguration } from "./config.js";
+import { TransactionImported, autoCategorize } from "./transaction.js";
 
 describe("Function: autoCategorize", () => {
   let mockTransaction: TransactionImported;

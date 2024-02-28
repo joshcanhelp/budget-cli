@@ -1,4 +1,4 @@
-import { getFormattedDate, getReportYear } from "./date";
+import { getFormattedDate, getReportYear } from "./date.js";
 
 describe("Function: getFormattedDate", () => {
   it("returns the correctly formatted date", () => {

@@ -1,4 +1,4 @@
-import path from "path";
+import * as path from "path";
 import { readFileSync } from "fs";
 import { CommandArgs } from "../cli.js";
 import { getReportYear } from "./date.js";
