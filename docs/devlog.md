@@ -8,6 +8,10 @@ TODO:
 - [ ] Reconciling transactions against a folder of CSVs
 - [ ] Investigate Plaid importing
 
+## [[2024-04-06]]
+
+I took a break from this project in order to work on [my other CLI project](https://github.com/joshcanhelp/api-getter). I've been looking for a CLI framework to handle the details around arguments, flags, and distribution and found what I needed in [oclif](https://oclif.io). I'm wary about adding new non-dev dependencies but this is well-maintained by a motivated company (SalesForce) and addresses a bunch of black box things around CLIs that I just don't want to deal with. It's also structured in a way that makes it easy to keep "business" logic pretty well separated from the CLI framework.  
+
 ## [[2024-02-26]]
 
 I starting working on the auto-categorization and I knew I wanted to be able to see the auto-categorized transaction before saving it. So I worked on the transaction printing and added that as a confirm prompt if it's able to categorize. This worked pretty well as a solution to the editing problem. Now, after the transaction is complete, you have to confirm to save it. That's helped me a few times already walking through the imports for the year. 

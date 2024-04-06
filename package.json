@@ -1,7 +1,7 @@
 {
   "type": "module",
   "engines": {
-    "node": ">=16 <=18"
+    "node": ">=18 <=20"
   },
   "scripts": {
     "test": "jest",
