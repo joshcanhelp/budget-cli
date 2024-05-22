@@ -3,7 +3,6 @@
 Notes taken during development, newest to oldest. 
 
 TODO:
-- [ ] Switch to oclif
 - [ ] Editing transactions
 - [ ] Deleting transactions
 - [ ] Reconciling transactions against a folder of CSVs
