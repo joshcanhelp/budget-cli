@@ -25,7 +25,7 @@ $ touch output/data.csv
 You should see the following output:
 
 ```
-$ npm run report
+$ ./bin/run.js report
 🤖 Reading from ./output/data.csv
 ❌ No transactions found for 2023.
 ```

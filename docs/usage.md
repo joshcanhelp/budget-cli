@@ -7,15 +7,15 @@ The first thing you will need for this to do anything for you are some transacti
 Assuming we have a CSV from one of the supported banks, we can run the importer, indicating a specific file or a directory containing one or more CSV files. 
 
 ```bash
-$ npm run import -- --input='/path/to/directory'
+$ ./bin/run.js import --input='/path/to/directory'
 # ... or
-$ npm run import -- --input='/path/to/directory/transactions.csv'
+$ ./bin/run.js import --input='/path/to/directory/transactions.csv'
 ```
 
 By default, the script will only import transactions for the current year. To import from a year in the past (or, I guess, the future), add a `year` argument to the command.
 
 ```bash
-$ npm run import -- --input='/path/to/directory' --year='2022'
+$ ./bin/run.js import --input='/path/to/directory' --year='2022'
 ```
 
 If the command checks out, you will be prompted to confirm the import file. This will help you determine if the configuration file is working. Next, it will prompt you for the first CSV it finds from your import path. Answering `n` will move on to the next CSV found, if there is one. 
@@ -42,7 +42,7 @@ You can view all of your transactions easily by just opening the CSV file that t
 You can also use the command line to see transactions. To see all stored transactions:
 
 ```bash
-$ npm run transactions
+$ ./bin/run.js transactions
 ```
 
 You'll be prompted with options to filter transactions.
@@ -52,17 +52,17 @@ You'll be prompted with options to filter transactions.
 The report is kind of the whole point of this thing. You can run an annual report for the current year:
 
 ```bash
-$ npm run report
+$ ./bin/run.js report
 ```
 
 Or specify a specific year or month:
 
 ```bash
-$ npm run report -- --date='2023'
+$ ./bin/run.js report --date='2023'
 # ... or 
-$ npm run report -- --year='2023'
+$ ./bin/run.js report --year='2023'
 # ... or
-$ npm run report -- --date='2023-02'
+$ ./bin/run.js report --date='2023-02'
 ```
 
 The report that is output does the following:

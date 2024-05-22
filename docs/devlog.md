@@ -3,10 +3,18 @@
 Notes taken during development, newest to oldest. 
 
 TODO:
+- [ ] Switch to oclif
 - [ ] Editing transactions
 - [ ] Deleting transactions
 - [ ] Reconciling transactions against a folder of CSVs
+- [ ] https://nutjs.dev/ for getting transactions
 - [ ] Investigate Plaid importing
+
+## [[2024-05-21]]
+
+I poked around with Plaid last week and was disappointed to figure out that there is no clear way to do authorization via CLI, everything has to run through their front-end SDK. That should work fine but I'll need to sit down and spend some time with it, time I don't really have to spare at the moment. 
+
+I've let budgeting fall behind for 3 months and now going back to handle it all. It really is such a chore to do all of this exporting and categorization. 
 
 ## [[2024-04-06]]
 
