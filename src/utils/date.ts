@@ -1,4 +1,3 @@
-import { CommandArgs } from "../cli.js";
 import { padLeftZero } from "./index.js";
 
 export const dateRegex = /^[0-9]{4}(?:-[0-9]{2})?(?:-[0-9]{2})?$/;
@@ -16,13 +15,15 @@ export const getFormattedDate = (date = new Date(), excludeDay = false): string 
   return `${yyyy}-` + padLeftZero(mm) + dateAppend;
 };
 
-export const getReportYear = (cliArgs?: CommandArgs): string => {
+export const getReportYear = (cliArgs?: {
+  date?: string;
+  year?: string;
+}): string => {
   const { date, year } = cliArgs || {};
-  let reportYear = new Date().getFullYear().toString();
   if (year) {
-    reportYear = year as string;
+    return year;
   } else if (date) {
-    reportYear = (date as string).split("-")[0];
+    return date.split("-")[0];
   }
-  return reportYear;
+  return new Date().getFullYear().toString();
 };

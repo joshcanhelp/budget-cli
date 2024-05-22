@@ -1,6 +1,5 @@
 import * as path from "path";
 import { readFileSync } from "fs";
-import { CommandArgs } from "../cli.js";
 import { getReportYear } from "./date.js";
 import { TransactionComplete } from "./transaction.js";
 
@@ -67,7 +66,7 @@ export interface AutoCategorization {
 export interface Configuration {
   outputFile: string | OutputFiles;
   subCategories: SubCategories;
-  getOutputFile: (args?: CommandArgs) => string;
+  getOutputFile: (args?: object) => string;
   expenseTypeMapping: { [key: string]: "need" | "want" };
   moveFilesAfterImport: { [key: string]: string };
   defaultImportDir?: string;
@@ -98,7 +97,11 @@ export const getConfiguration = (): Configuration => {
     ...parsedUserConfig,
   };
 
-  mergedConfig.getOutputFile = (cliArgs?: CommandArgs) => {
+  mergedConfig.getOutputFile = (cliArgs?: {
+    output?: string;
+    date?: string;
+    year?: string;
+  }) => {
     const { output } = cliArgs || {};
 
     if (output && typeof output === "string") {

@@ -14,9 +14,15 @@ module.exports = {
   root: true,
   overrides: [
     {
+      files: ["*"],
+      rules: {
+        "@typescript-eslint/require-await": "off",
+      }
+    },
+    {
       files: ["*.spec.*"],
       rules: {
-        "@typescript-eslint/no-non-null-assertion": "off"
+        "@typescript-eslint/no-non-null-assertion": "off",
       }
     }
   ]

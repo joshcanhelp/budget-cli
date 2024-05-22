@@ -1,11 +1,6 @@
 import inquirer from "inquirer";
 
-import {
-  transactionCategories,
-  TransactionComplete,
-  TransactionHeader,
-  transactionHeaders,
-} from "./transaction.js";
+import { transactionCategories, TransactionComplete } from "./transaction.js";
 import { getAccountNames } from "../translators/index.js";
 import { getConfiguration } from "./config.js";
 import { dateRegex } from "./date.js";
@@ -127,33 +122,6 @@ export const promptTransaction = async (
       message: "Notes?",
     },
   ])) as TransactionPrompt;
-};
-
-export const promptFix = async (): Promise<FixPrompt> => {
-  return (await inquirer.prompt([
-    {
-      name: "if",
-      type: "list",
-      choices: transactionHeaders.map((field: TransactionHeader) => field.header),
-      message: "Which field to check?",
-    },
-    {
-      name: "this",
-      type: "input",
-      message: "What should it equal?",
-    },
-    {
-      name: "then",
-      type: "list",
-      choices: transactionHeaders.map((field: TransactionHeader) => field.header),
-      message: "What field to change?",
-    },
-    {
-      name: "that",
-      type: "input",
-      message: "What to change it to?",
-    },
-  ])) as FixPrompt;
 };
 
 export const promptFilter = async (): Promise<FilterPrompt> => {
