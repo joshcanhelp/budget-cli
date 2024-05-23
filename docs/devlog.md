@@ -3,11 +3,21 @@
 Notes taken during development, newest to oldest. 
 
 TODO:
+- [ ] Searching transactions
+- [ ] CSV table output?
 - [ ] Editing transactions
 - [ ] Deleting transactions
 - [ ] Reconciling transactions against a folder of CSVs
 - [ ] https://nutjs.dev/ for getting transactions
 - [ ] Investigate Plaid importing
+
+## [[2024-05-23]]
+
+I've been thinking about what's irritating about budgeting and how this tool could help more, besides a list of features.
+
+- I'm missing a way to get a better analysis of what's going on. It always feels like the window is too small or I'm taking into account the wrong stuff to get a better idea of what's happening. I can't tell if I need more granular controls and views or if I'm just overanalyzing.
+- I definitely need a better way to view and manage transactions. I'm still opening up Numbers to work with the CSV and I want to move away from that.
+- Downloading and managing files is a pain but now that the CLI can read from a default directory and move the files, that feels better. 
 
 ## [[2024-05-21]]
 
