@@ -9,7 +9,7 @@ export const getCsvInDir = (path: string): string[] => {
   const csvs: string[] = [];
   readdirSync(path, { withFileTypes: true }).forEach((dirent: Dirent): void => {
     const extension = dirent.name.split(".").pop();
-    if (dirent.isFile() && extension === "csv") {
+    if (dirent.isFile() && extension?.toLowerCase() === "csv") {
       csvs.push(dirent.name);
     }
   });
@@ -24,5 +24,8 @@ export const readCsv = (
   if (typeof transform === "function") {
     data = transform(data);
   }
-  return csvParse(data, { skip_empty_lines: true }) as string[][];
+  return csvParse(data, {
+    skip_empty_lines: true,
+    relax_column_count: true,
+  }) as string[][];
 };
