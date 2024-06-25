@@ -1,4 +1,5 @@
 import { TransactionComplete, TransactionImported } from "../utils/transaction.js";
+import { amexTranslator } from "./amex.js";
 import { boaTranslator } from "./boa.js";
 import { chaseTranslator } from "./chase.js";
 import { nordstromsTranslator } from "./nordstroms.js";
@@ -13,6 +14,7 @@ export interface Translator {
 }
 
 const availableTranslators: Translator[] = [
+  amexTranslator,
   boaTranslator,
   chaseTranslator,
   nordstromsTranslator,

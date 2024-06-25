@@ -2,20 +2,20 @@
 
 ### Importing Transactions
 
-The first thing you will need for this to do anything for you are some transactions in the database. Transactions are imported from CSV files and translated from their original format to the CSV database. The translators currently available are the [translators](src/translators) folder. See the [Contributing](#Contributing) section for how to add or request new translators. 
+The first thing you will need for this to do anything for you are some transactions in the database. Transactions are imported from CSV files and translated from their original format to the CSV database. The translators currently available are the [translators](../src/translators) folder. See the [Contributing](#Contributing) section for how to add or request new translators. 
 
 Assuming we have a CSV from one of the supported banks, we can run the importer, indicating a specific file or a directory containing one or more CSV files. 
 
 ```bash
-$ ./bin/run.js import --input='/path/to/directory'
+$ ./bin/run.js import "/path/to/directory"
 # ... or
-$ ./bin/run.js import --input='/path/to/directory/transactions.csv'
+$ ./bin/run.js import "/path/to/directory/transactions.csv"
 ```
 
 By default, the script will only import transactions for the current year. To import from a year in the past (or, I guess, the future), add a `year` argument to the command.
 
 ```bash
-$ ./bin/run.js import --input='/path/to/directory' --year='2022'
+$ ./bin/run.js import "/path/to/directory" --year=2022
 ```
 
 If the command checks out, you will be prompted to confirm the import file. This will help you determine if the configuration file is working. Next, it will prompt you for the first CSV it finds from your import path. Answering `n` will move on to the next CSV found, if there is one. 
