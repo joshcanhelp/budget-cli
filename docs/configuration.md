@@ -4,65 +4,65 @@ This tool can be configured using a `.budget-cli.json` file in the root of this 
 
 ```json
 {
-	"outputFile": {
-		"YYYY": "/absolute/path/to/data.csv"
-	},
-	"subCategories": {
-		"income": [
-			"income_subcategory_1",
-			"income_subcategory_2",
-			"income_subcategory_3"
-		],
-		"expense": [
-			"expense_subcategory_1",
-			"expense_subcategory_2",
-			"expense_subcategory_3"
-		]
-	},
-	"expenseTypeMapping": {
-		"parent-1": "want",
-		"parent-2": "want",
-		"donation": "want",
-		"health": "need",
-		"childcare": "need"
-	},
-	"expenseAllowance": {
-		"YYYY": {
-			"expense_subcategory_1": {
-				"allowance": 300,
-				"carryover": 0
-			},
-			"expense_subcategory_2": {
-				"allowance": 300,
-				"carryover": 125
-			}
-		}
-	},
-	"moveFilesAfterImport": {
-		"AccountTranslatorName1": "/path/to/destination/directory/for/TranslatorName1",
-		"AccountTranslatorName2": "/path/to/destination/directory/for/TranslatorName2"
-	},
-	"defaultImportDir": "/path/to/default/import/directory",
-	"autoCategorization": [
-		{
-			"descriptions": [
-				"Description 1",
-				"Description 2"
-			],
-			"amount": {
-				"lt": 150,
-				"lte": 125,
-				"gte": 75,
-				"gt": 50
-			},
-			"categorization": {
-				"category": "expense",
-				"subCategory": "family",
-				"expenseType": "need",
-				"notes": "Notes here"
-			}
-		}
-	]
+  "outputFile": {
+    "YYYY": "/absolute/path/to/data.csv"
+  },
+  "subCategories": {
+    "income": [
+      "income_subcategory_1",
+      "income_subcategory_2",
+      "income_subcategory_3"
+    ],
+    "expense": [
+      "expense_subcategory_1",
+      "expense_subcategory_2",
+      "expense_subcategory_3"
+    ]
+  },
+  "expenseTypeMapping": {
+    "parent-1": "want",
+    "parent-2": "want",
+    "donation": "want",
+    "health": "need",
+    "childcare": "need"
+  },
+  "expenseAllowance": {
+    "YYYY": {
+      "expense_subcategory_1": {
+        "allowance": 300,
+        "carryover": 0
+      },
+      "expense_subcategory_2": {
+        "allowance": 300,
+        "carryover": 125
+      }
+    }
+  },
+  "moveFilesAfterImport": {
+    "AccountTranslatorName1": "/path/to/destination/directory/for/TranslatorName1",
+    "AccountTranslatorName2": "/path/to/destination/directory/for/TranslatorName2"
+  },
+  "defaultImportDir": "/path/to/default/import/directory",
+  "autoCategorization": [
+    {
+      "descriptions": [
+        "Description 1",
+        "Description 2"
+      ],
+      "amount": {
+        "lt": 150,
+        "lte": 125,
+        "gte": 75,
+        "gt": 50
+      },
+      "categorization": {
+        "category": "expense",
+        "subCategory": "family",
+        "expenseType": "need",
+        "notes": "Notes here"
+      }
+    }
+  ]
 }
 ```
 
