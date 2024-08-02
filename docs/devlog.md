@@ -27,7 +27,7 @@ I've let budgeting fall behind for 3 months and now going back to handle it all.
 
 ## [[2024-04-06]]
 
-I took a break from this project in order to work on [my other CLI project](https://github.com/joshcanhelp/api-getter). I've been looking for a CLI framework to handle the details around arguments, flags, and distribution and found what I needed in [oclif](https://oclif.io). I'm wary about adding new non-dev dependencies but this is well-maintained by a motivated company (SalesForce) and addresses a bunch of black box things around CLIs that I just don't want to deal with. It's also structured in a way that makes it easy to keep "business" logic pretty well separated from the CLI framework.  
+I took a break from this project in order to work on [my other CLI project](https://github.com/PersonalDataPipeline/data-getter). I've been looking for a CLI framework to handle the details around arguments, flags, and distribution and found what I needed in [oclif](https://oclif.io). I'm wary about adding new non-dev dependencies but this is well-maintained by a motivated company (SalesForce) and addresses a bunch of black box things around CLIs that I just don't want to deal with. It's also structured in a way that makes it easy to keep "business" logic pretty well separated from the CLI framework.  
 
 ## [[2024-02-26]]
 
