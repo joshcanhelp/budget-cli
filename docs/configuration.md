@@ -40,44 +40,45 @@ This tool can be configured using a `.budget-cli.json` file in the root of this 
   },
   "moveFilesAfterImport": {
     "AccountTranslatorName1": "/path/to/destination/directory/for/TranslatorName1",
-    "AccountTranslatorName2": "/path/to/destination/directory/for/TranslatorName2",
+    "AccountTranslatorName2": "/path/to/destination/directory/for/TranslatorName2"
   },
   "defaultImportDir": "/path/to/default/import/directory",
   "autoCategorization": [
-	{
-		"descriptions": [
-			"Description 1",
-			"Description 2"
-		],
-		"amount": {
-			"lt": 150, 
-			"lte": 125, 
-			"gte": 75, 
-			"gt": 50, 
-		},
-		"categorization": {
-			"category": "expense",
-			"subCategory": "family",
-			"expenseType": "need",
-			"notes": "Notes here"
-		}
-	}
+    {
+      "descriptions": [
+        "Description 1",
+        "Description 2"
+      ],
+      "amount": {
+        "lt": 150,
+        "lte": 125,
+        "gte": 75,
+        "gt": 50
+      },
+      "categorization": {
+        "category": "expense",
+        "subCategory": "family",
+        "expenseType": "need",
+        "notes": "Notes here"
+      }
+    }
+  ]
 }
 ```
 
-All keys are optional and will provide defaults. 
+All keys are optional and will provide defaults.
 
-- `outputFile`: This can be set to a string to use a single file for all transactions or an object with years as keys and paths as values to set a different file for different years. 
+- `outputFile`: This can be set to a string to use a single file for all transactions or an object with years as keys and paths as values to set a different file for different years.
 - `subCategories`: This can be set to an object with `income` and `expense` as keys. Each of those keys must be set to an array of strings indicating the sub-categories to use for each. When importing transactions, the tool will prompt you to select one.
 - `expenseTypeMapping`: The keys in the object are expense categories and the values are an expense type of "need" or "want" to automatically map expense categories to types.
 - `expenseAllowance`: This can be set to an object with keys indicating a specific year. Each year should be set to an object with expense sub-categories as keys. Each sub-category should be set to an object with the keys `allowance`, indicating how much is allowed per month, and `carryover`, indicating any rollover from the previous year (or `0` if none).
 - `moveFilesAfterImport`: This can be set to an object with keys indicating an account name and values indicating an absolute path to a local directory. If a destination path is set for a specific account, the CSV file will be moved there after successful import.
 - `defaultImportDir`: This can be set to a directory where the import command will look for CSV files. If this is not present then the command will require a directory path in the `input` flag.
 - `autoCategorization`: This can be set to a specifically-shaped object that will be used to auto-categorize transactions.
-    - `descriptions` is an array of one or more strings that are used to match the incoming transaction description in an "or" strategy. 
-    - `amount` is an object that should have at least one of the following keys: 
-      - `gt` (greater than)
-      - `gte` (greater than or equals)
-      - `lt` (less than)
-      - `lte` (less than or equals)
-    - `categorization` is the object that is merged with the transaction data if the conditions are met.
+  - `descriptions` is an array of one or more strings that are used to match the incoming transaction description in an "or" strategy.
+  - `amount` is an object that should have at least one of the following keys:
+    - `gt` (greater than)
+    - `gte` (greater than or equals)
+    - `lt` (less than)
+    - `lte` (less than or equals)
+  - `categorization` is the object that is merged with the transaction data if the conditions are met.
