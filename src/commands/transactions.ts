@@ -9,7 +9,7 @@ import { formatCurrency } from "../utils/money.js";
 import { hardNo, print } from "../utils/index.js";
 
 export default class Import extends ImportBaseCommand<typeof Import> {
-  static override summary = "Import a CSV or directory of CSVs";
+  static override summary = "Show transactions";
 
   static override examples = ["<%= config.bin %> <%= command.id %> PATH"];
 

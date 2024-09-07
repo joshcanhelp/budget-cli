@@ -27,7 +27,7 @@ export interface Aggregate {
 //
 
 export default class Report extends ImportBaseCommand<typeof Report> {
-  static override summary = "Import a CSV or directory of CSVs";
+  static override summary = "Output a report for the year";
 
   static override examples = ["<%= config.bin %> <%= command.id %> PATH"];
 
