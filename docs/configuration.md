@@ -62,7 +62,8 @@ This tool can be configured using a `.budget-cli.json` file in the root of this 
         "notes": "Notes here"
       }
     }
-  ]
+  ],
+  "wantNeedTracking": true
 }
 ```
 
@@ -82,3 +83,4 @@ All keys are optional and will provide defaults.
     - `lt` (less than)
     - `lte` (less than or equals)
   - `categorization` is the object that is merged with the transaction data if the conditions are met.
+- `wantNeedTracking`: Set this to `false` to turn off the want/need tracking. This will keep a column in your CSV output but not ask during import or display in transactions or reports. Default `true`.

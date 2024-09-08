@@ -25,6 +25,7 @@ const defaultConfig = {
       "other",
     ],
   },
+  wantNeedTracking: true,
 };
 
 ////
@@ -70,6 +71,7 @@ export interface Configuration {
   expenseTypeMapping: { [key: string]: "need" | "want" };
   moveFilesAfterImport: { [key: string]: string };
   defaultImportDir?: string;
+  wantNeedTracking?: boolean;
   autoCategorization?: AutoCategorization[];
   expenseAllowance?: {
     [key: string]: Allowance;
