@@ -1,5 +1,6 @@
 import { Args, Command, Flags, Interfaces } from "@oclif/core";
 import { Configuration, getConfiguration } from "../utils/config.js";
+import { isObjectWithKeys } from "../utils/index.js";
 
 ////
 /// Types
@@ -59,6 +60,13 @@ export abstract class ImportBaseCommand<T extends typeof Command> extends Comman
     this.flags = flags as Flags<T>;
     this.args = args as Args<T>;
     this.conf = getConfiguration();
+
+    if (
+      !this.conf.wantNeedTracking &&
+      isObjectWithKeys(this.conf.expenseTypeMapping)
+    ) {
+      throw new Error("Found expenseTypeMapping when wantNeedTracking is off.");
+    }
   }
 
   protected override async catch(err: Error & { exitCode?: number }) {

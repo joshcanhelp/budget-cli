@@ -22,3 +22,10 @@ export const generateHash = (hashString: string): string => {
   hash.update(hashString);
   return hash.digest("hex");
 };
+
+export const isObjectWithKeys = (inspect: unknown) => {
+  if (!inspect || typeof inspect !== "object") {
+    return false;
+  }
+  return Object.keys(inspect).length > 0;
+};
