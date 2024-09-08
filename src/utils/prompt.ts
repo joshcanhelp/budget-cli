@@ -110,7 +110,8 @@ export const promptTransaction = async (
       choices: ["need", "want"],
       when: (answers: TransactionAnswers) =>
         "expense" === answers.category &&
-        !mappedExpenses.includes(answers.subCategory),
+        !mappedExpenses.includes(answers.subCategory) &&
+        config.wantNeedTracking,
       message: "Which expense type is this?",
     },
     {
