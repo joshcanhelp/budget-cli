@@ -1,9 +1,8 @@
 import { Args } from "@oclif/core";
+import path from "path";
+import { existsSync, renameSync, statSync } from "fs";
 
 import { ImportBaseCommand } from "./_base.js";
-
-import path from "path";
-import { existsSync, renameSync } from "fs";
 
 import { getTranslator } from "../translators/index.js";
 import { DB } from "../utils/storage.js";
@@ -25,7 +24,6 @@ import {
   formatCurrency,
   roundCurrency,
 } from "../utils/money.js";
-import { statSync } from "fs";
 import { print } from "../utils/index.js";
 import { getFormattedDate, getReportYear } from "../utils/date.js";
 
