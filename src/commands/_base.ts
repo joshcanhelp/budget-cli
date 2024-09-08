@@ -61,11 +61,23 @@ export abstract class ImportBaseCommand<T extends typeof Command> extends Comman
     this.args = args as Args<T>;
     this.conf = getConfiguration();
 
-    if (
-      !this.conf.wantNeedTracking &&
-      isObjectWithKeys(this.conf.expenseTypeMapping)
-    ) {
-      throw new Error("Found expenseTypeMapping when wantNeedTracking is off.");
+    // TODO: This should be in ../utils/config.js but errors aren't thrown properly
+    if (!this.conf.wantNeedTracking) {
+      if (isObjectWithKeys(this.conf.expenseTypeMapping)) {
+        throw new Error("Found expenseTypeMapping when wantNeedTracking is off.");
+      }
+
+      const hasExpenseType = (this.conf.autoCategorization || [])
+        .map((el, index) => {
+          return el.categorization.expenseType ? index : null;
+        })
+        .filter((el) => typeof el === "number");
+
+      if (hasExpenseType.length) {
+        throw new Error(
+          "Found expenseTypein autoCategorization when wantNeedTracking is off."
+        );
+      }
     }
   }
 
