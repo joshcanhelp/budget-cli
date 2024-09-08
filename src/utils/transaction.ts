@@ -1,4 +1,4 @@
-import { Configuration } from "./config.js";
+import { Configuration, getConfiguration } from "./config.js";
 import { getFormattedDate } from "./date.js";
 import { print } from "./index.js";
 import { TransactionPrompt } from "./prompt.js";
@@ -158,14 +158,21 @@ export const sortTransactionsByDate = (a: string[], b: string[]): number => {
 export const printTransaction = (
   transaction: TransactionImported | TransactionComplete | TransactionPrompt
 ) => {
+  const skipProps = ["dateImported", "account", "splitId"];
+  if (!getConfiguration().wantNeedTracking) {
+    skipProps.push("expenseType");
+  }
+
   for (const transProp in transaction) {
-    if (["dateImported", "account", "splitId"].includes(transProp)) {
+    if (skipProps.includes(transProp)) {
       continue;
     }
+
     const label = transactionHeaders.find(
       (header) => header.key === transProp
     )?.header;
     const value = transaction[transProp as keyof typeof transaction];
+
     if (value) {
       print(
         `  | \u001B[1m${label || "<unknown>"}\u001B[0m: ${value ? value : "<none>"}`
