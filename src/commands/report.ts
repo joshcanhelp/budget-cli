@@ -3,7 +3,7 @@ import { DB } from "../utils/storage.js";
 import { convertStringCurrencyToNumber, formatCurrency } from "../utils/money.js";
 import { hardNo, print } from "../utils/index.js";
 import { dateRegex } from "../utils/date.js";
-import { Allowance } from "../utils/config.js";
+import { Allowance, getConfiguration } from "../utils/config.js";
 
 ////
 /// Types
@@ -112,18 +112,17 @@ $$$$$$$$$$$$$$$$$$$$$$$$
 $ ${reportType} report for ${getDate}
 $$$$$$$$$$$$$$$$$$$$$$$$
 
-Income: 
------------------ ${incomeOutput}
------------------
-${formatCurrency(totalIncome)} total income
 
-Expense: 
+Income: ${formatCurrency(totalIncome)}
+----------------- ${incomeOutput}
+
+Expenses: ${formatCurrency(totalExpense)} 
 -----------------${expenseOutput}
------------------
-${formatCurrency(totalExpense)} total expense
+
+Saved: ${formatCurrency(amountSaved)}
   `);
 
-    if (totalIncome) {
+    if (totalIncome && getConfiguration().wantNeedTracking) {
       print(`
 Simple budget
 =================
