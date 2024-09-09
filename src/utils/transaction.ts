@@ -1,6 +1,7 @@
 import { Configuration, getConfiguration } from "./config.js";
 import { getFormattedDate } from "./date.js";
 import { print } from "./index.js";
+import { formatCurrency } from "./money.js";
 import { TransactionPrompt } from "./prompt.js";
 
 ////
@@ -171,7 +172,11 @@ export const printTransaction = (
     const label = transactionHeaders.find(
       (header) => header.key === transProp
     )?.header;
-    const value = transaction[transProp as keyof typeof transaction];
+
+    let value = transaction[transProp as keyof typeof transaction];
+    if (transProp === "amount") {
+      (value as string) = formatCurrency(value);
+    }
 
     if (value) {
       print(
