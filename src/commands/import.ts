@@ -214,9 +214,10 @@ export default class Import extends ImportBaseCommand<typeof Import> {
       const destination = this.conf.moveFilesAfterImport[importAccountName];
       const csvFileName = csvFile.split(path.sep).pop();
       if (destination && csvFileName) {
-        const newCsvFile = csvFileName
-          .toLowerCase()
-          .replace(".csv", `-IMPORTED-${getFormattedDate()}.csv`);
+        const newCsvFile = csvFileName.replace(
+          /(\.csv)$/gi,
+          `-IMPORTED-${getFormattedDate()}.csv`
+        );
         renameSync(currentFile, path.join(destination, newCsvFile));
       }
     }
