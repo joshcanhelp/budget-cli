@@ -2,7 +2,7 @@ import { Args } from "@oclif/core";
 import path from "path";
 import { existsSync, renameSync, statSync } from "fs";
 
-import { ImportBaseCommand } from "./_base.js";
+import { ImportBaseCommand } from "../utils/oclif-base-command.js";
 
 import { getTranslator } from "../translators/index.js";
 import { DB } from "../utils/storage.js";

@@ -1,6 +1,6 @@
 import { Args } from "@oclif/core";
 
-import { ImportBaseCommand } from "./_base.js";
+import { ImportBaseCommand } from "../utils/oclif-base-command.js";
 
 import { DB } from "../utils/storage.js";
 import { sortTransactionsByDate } from "../utils/transaction.js";

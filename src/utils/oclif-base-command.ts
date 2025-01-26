@@ -1,6 +1,6 @@
 import { Args, Command, Flags, Interfaces } from "@oclif/core";
-import { Configuration, getConfiguration } from "../utils/config.js";
-import { isObjectWithKeys } from "../utils/index.js";
+import { Configuration, getConfiguration } from "./config.js";
+import { isObjectWithKeys } from "./index.js";
 
 ////
 /// Types

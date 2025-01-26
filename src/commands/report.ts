@@ -1,4 +1,4 @@
-import { ImportBaseCommand } from "./_base.js";
+import { ImportBaseCommand } from "../utils/oclif-base-command.js";
 import { DB } from "../utils/storage.js";
 import { convertStringCurrencyToNumber, formatCurrency } from "../utils/money.js";
 import { hardNo, print } from "../utils/index.js";
